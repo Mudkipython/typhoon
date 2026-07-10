@@ -140,6 +140,43 @@ function sortAndDedupeTrack(points: TrackPoint[]) {
   return output;
 }
 
+
+function nearestTagText(block: string, tag: string) {
+  return textOf(block, `jmx_eb:${tag}`) || textOf(block, tag);
+}
+function extractJmaTrackPoints(xml: string): TrackPoint[] {
+  const points: TrackPoint[] = [];
+  const coordinateRegex = /<(?:jmx_eb:)?Coordinate([^>]*)>([^<]+)<\/(?:jmx_eb:)?Coordinate>/gi;
+  for (const match of xml.matchAll(coordinateRegex)) {
+    const attrs = match[1] || "";
+    const index = match.index || 0;
+    const beforeInfo = Math.max(xml.lastIndexOf("<MeteorologicalInfo", index), xml.lastIndexOf("<Item", index), 0);
+    const afterMeteorological = xml.indexOf("</MeteorologicalInfo>", index);
+    const afterItem = xml.indexOf("</Item>", index);
+    const candidates = [afterMeteorological, afterItem].filter((value) => value > index);
+    const afterInfo = candidates.length ? Math.min(...candidates) + 24 : Math.min(xml.length, index + 2200);
+    const block = xml.slice(beforeInfo, afterInfo);
+    if (!/中心位置|center position|center/i.test(attrs + block)) continue;
+    const coordinate = parseJmaCoordinate(match[2]);
+    if (!coordinate) continue;
+    const dateMatch = block.match(/<(?:jmx_eb:)?DateTime([^>]*)>([^<]+)<\/(?:jmx_eb:)?DateTime>/i);
+    const dateAttrs = dateMatch?.[1] || "";
+    const time = dateMatch?.[2]?.trim() || null;
+    const forecast = /予報|forecast/i.test(dateAttrs) || (/予報円|予報位置|Forecast/i.test(block) && !/実況|analysis/i.test(dateAttrs));
+    const windValues = [...block.matchAll(/<(?:jmx_eb:)?WindSpeed[^>]*>([^<]+)<\/(?:jmx_eb:)?WindSpeed>/gi)].map((m) => Number.parseFloat(m[1])).filter(Number.isFinite);
+    const pressureValues = [...block.matchAll(/<(?:jmx_eb:)?Pressure[^>]*>([^<]+)<\/(?:jmx_eb:)?Pressure>/gi)].map((m) => Number.parseFloat(m[1])).filter(Number.isFinite);
+    points.push({
+      ...coordinate,
+      time,
+      windMs: windValues.length ? Math.max(...windValues) : null,
+      pressureHpa: pressureValues.length ? Math.min(...pressureValues) : null,
+      forecast,
+      source: "jma"
+    });
+  }
+  return sortAndDedupeTrack(points);
+}
+
 async function readNHC(): Promise<{ source: SourceStatus; storms: Storm[] }> {
   const url = "https://www.nhc.noaa.gov/CurrentStorms.json";
   try {
@@ -186,24 +223,14 @@ async function readJMA(): Promise<{ source: SourceStatus; storms: Storm[] }> {
     const feed = await (await fetchTimed(feedUrl)).text();
     const entries = xmlEntries(feed)
       .filter((entry) => /台風|熱帯低気圧|Typhoon|Tropical Cyclone/i.test(entry.title))
-      .slice(0, 5);
+      .slice(0, 14);
 
     const storms: Storm[] = [];
     for (const [index, entry] of entries.entries()) {
       if (!entry.href) continue;
       try {
         const xml = await (await fetchTimed(entry.href)).text();
-        const blocks = [...xml.matchAll(/<MeteorologicalInfo[\s\S]*?<\/MeteorologicalInfo>/gi)].map((m) => m[0]);
-        const points: TrackPoint[] = [];
-        for (const block of blocks) {
-          const rawCoordinate = textOf(block, "jmx_eb:Coordinate") || textOf(block, "Coordinate");
-          const coordinate = parseJmaCoordinate(rawCoordinate);
-          if (!coordinate) continue;
-          const wind = numberOf(block, "jmx_eb:WindSpeed") ?? numberOf(block, "WindSpeed");
-          const pressure = numberOf(block, "jmx_eb:Pressure") ?? numberOf(block, "Pressure");
-          const time = textOf(block, "jmx_eb:DateTime") || textOf(block, "DateTime") || null;
-          points.push({ ...coordinate, time, windMs: wind, pressureHpa: pressure, forecast: /予報|forecast/i.test(block), source: "jma" });
-        }
+        const points = extractJmaTrackPoints(xml);
         const fallbackCoordinate = parseJmaCoordinate(textOf(xml, "jmx_eb:Coordinate") || textOf(xml, "Coordinate"));
         const track = sortAndDedupeTrack(points.length ? points : (fallbackCoordinate ? [{ ...fallbackCoordinate, source: "jma", forecast: false } as TrackPoint] : []));
         const current = [...track].filter((point) => !point.forecast).sort((a, b) => pointTime(b) - pointTime(a))[0] || track[0];
@@ -253,7 +280,11 @@ async function readGDACS(): Promise<{ source: SourceStatus; storms: Storm[] }> {
     const features = Array.isArray(json?.features) ? json.features : [];
     const active = features.filter((feature: any) => {
       const p = feature?.properties || {};
-      return p.iscurrent === true || p.iscurrent === "true" || p.eventtype === "TC";
+      if (p.iscurrent === true || p.iscurrent === "true") return true;
+      const end = new Date(p.todate || p.toDate || 0).getTime();
+      const start = new Date(p.fromdate || p.fromDate || 0).getTime();
+      const now = Date.now();
+      return Number.isFinite(end) && end >= now - 36 * 3600_000 && (!Number.isFinite(start) || start <= now + 10 * 86400_000);
     }).slice(0, 12);
     const storms = active.map((feature: any, index: number) => {
       const p = feature.properties || {};

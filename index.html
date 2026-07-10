@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#edf4f8" />
   <meta name="color-scheme" content="light dark" />
   <meta name="description" content="Typhoon Vision — 面向公众与专业用户的全球热带气旋轨迹、风险与多来源交叉验证界面。" />
-  <title>Typhoon Vision · Public v8</title>
+  <title>Typhoon Vision · Public v9</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230f6b83'/%3E%3Cpath d='M13 33c8-18 29-19 38-5-9-4-17-2-20 5-3 7 2 13 11 14-17 6-33-2-29-14Z' fill='%23fff'/%3E%3Ccircle cx='34' cy='33' r='4' fill='%230f6b83'/%3E%3C/svg%3E" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
@@ -16,7 +16,7 @@
     <header class="topbar">
       <a class="brand" href="#" aria-label="Typhoon Vision">
         <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M6 21C10 9 27 7 34 17c-7-3-13 0-14 6-1 5 3 9 9 9C19 37 5 31 6 21Z"/><circle cx="21" cy="21" r="2.7"/></svg></span>
-        <span class="brand-copy"><strong>Typhoon Vision <em class="version-badge">Public v8</em></strong><small data-i18n="tagline">全球台风简报</small></span>
+        <span class="brand-copy"><strong>Typhoon Vision <em class="version-badge">Public v9</em></strong><small data-i18n="tagline">全球台风简报</small></span>
       </a>
 
       <div class="freshness-pill" id="freshnessPill" aria-live="polite">
@@ -82,6 +82,16 @@
           </div>
           <button class="map-action" id="globalViewButton"><svg viewBox="0 0 24 24"><path d="M4 6h6V3M20 6h-6V3M4 18h6v3M20 18h-6v3"/></svg><span data-i18n="fitWorld">查看全球</span></button>
           <button class="map-action" id="focusButton"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></svg><span data-i18n="focusStorm">聚焦台风</span></button>
+          <button class="map-action layer-button" id="layerButton" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="m12 3 8 4-8 4-8-4 8-4Z"/><path d="m4 12 8 4 8-4M4 17l8 4 8-4"/></svg><span data-i18n="layers">图层</span></button>
+        </div>
+
+        <div class="layer-panel" id="layerPanel" role="dialog" aria-label="地图图层">
+          <div class="layer-panel-head"><strong data-i18n="stormLayers">台风图层</strong><small data-i18n="layerHint">选择地图上要显示的信息</small></div>
+          <label><input type="checkbox" data-layer-toggle="track" checked><span><b data-i18n="trackLayer">实况与预报路径</b><small data-i18n="trackLayerHint">中心位置、路径节点与时间</small></span></label>
+          <label><input type="checkbox" data-layer-toggle="cone" checked><span><b data-i18n="coneLayer">预报可能范围</b><small data-i18n="coneLayerHint">仅在官方预报点充分时显示</small></span></label>
+          <label><input type="checkbox" data-layer-toggle="wind" checked><span><b data-i18n="windLayer">风圈与波及范围</b><small data-i18n="windLayerHint">无官方风圈数据时显示估算范围</small></span></label>
+          <label><input type="checkbox" data-layer-toggle="labels" checked><span><b data-i18n="labelLayer">地图标注</b><small data-i18n="labelLayerHint">台风名称、节点时间与风圈标签</small></span></label>
+          <p><span>i</span><small data-i18n="estimatedRangeNote">标有“估算”的风圈仅用于帮助理解，不是官方警戒范围。</small></p>
         </div>
 
         <div class="map-zoom">
@@ -127,10 +137,12 @@
           <button id="verificationButton"><span data-i18n="howVerified">如何交叉验证</span><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg></button>
         </div>
 
+        <div class="track-status" id="trackStatus" aria-live="polite"></div>
         <div class="map-legend">
           <span><i class="observed"></i><b data-i18n="observed">已观测路径</b></span>
           <span><i class="forecast"></i><b data-i18n="forecast">预测路径</b></span>
           <span><i class="uncertainty"></i><b data-i18n="uncertainty">可能范围</b></span>
+          <span><i class="wind-range"></i><b data-i18n="windRange">风圈/波及范围</b></span>
         </div>
         <div class="map-tip" id="mapTip" data-i18n="mapTip">拖动地图 · 滚轮或双指缩放 · 点击路径节点</div>
         <div class="point-tooltip" id="pointTooltip"></div>

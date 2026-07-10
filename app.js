@@ -137,6 +137,18 @@ Object.assign(i18n.fr, {
   similarPath:'Direction similaire', similarIntensity:'Intensité similaire', similarRegion:'Zone d’impact similaire', pastImpact:'Impact historique principal', lesson:'Enseignement utile', overlayTrack:'Superposer la trajectoire', removeOverlay:'Retirer la trajectoire', noAnalog:'Les informations de trajectoire sont insuffisantes pour proposer des cas.'
 });
 
+
+Object.assign(i18n.zh, {
+  layers:'图层', stormLayers:'台风图层', layerHint:'选择地图上要显示的信息', trackLayer:'实况与预报路径', trackLayerHint:'中心位置、路径节点与时间', coneLayer:'预报可能范围', coneLayerHint:'仅在官方预报点充分时显示', windLayer:'风圈与波及范围', windLayerHint:'无官方风圈数据时显示估算范围', labelLayer:'地图标注', labelLayerHint:'台风名称、节点时间与风圈标签', estimatedRangeNote:'标有“估算”的风圈仅用于帮助理解，不是官方警戒范围。', windRange:'风圈/波及范围', estimated:'估算', galeRadius:'大风影响范围', stormRadius:'强风影响范围', typhoonRadius:'台风核心范围', trackReady:'路径图已显示', observedPoints:'个实况点', forecastPoints:'个预报点', forecastUnavailable:'官方预报路径暂不可用', singleFixOnly:'目前仅收到一个中心位置', mapDataLimited:'当前来源的路径数据有限', currentCentre:'当前中心', noTrack:'暂无可绘制路径', layerChanged:'地图图层已更新'
+});
+Object.assign(i18n.en, {
+  layers:'Layers', stormLayers:'Storm layers', layerHint:'Choose what appears on the map', trackLayer:'Observed and forecast track', trackLayerHint:'Centre positions, nodes and times', coneLayer:'Forecast uncertainty area', coneLayerHint:'Shown only when enough official forecast points exist', windLayer:'Wind and possible impact range', windLayerHint:'Estimated ranges are used when official wind radii are unavailable', labelLayer:'Map labels', labelLayerHint:'Storm name, node times and wind-range labels', estimatedRangeNote:'Wind areas marked “estimated” help explain scale and are not official warning boundaries.', windRange:'Wind / impact range', estimated:'Estimated', galeRadius:'Gale-force range', stormRadius:'Storm-force range', typhoonRadius:'Typhoon core range', trackReady:'Track map available', observedPoints:'observed points', forecastPoints:'forecast points', forecastUnavailable:'Official forecast track is not available yet', singleFixOnly:'Only one centre position is currently available', mapDataLimited:'Track information from the current source is limited', currentCentre:'Current centre', noTrack:'No track available to draw', layerChanged:'Map layers updated'
+});
+Object.assign(i18n.ja, {layers:'レイヤー',stormLayers:'台風レイヤー',layerHint:'地図に表示する情報を選択',trackLayer:'実況・予報進路',trackLayerHint:'中心位置、時刻、進路点',coneLayer:'予報の可能範囲',coneLayerHint:'公式予報点が十分な場合のみ表示',windLayer:'風域・影響範囲',windLayerHint:'公式風域がない場合は推定表示',labelLayer:'地図ラベル',labelLayerHint:'台風名、時刻、風域ラベル',estimatedRangeNote:'「推定」の風域は理解の補助であり、公式警戒範囲ではありません。',windRange:'風域/影響範囲',estimated:'推定',galeRadius:'強風域',stormRadius:'暴風域',typhoonRadius:'中心域',trackReady:'進路図を表示中',observedPoints:'実況点',forecastPoints:'予報点',forecastUnavailable:'公式予報進路はまだ利用できません',singleFixOnly:'現在は中心位置が1点のみです',mapDataLimited:'現在の情報源では進路データが限定的です',currentCentre:'現在の中心',noTrack:'表示できる進路がありません',layerChanged:'地図レイヤーを更新しました'});
+Object.assign(i18n.ko, {layers:'레이어',stormLayers:'태풍 레이어',layerHint:'지도에 표시할 정보를 선택하세요',trackLayer:'관측·예보 경로',trackLayerHint:'중심 위치, 시각 및 경로 지점',coneLayer:'예보 가능 범위',coneLayerHint:'공식 예보 지점이 충분할 때 표시',windLayer:'강풍권·영향 범위',windLayerHint:'공식 풍권이 없으면 추정 범위 표시',labelLayer:'지도 라벨',labelLayerHint:'태풍 이름, 시각 및 풍권 라벨',estimatedRangeNote:'“추정” 풍권은 이해를 돕기 위한 것이며 공식 경계가 아닙니다.',windRange:'풍권/영향 범위',estimated:'추정',galeRadius:'강풍 영향 범위',stormRadius:'폭풍 영향 범위',typhoonRadius:'태풍 핵심 범위',trackReady:'경로 지도 표시 중',observedPoints:'관측 지점',forecastPoints:'예보 지점',forecastUnavailable:'공식 예보 경로를 아직 사용할 수 없습니다',singleFixOnly:'현재 중심 위치가 한 곳만 제공됩니다',mapDataLimited:'현재 자료원의 경로 정보가 제한적입니다',currentCentre:'현재 중심',noTrack:'표시할 경로가 없습니다',layerChanged:'지도 레이어가 업데이트되었습니다'});
+Object.assign(i18n.es, {layers:'Capas',stormLayers:'Capas del ciclón',layerHint:'Elija la información visible en el mapa',trackLayer:'Trayectoria observada y prevista',trackLayerHint:'Centro, horas y puntos de trayectoria',coneLayer:'Área posible de pronóstico',coneLayerHint:'Solo con suficientes puntos oficiales',windLayer:'Viento y posible zona de impacto',windLayerHint:'Se estima cuando no hay radios oficiales',labelLayer:'Etiquetas del mapa',labelLayerHint:'Nombre, horas y etiquetas de viento',estimatedRangeNote:'Las áreas marcadas como “estimadas” no son límites oficiales de alerta.',windRange:'Viento/zona de impacto',estimated:'Estimado',galeRadius:'Área de vientos fuertes',stormRadius:'Área de temporal',typhoonRadius:'Núcleo del tifón',trackReady:'Trayectoria disponible',observedPoints:'puntos observados',forecastPoints:'puntos previstos',forecastUnavailable:'La trayectoria oficial prevista aún no está disponible',singleFixOnly:'Solo hay una posición central disponible',mapDataLimited:'La fuente actual ofrece datos de trayectoria limitados',currentCentre:'Centro actual',noTrack:'No hay trayectoria para mostrar',layerChanged:'Capas del mapa actualizadas'});
+Object.assign(i18n.fr, {layers:'Couches',stormLayers:'Couches du cyclone',layerHint:'Choisissez les informations affichées',trackLayer:'Trajectoire observée et prévue',trackLayerHint:'Centre, heures et points de trajectoire',coneLayer:'Zone possible de prévision',coneLayerHint:'Affichée avec suffisamment de points officiels',windLayer:'Vent et zone d’impact possible',windLayerHint:'Zone estimée en l’absence de rayons officiels',labelLayer:'Libellés de carte',labelLayerHint:'Nom, heures et libellés de vent',estimatedRangeNote:'Les zones marquées « estimées » ne sont pas des limites officielles d’alerte.',windRange:'Vent/zone d’impact',estimated:'Estimé',galeRadius:'Zone de vents forts',stormRadius:'Zone de tempête',typhoonRadius:'Cœur du typhon',trackReady:'Trajectoire affichée',observedPoints:'points observés',forecastPoints:'points prévus',forecastUnavailable:'La trajectoire officielle prévue n’est pas encore disponible',singleFixOnly:'Une seule position centrale est disponible',mapDataLimited:'La source actuelle fournit peu de données de trajectoire',currentCentre:'Centre actuel',noTrack:'Aucune trajectoire à afficher',layerChanged:'Couches de carte mises à jour'});
+
 const demoStorm = {
   id: 'demo-aurora', name: 'AURORA', localName: '曙光', number: '2600', basin: 'Western North Pacific', classification: 'Strong typhoon', alertLevel: 'orange', lat: 25.2, lon: 124.8, windMs: 58, pressureHpa: 960, updatedAt: '2026-07-10T12:00:00Z', demo: true,
   track: [
@@ -192,6 +204,7 @@ const state = {
   locationPickMode: false,
   personalImpact: null,
   activeAnalogId: null,
+  layers: (() => { try { return {...{track:true,cone:true,wind:true,labels:true}, ...JSON.parse(localStorage.getItem('tv-layers')||'{}')}; } catch { return {track:true,cone:true,wind:true,labels:true}; } })(),
   lastFrame: 0,
   needsRender: true
 };
@@ -241,6 +254,7 @@ function setMapMode(mode) {
   state.mapMode = mode; localStorage.setItem('tv-map', mode); document.documentElement.dataset.map = mode;
   $$('[data-map-mode]').forEach(btn => { const active = btn.dataset.mapMode === mode; btn.classList.toggle('active',active); btn.setAttribute('aria-pressed',String(active)); });
   if (mode === 'globe' && state.zoom < .8) state.targetZoom = 1;
+  if(state.selectedStorm) setTimeout(()=>fitStormTrack(state.selectedStorm,false),0);
   state.needsRender = true;
 }
 
@@ -259,7 +273,7 @@ function selectStorm(storm, focus = false) {
 }
 
 function renderAll() {
-  renderStormList(); renderSources(); renderPersonalImpact(); renderHistoricalAnalogs(); renderBrief(); renderPro(); renderTimeline();
+  renderStormList(); renderSources(); renderPersonalImpact(); renderHistoricalAnalogs(); renderBrief(); renderPro(); renderTimeline(); renderTrackStatus();
 }
 function renderStormList() {
   const storms = availableStorms(); state.storms = storms;
@@ -565,6 +579,28 @@ function renderTimeline() {
   el.innerHTML = storm.track.map((p,i) => `<button class="timeline-item ${p.forecast?'forecast':''}" data-track-index="${i}"><time>${formatDate(p.time,true)}</time><i></i><p><span>${p.forecast?t('forecastWord'):t('observedWord')}</span><strong>${Number.isFinite(p.windMs)?`${Math.round(p.windMs)} m/s`:formatCoord(p.lat,p.lon)}</strong></p></button>`).join('');
   $$('[data-track-index]',el).forEach(btn => btn.addEventListener('click',()=>{ state.activeTrackIndex=+btn.dataset.trackIndex; renderPro(); state.needsRender=true; }));
 }
+
+function uniqueTrackPoints(track=[]) {
+  const output=[];
+  for(const point of track.filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lon)).sort((a,b)=>new Date(a.time||0)-new Date(b.time||0))){
+    const previous=output.at(-1);
+    if(previous&&Math.abs(previous.lat-point.lat)<.02&&Math.abs(normalizeLon(previous.lon-point.lon))<.02&&Boolean(previous.forecast)===Boolean(point.forecast)) continue;
+    output.push(point);
+  }
+  return output;
+}
+function trackParts(storm=state.selectedStorm){
+  const points=uniqueTrackPoints(storm?.track||[]);
+  return {points,observed:points.filter(p=>!p.forecast),forecast:points.filter(p=>p.forecast)};
+}
+function renderTrackStatus(){
+  const el=$('#trackStatus'); if(!el)return;
+  const {points,observed,forecast}=trackParts();
+  if(!state.selectedStorm||!points.length){el.innerHTML=`<span class="status-warn">!</span><b>${t('noTrack')}</b>`;return;}
+  const message=points.length===1?t('singleFixOnly'):(forecast.length?`${t('trackReady')} · ${observed.length} ${t('observedPoints')} · ${forecast.length} ${t('forecastPoints')}`:`${observed.length} ${t('observedPoints')} · ${t('forecastUnavailable')}`);
+  el.innerHTML=`<span class="${forecast.length?'status-ok':'status-warn'}">${forecast.length?'✓':'i'}</span><b>${escapeHtml(message)}</b>`;
+}
+
 function inferDirection(track=[]) {
   if (track.length < 2) return '—'; const a=track[Math.max(0,track.length-3)], b=track[track.length-1];
   const ns=b.lat-a.lat, ew=normalizeLon(b.lon-a.lon); let value=''; if(ns>1)value+='N'; else if(ns<-1)value+='S'; if(ew>1)value+='E'; else if(ew<-1)value+='W'; return value||'STNRY';
@@ -599,12 +635,13 @@ function canvasColors() {
   return {ocean:get('--ocean'),land:get('--land'),landStroke:get('--land-stroke'),grid:get('--grid'),brand:get('--brand'),warning:get('--warning'),danger:get('--danger'),text2:get('--text-2'),surface:get('--surface-solid')};
 }
 function worldScale() { return Math.min(state.width / 360, state.height / 180) * state.zoom; }
+function mapVisualCenterX(){return !isMobile()&&state.view==='simple'?state.width*.67:state.width*.5;}
 function projectWorld(lat,lon) {
   const scale = worldScale();
-  return {x:state.width/2+normalizeLon(lon-state.centerLon)*scale,y:state.height/2-(lat-state.centerLat)*scale,visible:true};
+  return {x:mapVisualCenterX()+normalizeLon(lon-state.centerLon)*scale,y:state.height/2-(lat-state.centerLat)*scale,visible:true};
 }
 function globeRadius(){return Math.min(state.width,state.height)*(isMobile()?.37:.36)*state.zoom;}
-function globeCenter(){return {x:state.width*.5,y:state.height*.5};}
+function globeCenter(){return {x:mapVisualCenterX(),y:state.height*.5};}
 function projectGlobe(lat,lon) {
   const r=globeRadius(), c=globeCenter(), phi=rad(lat), phi0=rad(state.centerLat), lambda=rad(normalizeLon(lon-state.centerLon));
   const cosPhi=Math.cos(phi),sinPhi=Math.sin(phi),cosPhi0=Math.cos(phi0),sinPhi0=Math.sin(phi0),z=sinPhi0*sinPhi+cosPhi0*cosPhi*Math.cos(lambda);
@@ -620,7 +657,7 @@ function drawBackground(colors) {
     ctx.save();ctx.beginPath();ctx.arc(c.x,c.y,r,0,Math.PI*2);ctx.clip();ctx.fillStyle=colors.ocean;ctx.fillRect(c.x-r,c.y-r,r*2,r*2);drawMapLayers(colors);ctx.restore();ctx.strokeStyle=colors.landStroke;ctx.lineWidth=1;ctx.beginPath();ctx.arc(c.x,c.y,r,0,Math.PI*2);ctx.stroke();
   } else drawMapLayers(colors);
 }
-function drawMapLayers(colors){ drawGrid(colors); drawLand(colors); drawHistoricalAnalog(colors); drawCone(colors); drawTrack(colors); drawUserLocation(colors); drawStormPulse(colors); }
+function drawMapLayers(colors){ drawGrid(colors); drawLand(colors); drawHistoricalAnalog(colors); if(state.layers.wind)drawWindFootprints(colors); if(state.layers.cone)drawCone(colors); if(state.layers.track)drawTrack(colors); drawUserLocation(colors); drawStormPulse(colors); }
 function drawGrid(colors) {
   ctx.strokeStyle=colors.grid;ctx.lineWidth=.7;
   for(let lat=-60;lat<=60;lat+=30){traceGeoLine(Array.from({length:121},(_,i)=>[lat,-180+i*3]),false);}
@@ -668,8 +705,46 @@ function drawLand(colors) {
   }}
   ctx.restore();
 }
+
+function geoCirclePoints(lat,lon,radiusKm,steps=96){
+  const angular=radiusKm/6371,lat1=rad(lat),lon1=rad(lon),points=[];
+  for(let i=0;i<=steps;i++){
+    const bearing=Math.PI*2*i/steps;
+    const lat2=Math.asin(Math.sin(lat1)*Math.cos(angular)+Math.cos(lat1)*Math.sin(angular)*Math.cos(bearing));
+    const lon2=lon1+Math.atan2(Math.sin(bearing)*Math.sin(angular)*Math.cos(lat1),Math.cos(angular)-Math.sin(lat1)*Math.sin(lat2));
+    points.push([lat2*180/Math.PI,normalizeLon(lon2*180/Math.PI)]);
+  }
+  return points;
+}
+function drawGeoArea(lat,lon,radiusKm,fill,stroke,label){
+  const pts=geoCirclePoints(lat,lon,radiusKm,state.mapMode==='globe'?112:84).map(([a,b])=>project(a,b));
+  const allVisible=pts.every(p=>p.visible),runs=[];let run=[];
+  for(const p of pts){if(!p.visible){if(run.length>1)runs.push(run);run=[];continue;}if(run.length&&Math.hypot(p.x-run.at(-1).x,p.y-run.at(-1).y)>(state.mapMode==='globe'?globeRadius()*.45:state.width*.45)){if(run.length>1)runs.push(run);run=[];}run.push(p);}if(run.length>1)runs.push(run);
+  ctx.save();ctx.fillStyle=fill;ctx.strokeStyle=stroke;ctx.lineWidth=1.25;
+  if(allVisible){ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fill();ctx.stroke();}
+  else for(const segment of runs){ctx.beginPath();segment.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();}
+  if(state.layers.labels&&!isMobile()&&state.view==='pro'&&label){const q=project(lat,lon);if(q.visible){const edge=project(lat,normalizeLon(lon+radiusKm/(111*Math.max(.2,Math.cos(rad(lat))))));if(edge.visible){ctx.font='700 11px '+getComputedStyle(document.body).fontFamily;ctx.fillStyle=stroke;ctx.textAlign='left';ctx.fillText(label,edge.x+6,edge.y-4);}}}
+  ctx.restore();
+}
+function estimatedWindRadii(point,storm){
+  const wind=Number(point?.windMs??storm?.windMs);
+  if(!Number.isFinite(wind)||wind<17)return[];
+  const gale=clamp(150+wind*4.6,210,520);
+  const rows=[{km:gale,key:'galeRadius',fill:'rgba(230,151,47,.10)',stroke:'rgba(218,126,24,.55)'}];
+  if(wind>=25)rows.push({km:clamp(gale*.56,110,300),key:'stormRadius',fill:'rgba(235,106,48,.11)',stroke:'rgba(220,91,34,.62)'});
+  if(wind>=33)rows.push({km:clamp(gale*.28,55,160),key:'typhoonRadius',fill:'rgba(213,66,66,.13)',stroke:'rgba(201,55,55,.72)'});
+  return rows;
+}
+function drawWindFootprints(colors){
+  const storm=state.selectedStorm;if(!storm)return;
+  const {points,observed}=trackParts(storm);const current=observed.at(-1)||points[0]||storm;
+  if(!current||!Number.isFinite(current.lat)||!Number.isFinite(current.lon))return;
+  const radii=Array.isArray(storm.windRadii)&&storm.windRadii.length?storm.windRadii:estimatedWindRadii(current,storm);
+  [...radii].sort((a,b)=>b.km-a.km).forEach((item,index)=>drawGeoArea(current.lat,current.lon,item.km,item.fill||colorAlpha(colors.warning,.08+index*.025),item.stroke||colorAlpha(colors.warning,.45+index*.1),`${t(item.key||'windRange')} · ${Math.round(item.km)} km${storm.windRadii?'':` · ${t('estimated')}`}`));
+}
+
 function drawCone(colors) {
-  const storm=state.selectedStorm;if(!storm?.track?.length)return;const points=storm.track.filter(p=>p.forecast);if(points.length<2)return;
+  const storm=state.selectedStorm;const points=trackParts(storm).forecast;if(points.length<2)return;
   const widths=points.map((_,i)=>30+i*28);const left=[],right=[];
   points.forEach((p,i)=>{const prev=points[Math.max(0,i-1)],next=points[Math.min(points.length-1,i+1)];const angle=Math.atan2(next.lat-prev.lat,normalizeLon(next.lon-prev.lon));const km=widths[i],dLat=km/111,dLon=km/(111*Math.max(.25,Math.cos(rad(p.lat))));left.push([p.lat-Math.sin(angle)*dLat,p.lon+Math.cos(angle)*dLon]);right.push([p.lat+Math.sin(angle)*dLat,p.lon-Math.cos(angle)*dLon]);});
   const polygon=[...left,...right.reverse()];ctx.save();ctx.fillStyle=colorAlpha(colors.warning,.14);ctx.strokeStyle=colorAlpha(colors.warning,.45);ctx.lineWidth=1;
@@ -684,11 +759,13 @@ function drawCone(colors) {
   ctx.restore();
 }
 function drawTrack(colors) {
-  const storm=state.selectedStorm;if(!storm?.track?.length)return;const observed=storm.track.filter(p=>!p.forecast),forecast=storm.track.filter((p,i)=>p.forecast||(!p.forecast&&storm.track[i+1]?.forecast));
-  drawTrackLine(observed,colors.brand,false);drawTrackLine(forecast,colors.warning,true);
-  storm.track.forEach((p,i)=>{const q=project(p.lat,p.lon);if(!q.visible)return;ctx.fillStyle=i===state.activeTrackIndex?colors.surface:(p.forecast?colors.warning:colors.brand);ctx.strokeStyle=p.forecast?colors.warning:colors.brand;ctx.lineWidth=i===state.activeTrackIndex?3:1.4;ctx.beginPath();ctx.arc(q.x,q.y,i===state.activeTrackIndex?5:3,0,Math.PI*2);ctx.fill();ctx.stroke();});
+  const storm=state.selectedStorm;const {points,observed,forecast}=trackParts(storm);if(!points.length)return;
+  const joinedForecast=forecast.length&&observed.length?[observed.at(-1),...forecast]:forecast;
+  drawTrackLine(observed,colors.brand,false);drawTrackLine(joinedForecast,colors.warning,true);
+  points.forEach((p,i)=>{const q=project(p.lat,p.lon);if(!q.visible)return;const active=Math.abs(i-state.activeTrackIndex)<1;ctx.save();ctx.shadowColor=colorAlpha(p.forecast?colors.warning:colors.brand,.28);ctx.shadowBlur=active?14:5;ctx.fillStyle=active?colors.surface:(p.forecast?colors.warning:colors.brand);ctx.strokeStyle=p.forecast?colors.warning:colors.brand;ctx.lineWidth=active?3:1.8;ctx.beginPath();ctx.arc(q.x,q.y,active?6:4,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore();if(state.layers.labels&&!isMobile()&&((state.view==='pro'&&active)||i===0||i===points.length-1)){ctx.save();ctx.font='700 11px '+getComputedStyle(document.body).fontFamily;ctx.fillStyle=colors.text2;ctx.textAlign='center';ctx.fillText(formatDate(p.time,true).replace(/,.*$/,''),q.x,q.y-11);ctx.restore();}});
+  if(state.layers.labels&&!isMobile()){const current=observed.at(-1)||points[0],q=project(current.lat,current.lon);if(q.visible){ctx.save();ctx.font='800 12px '+getComputedStyle(document.body).fontFamily;ctx.fillStyle=colors.text2;ctx.textAlign='left';ctx.fillText(displayStormName(storm),q.x+12,q.y+4);ctx.restore();}}
 }
-function drawTrackLine(points,color,dashed){if(points.length<2)return;ctx.save();ctx.strokeStyle=color;ctx.lineWidth=2.2;ctx.setLineDash(dashed?[6,6]:[]);ctx.beginPath();let started=false;for(const p of points){const q=project(p.lat,p.lon);if(!q.visible){started=false;continue;}if(!started){ctx.moveTo(q.x,q.y);started=true;}else ctx.lineTo(q.x,q.y);}ctx.stroke();ctx.restore();}
+function drawTrackLine(points,color,dashed){if(points.length<2)return;ctx.save();ctx.lineJoin='round';ctx.lineCap='round';ctx.setLineDash([]);ctx.strokeStyle=colorAlpha(color,.2);ctx.lineWidth=7;ctx.beginPath();let started=false,last=null;for(const p of points){const q=project(p.lat,p.lon);if(!q.visible||(last&&Math.hypot(q.x-last.x,q.y-last.y)>(state.mapMode==='globe'?globeRadius()*.45:state.width*.45))){started=false;last=null;continue;}if(!started){ctx.moveTo(q.x,q.y);started=true;}else ctx.lineTo(q.x,q.y);last=q;}ctx.stroke();ctx.strokeStyle=color;ctx.lineWidth=3.4;ctx.setLineDash(dashed?[9,7]:[]);ctx.stroke();ctx.restore();}
 function drawStormPulse(colors,time=performance.now()) {
   const storm=state.selectedStorm;if(!storm)return;const point=storm.track?.[state.activeTrackIndex]||storm;const p=project(point.lat,point.lon);if(!p.visible)return;const phase=(time%1800)/1800;ctx.save();ctx.strokeStyle=colorAlpha(colors.warning,.5*(1-phase));ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,12+phase*24,0,Math.PI*2);ctx.stroke();ctx.fillStyle=colors.warning;ctx.beginPath();ctx.arc(p.x,p.y,7,0,Math.PI*2);ctx.fill();ctx.fillStyle=colors.surface;ctx.beginPath();ctx.arc(p.x,p.y,2.4,0,Math.PI*2);ctx.fill();ctx.restore();
 }
@@ -735,11 +812,15 @@ $('#clearLocationButton').addEventListener('click',clearUserLocation);
 $$('[data-profile]').forEach(btn=>btn.addEventListener('click',()=>{state.profile=btn.dataset.profile;localStorage.setItem('tv-profile',state.profile);$$('[data-profile]').forEach(b=>b.classList.toggle('active',b.dataset.profile===state.profile));renderPersonalImpact();}));
 $$('[data-profile]').forEach(b=>b.classList.toggle('active',b.dataset.profile===state.profile));
 $('#demoToggle').addEventListener('click',()=>{state.demoEnabled=!state.demoEnabled;localStorage.setItem('tv-demo',String(state.demoEnabled));$('#demoToggle').setAttribute('aria-pressed',String(state.demoEnabled));const storms=availableStorms();selectStorm(storms[0]||null,false);fitWorld(false);});
+
+$('#layerButton').addEventListener('click',e=>{e.stopPropagation();const panel=$('#layerPanel');panel.classList.toggle('open');$('#layerButton').setAttribute('aria-expanded',String(panel.classList.contains('open')));});
+$$('[data-layer-toggle]').forEach(input=>{input.checked=state.layers[input.dataset.layerToggle]!==false;input.addEventListener('change',()=>{state.layers[input.dataset.layerToggle]=input.checked;localStorage.setItem('tv-layers',JSON.stringify(state.layers));renderTrackStatus();showToast(t('layerChanged'));});});
+
 $('#languageToggle').addEventListener('click',e=>{e.stopPropagation();const menu=$('#languageMenu');menu.classList.toggle('open');$('#themeMenu').classList.remove('open');$('#languageToggle').setAttribute('aria-expanded',String(menu.classList.contains('open')));});
 $$('[data-lang-value]').forEach(btn=>btn.addEventListener('click',()=>{state.lang=btn.dataset.langValue;localStorage.setItem('tv-lang',state.lang);applyTranslations();$('#languageMenu').classList.remove('open');$('#languageToggle').setAttribute('aria-expanded','false');showToast(t('languageChanged'));}));
 $('#themeButton').addEventListener('click',e=>{e.stopPropagation();const menu=$('#themeMenu');menu.classList.toggle('open');$('#languageMenu').classList.remove('open');$('#themeButton').setAttribute('aria-expanded',String(menu.classList.contains('open')));});
 $$('[data-theme-value]').forEach(btn=>btn.addEventListener('click',()=>{applyTheme(btn.dataset.themeValue);$('#themeMenu').classList.remove('open');showToast(t('themeChanged'));}));
-document.addEventListener('click',e=>{if(!e.target.closest('#themeMenu')&&!e.target.closest('#themeButton')){$('#themeMenu').classList.remove('open');$('#themeButton').setAttribute('aria-expanded','false');}if(!e.target.closest('#languageMenu')&&!e.target.closest('#languageToggle')){$('#languageMenu').classList.remove('open');$('#languageToggle').setAttribute('aria-expanded','false');}});
+document.addEventListener('click',e=>{if(!e.target.closest('#themeMenu')&&!e.target.closest('#themeButton')){$('#themeMenu').classList.remove('open');$('#themeButton').setAttribute('aria-expanded','false');}if(!e.target.closest('#languageMenu')&&!e.target.closest('#languageToggle')){$('#languageMenu').classList.remove('open');$('#languageToggle').setAttribute('aria-expanded','false');}if(!e.target.closest('#layerPanel')&&!e.target.closest('#layerButton')){$('#layerPanel').classList.remove('open');$('#layerButton').setAttribute('aria-expanded','false');}});
 
 const sourceDialog=$('#sourceDialog');function openSourceDialog(){renderSources();sourceDialog.showModal();}
 $('#openSources').addEventListener('click',openSourceDialog);$('#verificationButton').addEventListener('click',openSourceDialog);$('.dialog-close').addEventListener('click',()=>sourceDialog.close());sourceDialog.addEventListener('click',e=>{if(e.target===sourceDialog)sourceDialog.close();});
