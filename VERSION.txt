@@ -1,2 +1,1 @@
-Typhoon Vision Public v11
-Professional map-first redesign informed by NHC, HKO, CWA and PAGASA products.
+Typhoon Vision Public v13

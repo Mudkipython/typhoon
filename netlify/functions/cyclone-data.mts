@@ -192,9 +192,12 @@ async function readNHC(): Promise<{ source: SourceStatus; storms: Storm[] }> {
     const json: any = await (await fetchTimed(url)).json();
     const rows = Array.isArray(json?.activeStorms) ? json.activeStorms : [];
     const storms = rows.map((item: any, index: number) => {
-      const lat = parseCardinal(item.latitude ?? item.lat) ?? 0;
-      const lon = parseCardinal(item.longitude ?? item.lon) ?? 0;
-      const wind = Number(item.windSpeedMph ?? item.intensity ?? item.windSpeed);
+      const lat = parseCardinal(item.latitude ?? item.lat);
+      const lon = parseCardinal(item.longitude ?? item.lon);
+      if (lat == null || lon == null) return null;
+      const windKph = Number(item.windSpeedKph);
+      const windMph = Number(item.windSpeedMph ?? item.intensity ?? item.windSpeed);
+      const windMs = Number.isFinite(windKph) ? windKph / 3.6 : Number.isFinite(windMph) ? windMph * 0.44704 : null;
       const pressure = Number(item.pressure);
       const updatedAt = item.lastUpdate ?? item.lastUpdateDate ?? item.updateTime ?? null;
       return {
@@ -205,13 +208,12 @@ async function readNHC(): Promise<{ source: SourceStatus; storms: Storm[] }> {
         lat,
         lon,
         updatedAt,
-        // NHC fields vary by product. Keep wind null unless a clearly named metric field is present.
-        windMs: Number.isFinite(Number(item.windSpeedKph)) ? Number(item.windSpeedKph) / 3.6 : null,
+        windMs,
         pressureHpa: Number.isFinite(pressure) ? pressure : null,
-        track: [{ lat, lon, time: updatedAt, windMs: null, pressureHpa: Number.isFinite(pressure) ? pressure : null, forecast: false, source: "nhc" }],
+        track: [{ lat, lon, time: updatedAt, windMs, pressureHpa: Number.isFinite(pressure) ? pressure : null, forecast: false, source: "nhc" }],
         sources: ["nhc"]
       } satisfies Storm;
-    });
+    }).filter(Boolean) as Storm[];
     return {
       source: {
         id: "nhc", name: "NOAA / NHC", role: "official",
@@ -234,18 +236,17 @@ async function readJMA(): Promise<{ source: SourceStatus; storms: Storm[] }> {
       .filter((entry) => /台風|熱帯低気圧|Typhoon|Tropical Cyclone/i.test(entry.title))
       .slice(0, 14);
 
-    const storms: Storm[] = [];
-    for (const [index, entry] of entries.entries()) {
-      if (!entry.href) continue;
+    const parsed = await Promise.all(entries.map(async (entry, index) => {
+      if (!entry.href) return null;
       try {
         const xml = await (await fetchTimed(entry.href)).text();
         const points = extractJmaTrackPoints(xml);
         const fallbackCoordinate = parseJmaCoordinate(textOf(xml, "jmx_eb:Coordinate") || textOf(xml, "Coordinate"));
         const track = sortAndDedupeTrack(points.length ? points : (fallbackCoordinate ? [{ ...fallbackCoordinate, source: "jma", forecast: false } as TrackPoint] : []));
         const current = [...track].filter((point) => !point.forecast).sort((a, b) => pointTime(b) - pointTime(a))[0] || track[0];
-        if (!current) continue;
+        if (!current) return null;
         const identity = normalizeJmaIdentity(xml, entry.title, index);
-        storms.push({
+        return {
           id: `jma-${identity.number}`,
           name: identity.name,
           localName: identity.japaneseName,
@@ -261,11 +262,12 @@ async function readJMA(): Promise<{ source: SourceStatus; storms: Storm[] }> {
           pressureHpa: current.pressureHpa ?? null,
           track,
           sources: ["jma"]
-        });
+        } satisfies Storm;
       } catch {
-        // Feed remains useful even if an individual bulletin cannot be parsed.
+        return null;
       }
-    }
+    }));
+    const storms = parsed.filter(Boolean) as Storm[];
 
     return {
       source: {
