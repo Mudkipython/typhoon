@@ -1,2 +1,2 @@
-Typhoon Vision Public v16
-Meteorological wind structure, neutral no-label basemap, fixed satellite/radar integration, collapsible panels, and complete Chinese/English UI labels.
+Typhoon Vision Public v17
+Map-first redesign with always-on meteorological cyclone structure, city-only labels, mutually exclusive panels, and Open-Meteo cloud/precipitation fields.

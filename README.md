@@ -1,321 +1,170 @@
 # Typhoon Vision
 
-Typhoon Vision is a multilingual, map-first tropical-cyclone information and personal-impact prototype designed for deployment on Netlify.
+Typhoon Vision is a map-first, multilingual web prototype for viewing tropical-cyclone tracks, wind structure, nearby cities, personal exposure and supporting weather fields.
 
-It combines cyclone tracks, forecast uncertainty, wind radii, satellite imagery, radar replay, major-city screening, browser geolocation, scenario-based preparedness guidance, historical analogue context, and a professional data view in one responsive interface.
+Typhoon Vision 是一个面向普通用户与专业用户的全球热带气旋可视化原型，重点展示气旋路径、风圈、中心风速与气压、附近城市、个人位置影响及辅助天气场。
 
-> This project is an information-integration and visualisation prototype. It does not issue official warnings and must not replace alerts, closures, evacuation orders, or emergency instructions from national and local authorities.
-
-## Live site
+## Live deployment
 
 ```text
 https://typhoon-vision.netlify.app
 ```
 
-Expected Netlify Function endpoints:
+## Product principles
+
+1. **The cyclone is always visible on the map.** There is no separate “map” versus “3D cyclone” mode.
+2. **Meteorological meaning takes priority over decorative effects.** The animated structure is driven by wind speed, central pressure, hemisphere and wind-radius data.
+3. **The basemap does not display country labels.** Typhoon Vision overlays only selected city names relevant to the active track.
+4. **Only one drawer can be open at a time.** Systems, Details and Layers automatically close one another.
+5. **Official forecasts remain authoritative.** Trend lines, estimated wind radii and historical analogues are explicitly marked as references.
+
+## Main features
+
+### Animated cyclone structure
+
+The map directly displays:
+
+- the cyclone eye and pressure core;
+- clockwise circulation in the Southern Hemisphere and counter-clockwise circulation in the Northern Hemisphere;
+- 34 kt, 50 kt and 64 kt wind-radius rings;
+- estimated dashed wind radii when official radii are unavailable;
+- maximum wind and central pressure labels;
+- animated flow arrows;
+- a cyclone centre that moves with the track playback timeline.
+
+The visualization is a meteorological encoding. It is not a three-dimensional observation of real clouds.
+
+### Track and timeline
+
+- blue solid line: observed track;
+- orange dashed line: official forecast;
+- purple dotted line: non-official directional trend when official forecast points are unavailable;
+- intensity-coloured track points;
+- play, pause, scrub and playback-speed controls;
+- click a point to view time, wind and pressure.
+
+### City-only basemap labels
+
+The underlying raster basemap uses a no-label style. Typhoon Vision adds its own city layer near the selected cyclone track. It therefore avoids country-classification labels while retaining useful place references.
+
+A bundled `data/world-land.json` file provides a land-outline fallback if external raster tiles are slow or unavailable.
+
+### Cloud and precipitation fields
+
+V17 replaces the previous NASA/RainViewer tile workflow with a Netlify Function backed by the Open-Meteo Forecast API:
 
 ```text
-https://typhoon-vision.netlify.app/api/cyclones
-https://typhoon-vision.netlify.app/api/weather-layers
+/api/weather-grid?lat=23.9&lon=125.2&span=12
 ```
 
-## Product goals
+The Function samples a 7 × 7 grid around the selected cyclone and returns:
 
-Typhoon Vision is designed around four questions ordinary users actually ask:
+- total cloud cover;
+- precipitation;
+- 10 m wind speed;
+- 10 m wind direction.
 
-1. Where is the cyclone and where is it moving?
-2. When may it come closest to me?
-3. What hazards could affect my location?
-4. What should I do for commuting, driving, outdoor activity, office work, family care, or coastal living?
+These are **numerical weather-model fields**, not ground-radar reflectivity. The interface therefore labels the layers as “Cloud cover” and “Precipitation”, rather than presenting them as a global radar product.
 
-A separate professional view exposes the underlying coordinates, wind, pressure, track points, source status, responsible authority, and uncertainty layers.
+For real regional radar and official satellite products, the Details drawer provides links appropriate to the selected basin, such as JMA, NOAA/NHC and national meteorological agencies.
 
-## Public v16 design principles
+### Personal impact
 
-### 1. Meteorological structure instead of decorative “3D clouds”
+After the user grants browser location access or clicks a point on the map, the browser calculates:
 
-The previous cinematic spiral effect has been replaced with a restrained meteorological overlay that is tied to cyclone data:
+- nearest distance to the track;
+- estimated closest-approach time;
+- possible impact window;
+- estimate confidence;
+- broad wind, rain and coastal-risk guidance.
 
-- Northern Hemisphere circulation is counter-clockwise.
-- Southern Hemisphere circulation is clockwise.
-- Tangential vector arrows represent the circulation pattern.
-- 34 kt, 50 kt, and 64 kt wind radii are drawn as separate rings.
-- Quadrant radii are used when an agency supplies northeast, southeast, southwest, and northwest values.
-- Missing official radii are rendered as dashed estimates and labelled accordingly.
-- Centre pressure and maximum wind are shown next to the cyclone centre.
-- The active centre moves along the time-controlled track.
-- Observed, official forecast, and non-official trend references retain distinct colours and line styles.
+The selected location is stored only in browser `localStorage` and is not sent to the cyclone data providers.
 
-This overlay is an explanatory visual encoding, not a numerical weather-prediction model or a reconstruction of three-dimensional cloud volume.
+### Historical analogues
 
-### 2. Neutral geographic labelling
+The Details drawer includes selected historical cyclone analogues. Matching considers track direction, intensity and basin. Historical tracks can be overlaid as a grey dashed line.
 
-The base map uses an Esri no-label canvas layer. Political and country labels are not inherited from an external labelled style.
+Historical similarity is explanatory context, not a prediction of identical impacts.
 
-Typhoon Vision adds its own small set of geographic labels. Disputed areas use neutral geographic wording, for example:
+## Responsive interaction
 
-```text
-台湾地区
-Taiwan area
-```
+### Desktop
 
-These labels are intended only for weather-map orientation and do not express a sovereignty determination.
+- full-screen map;
+- compact controls around the map edges;
+- mutually exclusive floating drawers;
+- readable 15–16 px supporting text;
+- fixed playback timeline at the bottom.
 
-### 3. Map-first layout
+### Mobile
 
-Desktop:
+- map remains the primary surface;
+- drawers become bottom sheets;
+- Systems, Details and Layers never stack on top of one another;
+- compact storm chip and timeline controls;
+- large touch targets.
 
-- Full-size map workspace
-- Collapsible cyclone list
-- Collapsible personal-impact drawer
-- Compact summary card
-- Floating layer controls
-- Bottom playback timeline
+## Languages and themes
 
-Mobile:
+Supported interface languages:
 
-- Map remains the primary view
-- Cyclone list slides in from the left
-- Details use a three-state bottom sheet
-- The bottom sheet can be collapsed, half opened, or fully opened
-- Weather and track controls remain reachable with one hand
-
-### 4. Source transparency
-
-The responsible basin authority is treated as the primary source. Supporting sources are used only to cross-check location, update time, movement, and impact context.
-
-Different wind-averaging standards and warning systems are not silently averaged.
-
-## Main map layers
-
-### Cyclone track
-
-- Cyan solid line: observed track
-- Orange dashed line: official forecast track
-- Violet dotted line: non-official directional trend reference
-- Node colour: intensity at that time
-- Grey dashed line: optional historical analogue track
-
-The full track remains visible while the moving centre and animated trail follow the playback timeline.
-
-### Forecast uncertainty
-
-The orange translucent corridor represents possible centre-track uncertainty. It is not the full boundary of wind, rain, flooding, or storm-surge impacts.
-
-### Wind radii
-
-The map distinguishes:
-
-- 34 kt tropical-storm-force wind radius
-- 50 kt strong-wind radius
-- 64 kt hurricane/typhoon-force radius
-
-Official quadrant radii are preferred. If unavailable, the interface clearly marks estimated symmetric radii.
-
-### Cities and personal location
-
-The application can display:
-
-- Major cities near the track
-- Distance from each city to the track
-- A user-selected location
-- A line from the selected location to the nearest track point
-- Estimated closest-approach time and broad impact window
-
-The location is stored only in the browser and is not sent to the weather providers or Netlify Functions.
-
-## Satellite imagery
-
-Satellite imagery uses NASA Global Imagery Browse Services (GIBS).
-
-Configured layer:
-
-```text
-MODIS_Terra_CorrectedReflectance_TrueColor
-```
-
-Access method:
-
-```text
-NASA GIBS WMTS, EPSG:3857, GoogleMapsCompatible_Level9
-```
-
-The application requests a date two UTC days before the current date because daily true-colour composites can be incomplete on the current day.
-
-NASA GIBS is a public service and does not require an account or API key for this use.
-
-Documentation:
-
-```text
-https://nasa-gibs.github.io/gibs-api-docs/access-basics/
-```
-
-## Radar replay
-
-Radar metadata and tiles use the RainViewer public Weather Maps API.
-
-The Function reads:
-
-```text
-https://api.rainviewer.com/public/weather-maps.json
-```
-
-The documented radar-tile pattern is:
-
-```text
-{host}{path}/256/{z}/{x}/{y}/{color}/{smooth}_{snow}.png
-```
-
-The current implementation uses colour scheme `2` and smoothed rain display.
-
-RainViewer’s public endpoint does not require a user login or API key. A transparent map can still mean:
-
-- no significant radar echo,
-- no ground-radar coverage,
-- a temporary tile-network failure, or
-- a region outside the useful zoom/coverage range.
-
-The interface also exposes a radar-coverage mask to help distinguish no echo from no coverage.
-
-Documentation:
-
-```text
-https://www.rainviewer.com/api/weather-maps-api.html
-```
-
-## Global tropical-cyclone basins
-
-The interface recognises:
-
-- Western North Pacific
-- Atlantic
-- Eastern and Central Pacific
-- North Indian Ocean
-- Southwest Indian Ocean
-- Australian region
-- South Pacific
-
-The same broad phenomenon may be called a typhoon, hurricane, or tropical cyclone depending on the basin.
-
-## Data sources
-
-The cyclone Function normalises or checks data from sources such as:
-
-- JMA / RSMC Tokyo
-- NOAA / National Hurricane Center
-- PAGASA
-- Hong Kong Observatory
-- GDACS
-- Additional regional connectors reserved for later authorised integrations
-
-Example normalised object:
-
-```json
-{
-  "id": "storm-id",
-  "name": "BAVI",
-  "basin": "Western North Pacific",
-  "classification": "Typhoon",
-  "lat": 23.9,
-  "lon": 125.2,
-  "windMs": 42,
-  "pressureHpa": 955,
-  "windRadii": {
-    "radiusKm": 420
-  },
-  "track": []
-}
-```
-
-## Personal impact mode
-
-Users can:
-
-- authorise browser geolocation,
-- select a point on the map,
-- clear the saved location.
-
-The browser estimates:
-
-- nearest distance to the track,
-- closest-approach time,
-- a broad possible impact window,
-- estimate confidence,
-- nearby cities and hazards.
-
-These are screening estimates, not local official forecasts.
-
-## Scenario-based preparedness guidance
-
-Advice profiles include:
-
-- Commuting
-- Outdoor activity
-- Office work
-- Driving
-- Family and dependent care
-- Coastal residence
-
-Each profile separates:
-
-- actions to take now,
-- actions before possible impact,
-- actions during the impact period.
-
-## Historical analogue context
-
-Selected historical cases are ranked using a simplified comparison of:
-
-- track direction,
-- intensity range,
-- basin,
-- possible impact region,
-- proximity to a user-selected location.
-
-Each case explains why it was selected, the historical impact type, a preparedness lesson, and why the current event may differ.
-
-Historical similarity is contextual. It is not used to predict casualties, damage, landfall, or losses.
-
-## Internationalisation
-
-The interface includes:
-
-- Simplified Chinese
+- 简体中文
 - English
-- Japanese
-- Korean
-- Spanish
-- French
+- 日本語
+- 한국어
+- Español
+- Français
 
-Chinese and English contain the full interface copy. Other languages use translated core navigation with English fallback for specialist text.
+Themes:
 
-## File structure
+- system
+- light
+- dark
+
+## Architecture
+
+```text
+Browser
+├── MapLibre GL JS (bundled locally)
+├── no-label CARTO raster basemap
+├── bundled world-land GeoJSON fallback
+├── GeoJSON track, wind-radius, city and personal-location layers
+├── Canvas cyclone-structure overlay
+├── /api/cyclones
+└── /api/weather-grid
+
+Netlify Functions
+├── cyclone-data.mts
+└── weather-grid.mts
+    └── Open-Meteo Forecast API
+```
+
+MapLibre is bundled in `vendor/` so the application does not depend on a third-party JavaScript CDN during startup.
+
+## Project structure
 
 ```text
 index.html
 app.js
-cyclone3d.js
+cyclone-viz.js
 styles.css
 README.md
 VERSION.txt
 netlify.toml
+vendor/
+├── maplibre-gl.js
+└── maplibre-gl.css
+data/
+└── world-land.json
 netlify/
-  functions/
-    cyclone-data.mts
-    weather-layers.mts
+└── functions/
+    ├── cyclone-data.mts
+    └── weather-grid.mts
 ```
 
 ## Netlify deployment
 
-### Recommended: GitHub continuous deployment
-
-1. Extract the ZIP.
-2. Upload the contents directly to the GitHub repository root.
-3. Do not upload the outer `typhoon-vision-public-v16` folder as another nested directory.
-4. Confirm the repository root directly contains `index.html` and `netlify.toml`.
-5. Netlify will build and publish automatically.
-
-Expected `netlify.toml` settings:
+The repository root must directly contain `index.html` and `netlify.toml`.
 
 ```toml
 [build]
@@ -326,55 +175,44 @@ Expected `netlify.toml` settings:
   node_bundler = "esbuild"
 ```
 
-### Manual CLI deployment
+Recommended deployment:
 
-```bash
-npx netlify-cli login
-npx netlify-cli link
-npx netlify-cli deploy
-npx netlify-cli deploy --prod
-```
-
-A simple ZIP drag-and-drop deploy publishes static files but may not deploy Netlify Functions.
-
-## Deployment verification
-
-After deployment, verify:
-
-1. The header shows `Public v16`.
-2. The map loads without inherited country labels.
-3. `台湾地区` or `Taiwan area` appears as the neutral application label.
-4. Observed and forecast tracks are visible immediately.
-5. The cyclone structure layer shows wind vectors, wind radii, pressure, and wind.
-6. Both side panels can be opened and closed.
-7. The following endpoints return JSON:
+1. Extract the ZIP.
+2. Upload the extracted contents to the GitHub repository root.
+3. Commit the changes.
+4. Let Netlify deploy from the connected repository.
+5. Confirm the site header shows `Public v17`.
+6. Test:
 
 ```text
-/api/cyclones
-/api/weather-layers
+https://typhoon-vision.netlify.app/api/cyclones
+https://typhoon-vision.netlify.app/api/weather-grid?lat=23.9&lon=125.2
 ```
 
-8. NASA satellite imagery can be enabled.
-9. RainViewer radar frames can be enabled and replayed.
-10. Mobile details can be collapsed, half opened, and fully opened.
+A drag-and-drop static deployment does not package Netlify Functions.
 
-## Known limitations
+## Validation performed
 
-- Global radar coverage is uneven.
-- Satellite true-colour imagery is daily, not minute-by-minute cloud analysis.
-- Some agencies publish only a current centre point in easily parsed feeds.
-- Wind radii may be estimated when official quadrant data are unavailable.
-- The trend-reference path is not an official forecast.
-- Historical analogue scoring is explanatory, not predictive.
-- Public third-party tile services do not provide a production SLA.
+- `app.js` JavaScript syntax check;
+- `cyclone-viz.js` JavaScript syntax check;
+- both Netlify Functions bundled with esbuild;
+- weather-grid Function tested with a mocked 49-cell Open-Meteo response;
+- HTML duplicate-ID check;
+- local MapLibre assets verified;
+- jsdom startup test confirmed four demo systems render when the API is unavailable;
+- drawer mutual-exclusion test;
+- Japanese interface switch test.
 
-## Privacy
+A real browser WebGL screenshot could not be produced in the execution container because its Chromium GPU process is restricted. The JavaScript and interaction boot sequence were tested with a browser DOM simulation instead.
 
-- Browser location is stored locally.
-- No location is sent to Netlify Functions.
-- No advertising or user-tracking SDK is included.
-- Weather API keys are not exposed in client-side code.
+## Limitations
 
-## Disclaimer
+- Open-Meteo cloud and precipitation fields are model output, not satellite pixels or radar observations.
+- A single globally consistent and free ground-radar mosaic is not available at equal quality everywhere.
+- Official agencies use different averaging periods and intensity scales.
+- Estimated wind radii are not official warning boundaries.
+- Historical analogues cannot predict damage from the current event.
 
-Typhoon Vision does not replace any national meteorological agency, emergency-management authority, evacuation order, closure notice, or local warning. Always follow the responsible official authority for the affected location.
+## Safety notice
+
+Typhoon Vision is an information-integration and visualization prototype. It does not replace warnings, evacuation orders, closures or emergency instructions issued by national and local authorities.
