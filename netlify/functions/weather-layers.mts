@@ -9,7 +9,7 @@ async function fetchTimed(url: string): Promise<Response> {
     const response = await fetch(url, {
       signal: controller.signal,
       headers: {
-        "User-Agent": "Typhoon-Vision/1.0 (+https://typhoon-vision.netlify.app)",
+        "User-Agent": "Typhoon-Vision/16 (+https://typhoon-vision.netlify.app)",
         Accept: "application/json",
       },
     });
@@ -27,6 +27,8 @@ function isoDay(offsetDays = 0): string {
 export default async () => {
   let radar: Record<string, unknown> = {
     status: "offline",
+    provider: "RainViewer public API",
+    requiresAuthentication: false,
     host: null,
     frames: [],
     generatedAt: null,
@@ -36,28 +38,35 @@ export default async () => {
     const json: any = await (await fetchTimed("https://api.rainviewer.com/public/weather-maps.json")).json();
     const host = typeof json?.host === "string" ? json.host : "https://tilecache.rainviewer.com";
     const past = Array.isArray(json?.radar?.past) ? json.radar.past : [];
-    const frames = past
-      .slice(-12)
+    const nowcast = Array.isArray(json?.radar?.nowcast) ? json.radar.nowcast : [];
+    const frames = [...past, ...nowcast]
+      .slice(-18)
       .map((frame: any) => ({
         time: Number(frame.time),
         path: String(frame.path || ""),
+        // RainViewer's documented order is z/x/y.
         tileTemplate: `${host}${String(frame.path || "")}/256/{z}/{x}/{y}/2/1_1.png`,
       }))
       .filter((frame: any) => Number.isFinite(frame.time) && frame.path);
 
     radar = {
       status: frames.length ? "online" : "no-data",
+      provider: "RainViewer public API",
+      requiresAuthentication: false,
       host,
       frames,
       generatedAt: Number.isFinite(Number(json?.generated))
         ? new Date(Number(json.generated) * 1000).toISOString()
         : null,
       coverageTemplate: `${host}/v2/coverage/0/256/{z}/{x}/{y}/0/0_0.png`,
+      maxZoom: 7,
       documentation: "https://www.rainviewer.com/api/weather-maps-api.html",
     };
   } catch (error) {
     radar = {
       status: "offline",
+      provider: "RainViewer public API",
+      requiresAuthentication: false,
       host: null,
       frames: [],
       generatedAt: null,
@@ -66,22 +75,21 @@ export default async () => {
     };
   }
 
-  // GIBS WMS uses nearestValue=1. Supplying yesterday's UTC date avoids the
-  // common situation where today's daily composite is only partially processed.
-  const satelliteDate = isoDay(-1);
-  const satelliteLayer = "VIIRS_SNPP_CorrectedReflectance_TrueColor";
+  // Daily true-colour composites can be incomplete on the current UTC date.
+  // Two days ago is intentionally used for a reliable public demonstration layer.
+  const satelliteDate = isoDay(-2);
+  const satelliteLayer = "MODIS_Terra_CorrectedReflectance_TrueColor";
   const satellite = {
     status: "online",
     provider: "NASA GIBS",
+    requiresAuthentication: false,
     layer: satelliteLayer,
     date: satelliteDate,
-    wmsTemplate:
-      `https://gibs.earthdata.nasa.gov/wms/epsg3857/best/wms.cgi` +
-      `?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1` +
-      `&LAYERS=${satelliteLayer}&STYLES=&FORMAT=image/jpeg&TRANSPARENT=FALSE` +
-      `&HEIGHT=256&WIDTH=256&SRS=EPSG:3857&BBOX={bbox-epsg-3857}` +
-      `&TIME=${satelliteDate}`,
-    fallbackDates: [isoDay(-2), isoDay(-3)],
+    // GIBS WMTS REST uses row before column, hence {y}/{x}.
+    tileTemplate:
+      `https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/${satelliteLayer}` +
+      `/default/${satelliteDate}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg`,
+    fallbackDates: [isoDay(-3), isoDay(-4)],
     acknowledgement: "NASA GIBS / ESDIS",
     documentation: "https://nasa-gibs.github.io/gibs-api-docs/access-basics/",
   };

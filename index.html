@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#eff7fb" />
-  <title>Typhoon Vision · 全球热带气旋与 3D 风场</title>
+  <title>Typhoon Vision · 全球热带气旋与气象结构</title>
   <meta name="description" content="全球热带气旋路径、风圈、卫星云图、雷达与个人影响可视化原型。" />
   <link rel="preconnect" href="https://unpkg.com" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
@@ -19,7 +19,7 @@
     <button class="brand" id="brandButton" aria-label="打开气旋列表">
       <span class="brand-mark" aria-hidden="true">◔</span>
       <span class="brand-copy">
-        <strong>Typhoon Vision <span class="version-pill">Public v15.1</span></strong>
+        <strong>Typhoon Vision <span class="version-pill">Public v16</span></strong>
         <small data-i18n="tagline">全球热带气旋与个人影响</small>
       </span>
     </button>
@@ -77,7 +77,7 @@
         <div class="map-toolbar glass-panel">
           <button class="tool-button is-active" id="flatButton">▦ <span data-i18n="mapView">地图</span></button>
           <button class="tool-button" id="globeButton">◎ <span data-i18n="globeView">地球</span></button>
-          <button class="tool-button cinematic-tool is-active" id="cyclone3dButton">✦ <span data-i18n="cyclone3d">动态气旋</span></button>
+          <button class="tool-button cinematic-tool is-active" id="cyclone3dButton">◉ <span data-i18n="cyclone3d">气旋结构</span></button>
           <button class="tool-button" id="fitStormButton">⌖ <span data-i18n="focusStorm">聚焦气旋</span></button>
           <button class="tool-button" id="fitWorldButton">◫ <span data-i18n="viewWorld">查看全球</span></button>
           <button class="tool-button" id="layersButton" aria-expanded="false" aria-controls="layerPanel">◈ <span data-i18n="layers">图层</span></button>
@@ -98,7 +98,7 @@
 
       <section class="cinematic-hud glass-panel" id="cinematicHud" hidden aria-live="polite">
         <div class="cinematic-hud-top">
-          <span class="cinematic-badge"><i></i><span data-i18n="cinematicMode">3D 气旋模式</span></span>
+          <span class="cinematic-badge"><i></i><span data-i18n="cinematicMode">气旋风场结构</span></span>
           <span class="visual-demo" data-i18n="visualDemo">数据驱动视觉示意</span>
         </div>
         <div class="cinematic-title-row">
@@ -132,13 +132,13 @@
         <label class="layer-switch"><input type="checkbox" data-layer-toggle="coverage" /><span><strong data-i18n="coverageLayer">雷达覆盖范围</strong><small data-i18n="coverageNote">用于区分无回波与无雷达覆盖</small></span></label>
         <div class="opacity-row"><span data-i18n="weatherOpacity">天气图层透明度</span><input id="weatherOpacity" type="range" min="20" max="90" value="62" /></div>
         <section class="fx-settings">
-          <div class="fx-settings-title"><span><strong data-i18n="visualEffects">3D 视觉效果</strong><small data-i18n="visualEffectsNote">仅在 3D 气旋模式启用</small></span><select id="fxQuality" aria-label="3D quality"><option value="auto" data-i18n="qualityAuto">自动</option><option value="high" data-i18n="qualityHigh">高</option><option value="balanced" data-i18n="qualityBalanced">均衡</option><option value="eco" data-i18n="qualityEco">省电</option></select></div>
-          <label><input id="fxParticles" type="checkbox" checked /><span data-i18n="fxParticles">风场粒子</span></label>
-          <label><input id="fxEyewall" type="checkbox" checked /><span data-i18n="fxEyewall">眼墙与压力核心</span></label>
-          <label><input id="fxTrail" type="checkbox" checked /><span data-i18n="fxTrail">立体路径</span></label>
-          <label><input id="fxFollow" type="checkbox" checked /><span data-i18n="fxFollow">镜头跟随播放</span></label>
+          <div class="fx-settings-title"><span><strong data-i18n="visualEffects">气象结构图</strong><small data-i18n="visualEffectsNote">按风速、气压和风圈绘制，不模拟真实云体</small></span><select id="fxQuality" aria-label="3D quality"><option value="auto" data-i18n="qualityAuto">自动</option><option value="high" data-i18n="qualityHigh">高</option><option value="balanced" data-i18n="qualityBalanced">均衡</option><option value="eco" data-i18n="qualityEco">省电</option></select></div>
+          <label><input id="fxParticles" type="checkbox" checked /><span data-i18n="fxParticles">环流矢量</span></label>
+          <label><input id="fxEyewall" type="checkbox" checked /><span data-i18n="fxEyewall">中心气压与强度标注</span></label>
+          <label><input id="fxTrail" type="checkbox" checked /><span data-i18n="fxTrail">动态轨迹</span></label>
+          <label><input id="fxFollow" type="checkbox" checked /><span data-i18n="fxFollow">播放时跟随中心</span></label>
         </section>
-        <div class="weather-links"><a href="https://worldview.earthdata.nasa.gov/" target="_blank" rel="noreferrer">NASA Worldview ↗</a><a href="https://www.rainviewer.com/weather-radar-map-live.html" target="_blank" rel="noreferrer">RainViewer ↗</a></div>
+        <p class="weather-auth-note">NASA GIBS 与 RainViewer 公共接口无需登录；若图层为空，通常是日期、覆盖范围或瓦片网络问题。</p><div class="weather-links"><a href="https://worldview.earthdata.nasa.gov/" target="_blank" rel="noreferrer">NASA Worldview ↗</a><a href="https://www.rainviewer.com/weather-radar-map-live.html" target="_blank" rel="noreferrer">RainViewer ↗</a></div>
         <p class="layer-disclaimer" data-i18n="layerDisclaimer">云图和雷达仅用于态势参考；透明雷达区域可能代表无回波或覆盖不足，预警以当地官方气象机构为准。</p>
       </aside>
 
@@ -154,7 +154,7 @@
         <span><i class="legend-line trend"></i><span data-i18n="trend">趋势参考</span></span>
         <span><i class="legend-area wind"></i><span data-i18n="windArea">风圈</span></span>
         <span><i class="legend-dot city"></i><span data-i18n="affectedCity">受影响城市</span></span>
-        <span class="fx-legend" id="fxLegend" hidden><i class="legend-orbit"></i><span data-i18n="visualDemo">数据驱动视觉示意</span></span>
+        <span class="fx-legend" id="fxLegend" hidden><i class="legend-orbit"></i><span data-i18n="visualDemo">风速、气压与风圈驱动</span></span>
       </div>
 
       <section class="timeline glass-panel" id="timeline">
@@ -172,6 +172,7 @@
     </main>
 
     <aside class="insight-panel" id="insightPanel" aria-label="气旋影响详情">
+      <button class="insight-close" id="insightClose" aria-label="收起详情">×</button>
       <div class="sheet-handle" id="sheetHandle" aria-label="拖动详情面板"><span></span></div>
       <div class="insight-scroll" id="insightScroll">
         <section class="insight-section public-only" id="impactSection">

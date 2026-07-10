@@ -1,2 +1,2 @@
-Typhoon Vision Public v15.1
-Hotfix: corrected duplicate async keyword in app.js so the application can boot.
+Typhoon Vision Public v16
+Meteorological wind structure, neutral no-label basemap, fixed satellite/radar integration, collapsible panels, and complete Chinese/English UI labels.

@@ -9,12 +9,12 @@ const UI = {
   zh: {
     tagline:'全球热带气旋与个人影响', connecting:'正在连接权威来源', publicView:'公众视图', proView:'专业视图', appearance:'外观',
     activeSystems:'活跃系统', systemsWorldwide:'个全球系统', showDemo:'显示全球演示系统', demoExplain:'无活跃气旋时用于体验全部功能',
-    authority:'所属权威机构', officialSite:'官网 ↗', mapView:'地图', globeView:'地球', cyclone3d:'动态气旋', cinematicMode:'3D 气旋模式', visualDemo:'数据驱动视觉示意', focusStorm:'聚焦气旋', viewWorld:'查看全球', layers:'图层',
+    authority:'所属权威机构', officialSite:'官网 ↗', mapView:'地图', globeView:'地球', cyclone3d:'气旋结构', cinematicMode:'气旋风场结构', visualDemo:'风速、气压与风圈驱动', focusStorm:'聚焦气旋', viewWorld:'查看全球', layers:'图层',
     mapLayers:'地图图层', weatherLayers:'气象与风险图层', trackLayer:'路径与节点', trackLayerNote:'实况、官方预报与趋势参考',
     coneLayer:'预测可能范围', coneLayerNote:'中心路径的不确定性，不是影响边界', windLayer:'风圈与波及范围', windLayerNote:'无官方半径时会明确标为估算',
     cityLayer:'受影响城市', cityLayerNote:'按路径距离筛选主要城市', satelliteLayer:'NASA 卫星云图', radarLayer:'全球雷达拼图',
     coverageLayer:'雷达覆盖范围', coverageNote:'用于区分无回波与无雷达覆盖', weatherOpacity:'天气图层透明度',
-    layerDisclaimer:'云图和雷达仅用于态势参考；预警以当地官方气象机构为准。', visualEffects:'3D 视觉效果', visualEffectsNote:'仅在 3D 气旋模式启用', qualityAuto:'自动', qualityHigh:'高', qualityBalanced:'均衡', qualityEco:'省电', fxParticles:'风场粒子', fxEyewall:'眼墙与压力核心', fxTrail:'立体路径', fxFollow:'镜头跟随播放', fxDataNote:'粒子与眼墙为视觉化表达，路径和数值来自当前数据。', fxUnavailable:'此设备无法启用 3D 气旋效果', fxEnabled:'已进入 3D 气旋模式', sourcesCompare:'个来源可用于对照', howVerified:'如何交叉验证 →',
+    layerDisclaimer:'云图和雷达仅用于态势参考；预警以当地官方气象机构为准。', visualEffects:'气象结构图', visualEffectsNote:'按风速、气压和风圈绘制，不模拟真实云体', qualityAuto:'自动', qualityHigh:'高', qualityBalanced:'均衡', qualityEco:'省电', fxParticles:'环流矢量', fxEyewall:'中心气压与强度标注', fxTrail:'动态轨迹', fxFollow:'播放时跟随中心', fxDataNote:'环流方向、风速、气压与风圈来自当前数据；缺少官方风圈时会标注估算。', fxUnavailable:'此设备无法启用气旋结构图', fxEnabled:'已开启气旋结构图', sourcesCompare:'个来源可用于对照', howVerified:'如何交叉验证 →',
     observed:'实况', forecast:'官方预报', trend:'趋势参考', windArea:'风圈', affectedCity:'受影响城市', trackPlayback:'路径播放', radarPlayback:'雷达回放',
     plainBrief:'公众简报', whatMeans:'这对我意味着什么？', yourLocation:'你的位置', locationNotSet:'尚未设置', useLocation:'使用定位', pickOnMap:'地图点选', clear:'清除',
     nearestDistance:'距路径最近', closestTime:'预计最接近', impactWindow:'可能影响时段', confidence:'估算可信度', profileAdvice:'画像建议', chooseScenario:'选择你的活动场景',
@@ -30,19 +30,19 @@ const UI = {
     coastLow:'当前沿海直接风险较低', coastMedium:'沿海、港口和海上活动需关注风浪', coastHigh:'避免海边观浪，并服从风暴潮或撤离指令',
     commute:'通勤', outdoor:'户外', office:'办公', drive:'驾车', family:'家庭照护', coastProfile:'沿海居住',
     now:'现在', before:'影响前', during:'影响期间', noOfficialForecast:'官方预报节点暂不可用，紫色趋势线仅用于方向参考',
-    trackKindObserved:'历史实况', trackKindForecast:'官方预报', trackKindTrend:'非官方趋势参考', radarEmpty:'当前雷达帧不可用', sourceConnected:'权威与辅助来源已连接',
+    trackKindObserved:'历史实况', trackKindForecast:'官方预报', trackKindTrend:'非官方趋势参考', radarEmpty:'当前雷达帧不可用', weatherNoLogin:'NASA GIBS 与 RainViewer 公共接口不需要登录', satelliteLoading:'正在加载 NASA 卫星影像', radarNoEcho:'雷达已开启；透明区域可能表示无回波或无覆盖', weatherFailed:'图层加载失败，请稍后重试', sourceConnected:'权威与辅助来源已连接',
     global:'全球', westPacific:'西北太平洋', atlantic:'大西洋', eastPacific:'东北/中太平洋', northIndian:'北印度洋', southwestIndian:'西南印度洋', australia:'澳大利亚区域', southPacific:'南太平洋',
-    estimated:'估算', noNearbyCity:'当前筛选范围内没有主要城市', km:'公里', hours:'小时', sourceMethod:'主来源优先，其他来源仅作对照',
+    estimated:'估算', noNearbyCity:'当前筛选范围内没有主要城市', km:'公里', hours:'小时', sourceMethod:'主来源优先，其他来源仅作对照', details:'详情', systems:'气旋', historyReference:'历史参考', similarStorms:'过去有哪些相似气旋？', referenceOnly:'仅供理解', historyLead:'按路径方向、强度和影响区域筛选案例，用于理解风险类型，不代表本次一定重演。', historyNotForecast:'历史相似不等于结果相同', historyCaveat:'速度、大小、潮位、地形和防灾条件都可能改变实际影响。当前官方预报始终优先。',
   },
   en: {
     tagline:'Global tropical cyclone and personal impact', connecting:'Connecting authoritative sources', publicView:'Public view', proView:'Professional view', appearance:'Appearance',
     activeSystems:'Active systems', systemsWorldwide:'systems worldwide', showDemo:'Show global demo systems', demoExplain:'Explore all features when no live cyclone is active',
-    authority:'Responsible authority', officialSite:'Official site ↗', mapView:'Map', globeView:'Globe', cyclone3d:'Animated cyclone', cinematicMode:'3D cyclone mode', visualDemo:'Data-driven visualisation', focusStorm:'Focus cyclone', viewWorld:'View world', layers:'Layers',
+    authority:'Responsible authority', officialSite:'Official site ↗', mapView:'Map', globeView:'Globe', cyclone3d:'Animated cyclone', cinematicMode:'Cyclone wind structure', visualDemo:'Driven by wind, pressure and radii', focusStorm:'Focus cyclone', viewWorld:'View world', layers:'Layers',
     mapLayers:'Map layers', weatherLayers:'Weather and risk layers', trackLayer:'Track and points', trackLayerNote:'Observed, official forecast and trend reference',
     coneLayer:'Forecast uncertainty', coneLayerNote:'Possible centre-track area, not an impact boundary', windLayer:'Wind and impact area', windLayerNote:'Estimated values are clearly labelled',
     cityLayer:'Affected cities', cityLayerNote:'Major cities screened by track distance', satelliteLayer:'NASA satellite imagery', radarLayer:'Global radar mosaic',
     coverageLayer:'Radar coverage', coverageNote:'Distinguishes no echoes from no radar coverage', weatherOpacity:'Weather-layer opacity',
-    layerDisclaimer:'Satellite and radar layers are situational references. Follow local official warnings.', visualEffects:'3D visual effects', visualEffectsNote:'Used only in 3D cyclone mode', qualityAuto:'Auto', qualityHigh:'High', qualityBalanced:'Balanced', qualityEco:'Battery saver', fxParticles:'Wind particles', fxEyewall:'Eyewall and pressure core', fxTrail:'Elevated track', fxFollow:'Camera follows playback', fxDataNote:'Particles and eyewall are visual encodings; track and values use current data.', fxUnavailable:'3D cyclone effects are unavailable on this device', fxEnabled:'3D cyclone mode enabled', sourcesCompare:'sources available for comparison', howVerified:'How it is checked →',
+    layerDisclaimer:'Satellite and radar layers are situational references. Follow local official warnings.', visualEffects:'Meteorological structure', visualEffectsNote:'Wind-vector and radii display; not a simulated cloud volume', qualityAuto:'Auto', qualityHigh:'High', qualityBalanced:'Balanced', qualityEco:'Battery saver', fxParticles:'Circulation vectors', fxEyewall:'Centre pressure and intensity label', fxTrail:'Animated track', fxFollow:'Follow centre during playback', fxDataNote:'Circulation, wind, pressure and wind radii use current data; missing official radii are labelled estimated.', fxUnavailable:'Cyclone-structure rendering is unavailable on this device', fxEnabled:'Cyclone structure enabled', sourcesCompare:'sources available for comparison', howVerified:'How it is checked →',
     observed:'Observed', forecast:'Official forecast', trend:'Trend reference', windArea:'Wind area', affectedCity:'Affected city', trackPlayback:'Track playback', radarPlayback:'Radar replay',
     plainBrief:'Public brief', whatMeans:'What does this mean for me?', yourLocation:'Your location', locationNotSet:'Not set', useLocation:'Use location', pickOnMap:'Pick on map', clear:'Clear',
     nearestDistance:'Nearest track distance', closestTime:'Closest approach', impactWindow:'Possible impact window', confidence:'Estimate confidence', profileAdvice:'Profile advice', chooseScenario:'Choose your activity',
@@ -58,9 +58,9 @@ const UI = {
     coastLow:'Direct coastal risk is currently low', coastMedium:'Coasts, ports and marine activity should monitor waves', coastHigh:'Stay away from the shoreline and follow surge or evacuation orders',
     commute:'Commute', outdoor:'Outdoor', office:'Office', drive:'Driving', family:'Family care', coastProfile:'Coastal resident',
     now:'Now', before:'Before impact', during:'During impact', noOfficialForecast:'Official forecast points are unavailable; the purple trend is directional only',
-    trackKindObserved:'Observed history', trackKindForecast:'Official forecast', trackKindTrend:'Non-official trend reference', radarEmpty:'Radar frames are currently unavailable', sourceConnected:'Authoritative and supporting sources connected',
+    trackKindObserved:'Observed history', trackKindForecast:'Official forecast', trackKindTrend:'Non-official trend reference', radarEmpty:'Radar frames are currently unavailable', weatherNoLogin:'NASA GIBS and the RainViewer public endpoint do not require sign-in', satelliteLoading:'Loading NASA satellite imagery', radarNoEcho:'Radar is on; transparent areas may mean no echo or no coverage', weatherFailed:'Layer failed to load; please try again later', sourceConnected:'Authoritative and supporting sources connected',
     global:'Global', westPacific:'Western North Pacific', atlantic:'Atlantic', eastPacific:'Eastern/Central Pacific', northIndian:'North Indian Ocean', southwestIndian:'Southwest Indian Ocean', australia:'Australian region', southPacific:'South Pacific',
-    estimated:'Estimated', noNearbyCity:'No major city is inside the current screening range', km:'km', hours:'hours', sourceMethod:'Primary authority first; other sources are cross-checks',
+    estimated:'Estimated', noNearbyCity:'No major city is inside the current screening range', km:'km', hours:'hours', sourceMethod:'Primary authority first; other sources are cross-checks', details:'Details', systems:'Cyclones', historyReference:'Historical context', similarStorms:'Which past cyclones were similar?', referenceOnly:'Context only', historyLead:'Cases are screened by track direction, intensity and impact area to explain risk types—not to predict a repeat.', historyNotForecast:'Historical similarity is not a forecast', historyCaveat:'Size, speed, tide, terrain and preparedness can change the outcome. Current official forecasts always take priority.',
   },
 };
 
@@ -141,23 +141,23 @@ const historicalAnalogCatalog = [
 ];
 
 const state = {
-  lang: localStorage.getItem('tv15-lang') || 'zh',
-  theme: localStorage.getItem('tv15-theme') || 'system',
-  view: localStorage.getItem('tv15-view') || 'public',
-  demo: localStorage.getItem('tv15-demo') === 'true',
+  lang: localStorage.getItem('tv16-lang') || 'zh',
+  theme: localStorage.getItem('tv16-theme') || 'system',
+  view: localStorage.getItem('tv16-view') || 'public',
+  demo: localStorage.getItem('tv16-demo') === 'true',
   basin:'global', storms:[], sources:[], selected:null, weather:null,
   map:null, mapReady:false, projection:'mercator', styleReloading:false,
   layers:{track:true,cone:true,wind:true,cities:true,satellite:false,radar:false,coverage:false},
-  opacity:Number(localStorage.getItem('tv15-opacity') || 62) / 100,
+  opacity:Number(localStorage.getItem('tv16-opacity') || 62) / 100,
   playMode:'track', playIndex:0, playProgress:0, playing:false, speed:1, raf:null, playLastTs:0, radarAccum:0,
-  userLocation:(() => { try { return JSON.parse(localStorage.getItem('tv15-location') || 'null'); } catch { return null; } })(),
-  pickLocation:false, profile:localStorage.getItem('tv15-profile') || 'commute', sheet:'collapsed',
-  visualMode: localStorage.getItem('tv15-visual-mode') || 'map',
-  fxQuality: localStorage.getItem('tv15-fx-quality') || 'auto',
-  fxParticles: localStorage.getItem('tv15-fx-particles') !== 'false',
-  fxEyewall: localStorage.getItem('tv15-fx-eyewall') !== 'false',
-  fxTrail: localStorage.getItem('tv15-fx-trail') !== 'false',
-  fxFollow: localStorage.getItem('tv15-fx-follow') !== 'false',
+  userLocation:(() => { try { return JSON.parse(localStorage.getItem('tv16-location') || 'null'); } catch { return null; } })(),
+  pickLocation:false, profile:localStorage.getItem('tv16-profile') || 'commute', sheet:'collapsed',
+  visualMode: localStorage.getItem('tv16-visual-mode') || 'cinematic',
+  fxQuality: localStorage.getItem('tv16-fx-quality') || 'auto',
+  fxParticles: localStorage.getItem('tv16-fx-particles') !== 'false',
+  fxEyewall: localStorage.getItem('tv16-fx-eyewall') !== 'false',
+  fxTrail: localStorage.getItem('tv16-fx-trail') !== 'false',
+  fxFollow: localStorage.getItem('tv16-fx-follow') !== 'false',
   fxLastFollowAt: 0, activeAnalogId:null, insightOpen:false, railCollapsed:true,
 };
 
@@ -286,11 +286,18 @@ function applyI18n() {
   $('#languageLabel').textContent=languageNames[state.lang]||'English'; renderAll();applyNeutralGeographyLabels();
 }
 function resolvedTheme() { return state.theme==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):state.theme; }
-function applyTheme(reloadMap=true) {
-  document.documentElement.dataset.theme=resolvedTheme(); localStorage.setItem('tv15-theme',state.theme);
-  if(reloadMap&&state.map) { state.styleReloading=true; state.map.setStyle(`https://tiles.openfreemap.org/styles/${resolvedTheme()==='dark'?'dark':'positron'}`); state.map.once('style.load',()=>{ state.styleReloading=false; installMapLayers(); ensureCycloneFX(); }); }
+function baseMapStyle() {
+  const dark=resolvedTheme()==='dark';
+  const tile=dark
+    ? 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}'
+    : 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
+  return {version:8,sources:{base:{type:'raster',tiles:[tile],tileSize:256,attribution:'Tiles © Esri; geographic data contributors'}},layers:[{id:'base',type:'raster',source:'base',paint:{'raster-saturation':dark?-.25:-.12,'raster-contrast':dark?.08:.02,'raster-brightness-min':dark?.08:.72,'raster-brightness-max':dark?.72:1}}]};
 }
-function setView(view) { state.view=view; localStorage.setItem('tv15-view',view); document.body.dataset.view=view; $$('[data-view-mode]').forEach(b=>b.classList.toggle('is-active',b.dataset.viewMode===view)); }
+function applyTheme(reloadMap=true) {
+  document.documentElement.dataset.theme=resolvedTheme(); localStorage.setItem('tv16-theme',state.theme);
+  if(reloadMap&&state.map) { state.styleReloading=true; state.map.setStyle(baseMapStyle()); state.map.once('style.load',()=>{ state.styleReloading=false; installMapLayers(); ensureCycloneFX(); }); }
+}
+function setView(view) { state.view=view; localStorage.setItem('tv16-view',view); document.body.dataset.view=view; $$('[data-view-mode]').forEach(b=>b.classList.toggle('is-active',b.dataset.viewMode===view)); }
 
 function neutralAreaLabel(){return state.lang==='zh'?'台湾地区':state.lang==='ja'?'台湾地域':state.lang==='ko'?'대만 지역':state.lang==='es'?'Área de Taiwán':state.lang==='fr'?'Zone de Taïwan':'Taiwan area';}
 function applyNeutralGeographyLabels(){
@@ -318,7 +325,7 @@ function ensureCycloneFX() {
   window.CycloneFX.attach(state.map);
   window.CycloneFX.setQuality(state.fxQuality);
   window.CycloneFX.setOptions({particles:state.fxParticles,eyewall:state.fxEyewall,trail:state.fxTrail});
-  window.CycloneFX.setEnabled(true);
+  window.CycloneFX.setEnabled(state.visualMode==='cinematic');
   syncCycloneFX(false);
   return true;
 }
@@ -346,10 +353,10 @@ function syncCycloneFX(followCamera=true) {
   const point=activePlaybackPoint();
   if(!point || !Number.isFinite(+point.lat) || !Number.isFinite(+point.lon)) return;
   const radiusKm=Number(state.selected.windRadii?.radiusKm || clamp(140+(Number(point.windMs||state.selected.windMs||25))*6,180,520));
-  window.CycloneFX.setStorm({name:displayName(state.selected),lat:+point.lat,lon:+point.lon,windMs:+(point.windMs??state.selected.windMs??25),pressureHpa:+(point.pressureHpa??state.selected.pressureHpa??990),radiusKm,time:point.time,track,observedCount:parts.observed.length,progress:state.playProgress,officialForecast:Boolean(parts.forecast.length),demo:Boolean(state.selected.demo)});
+  window.CycloneFX.setStorm({name:displayName(state.selected),lat:+point.lat,lon:+point.lon,windMs:+(point.windMs??state.selected.windMs??25),pressureHpa:+(point.pressureHpa??state.selected.pressureHpa??990),radiusKm,windRadii:state.selected.windRadii||null,time:point.time,track,observedCount:parts.observed.length,progress:state.playProgress,officialForecast:Boolean(parts.forecast.length),demo:Boolean(state.selected.demo)});
   window.CycloneFX.setQuality(state.fxQuality);
   window.CycloneFX.setOptions({particles:state.fxParticles,eyewall:state.fxEyewall,trail:state.fxTrail});
-  window.CycloneFX.setEnabled(true);
+  window.CycloneFX.setEnabled(state.visualMode==='cinematic');
   updateCinematicHud(point,radiusKm);
   if(state.fxFollow && followCamera && state.playing && state.map) {
     const now=Date.now();if(now-state.fxLastFollowAt>900){state.fxLastFollowAt=now;state.map.easeTo({center:[+point.lon,+point.lat],duration:700,easing:t=>1-Math.pow(1-t,3)});}
@@ -359,7 +366,7 @@ function syncCycloneFX(followCamera=true) {
 
 function applyVisualMode(mode,animate=true) {
   state.visualMode=mode==='cinematic'?'cinematic':'map';
-  localStorage.setItem('tv15-visual-mode',state.visualMode);
+  localStorage.setItem('tv16-visual-mode',state.visualMode);
   document.body.dataset.visual=state.visualMode;
   $('#cyclone3dButton')?.classList.toggle('is-active',state.visualMode==='cinematic');
   $('#flatButton')?.classList.toggle('is-active',state.visualMode==='map'&&state.projection==='mercator');
@@ -368,10 +375,9 @@ function applyVisualMode(mode,animate=true) {
   $('#fxLegend').hidden=false;
   if(!state.map)return;
   ensureCycloneFX();
-  if(state.visualMode==='cinematic'){
-    state.projection='mercator';try{state.map.setProjection({type:'mercator'});}catch{}
-    const point=activePlaybackPoint();if(point)state.map.easeTo({center:[+point.lon,+point.lat],zoom:Math.max(4.6,state.map.getZoom()),pitch:48,bearing:-18,duration:animate?850:0});
-  }else state.map.easeTo({pitch:0,bearing:0,duration:animate?550:0});
+  state.projection='mercator';try{state.map.setProjection({type:'mercator'});}catch{}
+  state.map.easeTo({pitch:0,bearing:0,duration:animate?420:0});
+  window.CycloneFX?.setEnabled(state.visualMode==='cinematic');
   syncCycloneFX(false);
 }
 
@@ -380,7 +386,7 @@ window.addEventListener('cyclonefxready',()=>{if(state.mapReady)ensureCycloneFX(
 
 function initMap() {
   if(!window.maplibregl) { $('#map').innerHTML='<div class="map-fallback">MapLibre failed to load. Check network access to unpkg.com.</div>'; return; }
-  state.map=new maplibregl.Map({container:'map',style:`https://tiles.openfreemap.org/styles/${resolvedTheme()==='dark'?'dark':'positron'}`,center:[130,20],zoom:2.2,attributionControl:true,maxPitch:72,canvasContextAttributes:{antialias:true}});
+  state.map=new maplibregl.Map({container:'map',style:baseMapStyle(),center:[130,20],zoom:2.2,attributionControl:true,maxPitch:72,canvasContextAttributes:{antialias:true}});
   state.map.addControl(new maplibregl.NavigationControl({showCompass:true,showZoom:true}),'right');
   state.map.on('load',()=>{ state.mapReady=true; installMapLayers(); bindMapEvents(); ensureCycloneFX(); applyVisualMode(state.visualMode,false); fitSelected(false); });
   state.map.on('error',(event)=>{if(event?.error?.message)console.warn('Map error',event.error.message);const sourceId=event?.sourceId||event?.error?.sourceId||'';if(String(sourceId).includes('satellite')||String(sourceId).includes('radar'))showWeatherStatus(state.lang==='zh'?'天气图层暂不可用':'Weather layer unavailable',tr('weatherFailed'),'error');});
@@ -418,12 +424,12 @@ function currentPlaybackPoints() {
 function updateMapData() {
   if(!state.mapReady||state.styleReloading) return;
   if(!state.selected){['tv-cone','tv-wind','tv-observed','tv-forecast','tv-trend','tv-points','tv-cities','tv-user-link','tv-history'].forEach(id=>setSourceData(id,featureCollection()));updateUserMap();window.CycloneFX?.setEnabled(false);return;}
-  const parts=trackParts(state.selected); const shown=currentPlaybackPoints();
+  const parts=trackParts(state.selected); const shown=parts.all;
   const observed=shown.filter(p=>!p.forecast), official=shown.filter(p=>p.forecast&&!p.trend), trend=shown.filter(p=>p.trend);
   setSourceData('tv-observed',observed.length>1?featureCollection([lineFeature(observed)]):featureCollection());
   setSourceData('tv-forecast',official.length>0?featureCollection([lineFeature([parts.observed.at(-1),...official].filter(Boolean))]):featureCollection());
   setSourceData('tv-trend',trend.length>0?featureCollection([lineFeature([parts.observed.at(-1),...trend].filter(Boolean))]):featureCollection());
-  const pointFeatures=shown.map((p,i)=>({type:'Feature',properties:{index:i,time:p.time||'',kind:p.trend?'trend':p.forecast?'forecast':'observed',color:intensityColor(p.windMs),wind:p.windMs??'',pressure:p.pressureHpa??'',current:i===Math.min(parts.observed.length-1,shown.length-1),label:fmtDate(p.time)},geometry:{type:'Point',coordinates:[p.lon,p.lat]}}));
+  const pointFeatures=shown.map((p,i)=>({type:'Feature',properties:{index:i,time:p.time||'',kind:p.trend?'trend':p.forecast?'forecast':'observed',color:intensityColor(p.windMs),wind:p.windMs??'',pressure:p.pressureHpa??'',current:i===Math.round(clamp(state.playProgress,0,1)*Math.max(0,shown.length-1)),label:fmtDate(p.time)},geometry:{type:'Point',coordinates:[p.lon,p.lat]}}));
   setSourceData('tv-points',featureCollection(pointFeatures));
   const prediction=parts.forecast.length?parts.forecast:parts.trend; const cone=corridorPolygon([parts.observed.at(-1),...prediction].filter(Boolean));
   setSourceData('tv-cone',cone?featureCollection([cone]):featureCollection());
@@ -432,7 +438,7 @@ function updateMapData() {
   const near=nearbyCities(state.selected); setSourceData('tv-cities',featureCollection(near.slice(0,12).map(item=>({type:'Feature',properties:{label:`${item.name} · ${Math.round(item.distance)} km`,color:item.level==='high'?'#ef4444':item.level==='medium'?'#f59e0b':'#16a36a'},geometry:{type:'Point',coordinates:[item.lon,item.lat]}}))));
   const analog=historicalAnalogCatalog.find(a=>a.id===state.activeAnalogId);setSourceData('tv-history',analog?featureCollection([lineFeature(analog.track,{name:analog.name})]):featureCollection());
   updateUserMap();
-  const showStaticTrack=state.view==='pro';setVisibility(['tv-observed-line','tv-forecast-line','tv-trend-line','tv-track-points'],state.layers.track&&showStaticTrack);
+  const showStaticTrack=true;setVisibility(['tv-observed-line','tv-forecast-line','tv-trend-line','tv-track-points'],state.layers.track&&showStaticTrack);
   setVisibility(['tv-cone-fill','tv-cone-outline'],state.layers.cone);
   setVisibility(['tv-wind-fill','tv-wind-outline'],state.layers.wind);
   setVisibility(['tv-city-circles','tv-city-labels'],state.layers.cities);setVisibility(['tv-history-line'],Boolean(state.activeAnalogId));
@@ -460,7 +466,7 @@ function syncRasterLayers() {
 function bindMapEvents() {
   state.map.on('click','tv-track-points',e=>{const f=e.features?.[0];if(!f)return;const c=f.geometry.coordinates.slice();new maplibregl.Popup({offset:12}).setLngLat(c).setHTML(`<div class="node-popup"><header><h3>${escapeHtml(displayName(state.selected))}</h3><span class="kind">${escapeHtml(tr(f.properties.kind==='observed'?'trackKindObserved':f.properties.kind==='forecast'?'trackKindForecast':'trackKindTrend'))}</span></header><dl><div><dt>${tr('updated')}</dt><dd>${escapeHtml(fmtDate(f.properties.time))}</dd></div><div><dt>${tr('maxWind')}</dt><dd>${f.properties.wind?`${Math.round(f.properties.wind)} m/s`:'—'}</dd></div><div><dt>${tr('pressure')}</dt><dd>${f.properties.pressure?`${Math.round(f.properties.pressure)} hPa`:'—'}</dd></div><div><dt>${tr('coordinates')}</dt><dd>${c[1].toFixed(1)}°, ${c[0].toFixed(1)}°</dd></div></dl></div>`).addTo(state.map);});
   state.map.on('mouseenter','tv-track-points',()=>state.map.getCanvas().style.cursor='pointer'); state.map.on('mouseleave','tv-track-points',()=>state.map.getCanvas().style.cursor='');
-  state.map.on('click',e=>{if(!state.pickLocation)return;state.userLocation={lat:e.lngLat.lat,lon:e.lngLat.lng};localStorage.setItem('tv15-location',JSON.stringify(state.userLocation));state.pickLocation=false;renderPersonalImpact();updateMapData();toast(tr('locationSaved'));});
+  state.map.on('click',e=>{if(!state.pickLocation)return;state.userLocation={lat:e.lngLat.lat,lon:e.lngLat.lng};localStorage.setItem('tv16-location',JSON.stringify(state.userLocation));state.pickLocation=false;renderPersonalImpact();updateMapData();toast(tr('locationSaved'));});
 }
 function fitSelected(animate=true) {
   if(!state.map||!state.selected)return;const pts=trackParts(state.selected).all;if(!pts.length)return;
@@ -512,7 +518,7 @@ const adviceCopy={
   family:{zh:['确认老人、儿童、宠物和常用药需求。','提前完成接送与采购，准备照明和饮水。','保持家人联系，及时执行疏散或停课要求。'],en:['Check needs for older adults, children, pets and medicine.','Finish pick-ups and shopping early; prepare lighting and water.','Keep family contact and follow evacuation or school-closure orders.']},
   coastProfile:{zh:['确认风暴潮区、地下空间和疏散路线。','转移车辆与室外物品，停止海上活动。','远离岸线，官方要求撤离时立即行动。'],en:['Check surge zones, underground spaces and evacuation routes.','Move vehicles and outdoor items; stop marine activity.','Stay away from the shoreline and evacuate immediately when ordered.']}
 };
-function renderProfiles() { const ids=['commute','outdoor','office','drive','family','coastProfile'];$('#profileTabs').innerHTML=ids.map(id=>`<button class="profile-tab${state.profile===id?' is-active':''}" data-profile="${id}">${tr(id)}</button>`).join('');$$('[data-profile]').forEach(b=>b.onclick=()=>{state.profile=b.dataset.profile;localStorage.setItem('tv15-profile',state.profile);renderAdvice(personalImpact(state.selected)?.level||'low');renderProfiles();}); }
+function renderProfiles() { const ids=['commute','outdoor','office','drive','family','coastProfile'];$('#profileTabs').innerHTML=ids.map(id=>`<button class="profile-tab${state.profile===id?' is-active':''}" data-profile="${id}">${tr(id)}</button>`).join('');$$('[data-profile]').forEach(b=>b.onclick=()=>{state.profile=b.dataset.profile;localStorage.setItem('tv16-profile',state.profile);renderAdvice(personalImpact(state.selected)?.level||'low');renderProfiles();}); }
 function renderAdvice(level) { const lang=state.lang==='zh'?'zh':'en',copy=adviceCopy[state.profile]?.[lang]||adviceCopy.commute[lang];$('#adviceTimeline').innerHTML=[[tr('now'),copy[0]],[tr('before'),copy[1]],[tr('during'),copy[2]]].map(([label,text],i)=>`<article class="advice-step"><span>${label}</span><div><strong>${level==='high'&&i>0?(state.lang==='zh'?'优先执行':'Priority'):tr(state.profile)}</strong><p>${escapeHtml(text)}</p></div></article>`).join(''); }
 function renderPro() { const s=state.selected,a=authorityFor(s),parts=trackParts(s);$('#proStormName').textContent=displayName(s);$('#proCoordinates').textContent=s?`${(+s.lat).toFixed(1)}°N · ${(+s.lon).toFixed(1)}°E`:'—';$('#proWind').textContent=Number.isFinite(+s?.windMs)?`${Math.round(s.windMs)} m/s`:'—';$('#proPressure').textContent=Number.isFinite(+s?.pressureHpa)?`${Math.round(s.pressureHpa)} hPa`:'—';$('#proClass').textContent=s?.classification||'—';$('#proTrackCount').textContent=`${parts.observed.length} + ${parts.forecast.length||parts.trend.length}`;$('#proAgency').textContent=a.name;
   $('#sourceList').innerHTML=state.sources.map(src=>`<article class="source-row"><div><strong>${escapeHtml(src.name)}</strong><small>${escapeHtml(src.message||src.role||'')}</small></div><span class="source-state">${escapeHtml(src.status||'—')}</span></article>`).join(''); }
@@ -532,33 +538,33 @@ function renderAll() { if ($('#demoToggle')) $('#demoToggle').checked=state.demo
 
 function setSheet(sheet) { state.sheet=sheet;$('#insightPanel').dataset.sheet=sheet; }
 function bindUI() {
-  $('#brandButton').onclick=()=>$('#stormRail').classList.add('is-open');$('#railClose').onclick=()=>$('#stormRail').classList.remove('is-open');$('#railToggleFloat').onclick=()=>{if(innerWidth<=920)$('#stormRail').classList.toggle('is-open');else toggleRail();};$('#insightToggleFloat').onclick=()=>{if(innerWidth<=920)setSheet(state.sheet==='collapsed'?'half':'collapsed');else toggleInsight();};$('#weatherLayerClose').onclick=()=>$('#weatherLayerStatus').hidden=true;
+  $('#brandButton').onclick=()=>{if(innerWidth<=920)$('#stormRail').classList.add('is-open');else toggleRail(false);};$('#railClose').onclick=()=>{if(innerWidth<=920)$('#stormRail').classList.remove('is-open');else toggleRail(true);};$('#railToggleFloat').onclick=()=>{if(innerWidth<=920)$('#stormRail').classList.toggle('is-open');else toggleRail();};$('#insightToggleFloat').onclick=()=>{if(innerWidth<=920)setSheet(state.sheet==='collapsed'?'half':'collapsed');else toggleInsight();};$('#weatherLayerClose').onclick=()=>$('#weatherLayerStatus').hidden=true;$('#insightClose').onclick=()=>{if(innerWidth<=920)setSheet('collapsed');else toggleInsight(false);};
   $$('[data-view-mode]').forEach(b=>b.onclick=()=>{setView(b.dataset.viewMode);if(innerWidth<=920)setSheet('half');});
   $('#languageButton').onclick=e=>{e.stopPropagation();$('#languageMenu').hidden=!$('#languageMenu').hidden;$('#themeMenu').hidden=true;};
   $('#themeButton').onclick=e=>{e.stopPropagation();$('#themeMenu').hidden=!$('#themeMenu').hidden;$('#languageMenu').hidden=true;};
-  $$('[data-language]').forEach(b=>b.onclick=()=>{state.lang=b.dataset.language;localStorage.setItem('tv15-lang',state.lang);$('#languageMenu').hidden=true;applyI18n();});
+  $$('[data-language]').forEach(b=>b.onclick=()=>{state.lang=b.dataset.language;localStorage.setItem('tv16-lang',state.lang);$('#languageMenu').hidden=true;applyI18n();});
   $$('[data-theme-choice]').forEach(b=>b.onclick=()=>{state.theme=b.dataset.themeChoice;$('#themeMenu').hidden=true;applyTheme();});
   document.addEventListener('click',()=>{$('#languageMenu').hidden=true;$('#themeMenu').hidden=true;});
-  $('#demoToggle').checked=state.demo;$('#demoToggle').onchange=e=>{state.demo=e.target.checked;localStorage.setItem('tv15-demo',state.demo);state.selected=null;renderAll();if(state.selected)fitSelected();};
+  $('#demoToggle').checked=state.demo;$('#demoToggle').onchange=e=>{state.demo=e.target.checked;localStorage.setItem('tv16-demo',state.demo);state.selected=null;renderAll();if(state.selected)fitSelected();};
   $('#flatButton').onclick=()=>{state.projection='mercator';applyVisualMode('map',false);state.map?.setProjection({type:'mercator'});$('#flatButton').classList.add('is-active');$('#globeButton').classList.remove('is-active');};
   $('#globeButton').onclick=()=>{try{state.projection='globe';applyVisualMode('map',false);state.map?.setProjection({type:'globe'});$('#globeButton').classList.add('is-active');$('#flatButton').classList.remove('is-active');}catch{toast('Globe projection is not supported by this browser.');}};
   $('#cyclone3dButton').onclick=()=>applyVisualMode(state.visualMode==='cinematic'?'map':'cinematic');
   $('#fitStormButton').onclick=()=>fitSelected();$('#fitWorldButton').onclick=()=>state.map?.flyTo({center:[0,10],zoom:1.4,duration:700});
   $('#layersButton').onclick=e=>{e.stopPropagation();$('#layerPanel').hidden=!$('#layerPanel').hidden;};$$('[data-close-panel]').forEach(b=>b.onclick=()=>$('#'+b.dataset.closePanel).hidden=true);
-  $$('[data-layer-toggle]').forEach(input=>{input.checked=state.layers[input.dataset.layerToggle];input.onchange=()=>{const key=input.dataset.layerToggle;state.layers[key]=input.checked;if(key==='satellite'&&input.checked){if(!state.weather?.satellite?.tileTemplate){input.checked=false;state.layers[key]=false;showWeatherStatus(tr('satelliteLayer'),tr('weatherFailed'),'error');}else showWeatherStatus(tr('satelliteLayer'),tr('satelliteLoading'),'loading');}if(key==='radar'&&input.checked){if(!state.weather?.radar?.frames?.length){input.checked=false;state.layers[key]=false;showWeatherStatus(tr('radarLayer'),tr('radarEmpty'),'error');}else{state.playMode='radar';state.playIndex=state.weather.radar.frames.length-1;$$('[data-play-mode]').forEach(x=>x.classList.toggle('is-active',x.dataset.playMode==='radar'));showWeatherStatus(tr('radarLayer'),tr('radarNoEcho'),'ready');}}syncRasterLayers();renderTimeline();updateMapData();};});
-  $('#weatherOpacity').value=Math.round(state.opacity*100);$('#weatherOpacity').oninput=e=>{state.opacity=e.target.value/100;localStorage.setItem('tv15-opacity',e.target.value);['tv-satellite','tv-radar'].forEach(id=>{if(state.map?.getLayer(id))state.map.setPaintProperty(id,'raster-opacity',state.opacity);});};
-  $('#fxQuality').value=state.fxQuality;$('#fxQuality').onchange=e=>{state.fxQuality=e.target.value;localStorage.setItem('tv15-fx-quality',state.fxQuality);window.CycloneFX?.setQuality(state.fxQuality);syncCycloneFX(false);};
-  $('#fxParticles').checked=state.fxParticles;$('#fxParticles').onchange=e=>{state.fxParticles=e.target.checked;localStorage.setItem('tv15-fx-particles',String(state.fxParticles));syncCycloneFX(false);};
-  $('#fxEyewall').checked=state.fxEyewall;$('#fxEyewall').onchange=e=>{state.fxEyewall=e.target.checked;localStorage.setItem('tv15-fx-eyewall',String(state.fxEyewall));syncCycloneFX(false);};
-  $('#fxTrail').checked=state.fxTrail;$('#fxTrail').onchange=e=>{state.fxTrail=e.target.checked;localStorage.setItem('tv15-fx-trail',String(state.fxTrail));syncCycloneFX(false);};
-  $('#fxFollow').checked=state.fxFollow;$('#fxFollow').onchange=e=>{state.fxFollow=e.target.checked;localStorage.setItem('tv15-fx-follow',String(state.fxFollow));};
+  $$('[data-layer-toggle]').forEach(input=>{input.checked=state.layers[input.dataset.layerToggle];input.onchange=()=>{const key=input.dataset.layerToggle;state.layers[key]=input.checked;if(key==='satellite'&&input.checked){if(!(state.weather?.satellite?.tileTemplate||state.weather?.satellite?.wmsTemplate)){input.checked=false;state.layers[key]=false;showWeatherStatus(tr('satelliteLayer'),tr('weatherFailed'),'error');}else showWeatherStatus(tr('satelliteLayer'),tr('satelliteLoading'),'loading');}if(key==='radar'&&input.checked){if(!state.weather?.radar?.frames?.length){input.checked=false;state.layers[key]=false;showWeatherStatus(tr('radarLayer'),tr('radarEmpty'),'error');}else{state.playMode='radar';state.playIndex=state.weather.radar.frames.length-1;$$('[data-play-mode]').forEach(x=>x.classList.toggle('is-active',x.dataset.playMode==='radar'));showWeatherStatus(tr('radarLayer'),tr('radarNoEcho'),'ready');}}syncRasterLayers();renderTimeline();updateMapData();};});
+  $('#weatherOpacity').value=Math.round(state.opacity*100);$('#weatherOpacity').oninput=e=>{state.opacity=e.target.value/100;localStorage.setItem('tv16-opacity',e.target.value);['tv-satellite','tv-radar'].forEach(id=>{if(state.map?.getLayer(id))state.map.setPaintProperty(id,'raster-opacity',state.opacity);});};
+  $('#fxQuality').value=state.fxQuality;$('#fxQuality').onchange=e=>{state.fxQuality=e.target.value;localStorage.setItem('tv16-fx-quality',state.fxQuality);window.CycloneFX?.setQuality(state.fxQuality);syncCycloneFX(false);};
+  $('#fxParticles').checked=state.fxParticles;$('#fxParticles').onchange=e=>{state.fxParticles=e.target.checked;localStorage.setItem('tv16-fx-particles',String(state.fxParticles));syncCycloneFX(false);};
+  $('#fxEyewall').checked=state.fxEyewall;$('#fxEyewall').onchange=e=>{state.fxEyewall=e.target.checked;localStorage.setItem('tv16-fx-eyewall',String(state.fxEyewall));syncCycloneFX(false);};
+  $('#fxTrail').checked=state.fxTrail;$('#fxTrail').onchange=e=>{state.fxTrail=e.target.checked;localStorage.setItem('tv16-fx-trail',String(state.fxTrail));syncCycloneFX(false);};
+  $('#fxFollow').checked=state.fxFollow;$('#fxFollow').onchange=e=>{state.fxFollow=e.target.checked;localStorage.setItem('tv16-fx-follow',String(state.fxFollow));};
   $$('[data-play-mode]').forEach(b=>b.onclick=()=>{state.playMode=b.dataset.playMode;state.playIndex=0;if(state.playMode==='track')state.playProgress=0;$$('[data-play-mode]').forEach(x=>x.classList.toggle('is-active',x===b));renderTimeline();});
   $('#timelineRange').oninput=e=>{if(state.playMode==='radar')state.playIndex=Number(e.target.value);else state.playProgress=Number(e.target.value)/1000;renderTimeline();};$('#playButton').onclick=togglePlay;$('#speedButton').onclick=()=>{state.speed=state.speed===1?1.5:state.speed===1.5?2:1;renderTimeline();if(state.playing){stopPlay();startPlay();}};
   $('#impactButton').onclick=()=>{if(innerWidth>920)toggleInsight(true);setSheet(innerWidth<=920?'full':'half');$('#impactSection').scrollIntoView({behavior:'smooth',block:'start'});};$('#sourcesButton').onclick=()=>{if(innerWidth>920)toggleInsight(true);$('#methodSection').scrollIntoView({behavior:'smooth'});setSheet(innerWidth<=920?'full':'half');};
-  $('#locateButton').onclick=()=>navigator.geolocation?.getCurrentPosition(pos=>{state.userLocation={lat:pos.coords.latitude,lon:pos.coords.longitude};localStorage.setItem('tv15-location',JSON.stringify(state.userLocation));renderPersonalImpact();updateMapData();fitSelected();toast(tr('locationSaved'));},()=>toast(tr('locationDenied')),{enableHighAccuracy:false,timeout:8000,maximumAge:600000});
-  $('#pickLocationButton').onclick=()=>{state.pickLocation=true;toast(tr('pickHint'));};$('#clearLocationButton').onclick=()=>{state.userLocation=null;localStorage.removeItem('tv15-location');renderPersonalImpact();updateMapData();};
+  $('#locateButton').onclick=()=>navigator.geolocation?.getCurrentPosition(pos=>{state.userLocation={lat:pos.coords.latitude,lon:pos.coords.longitude};localStorage.setItem('tv16-location',JSON.stringify(state.userLocation));renderPersonalImpact();updateMapData();fitSelected();toast(tr('locationSaved'));},()=>toast(tr('locationDenied')),{enableHighAccuracy:false,timeout:8000,maximumAge:600000});
+  $('#pickLocationButton').onclick=()=>{state.pickLocation=true;toast(tr('pickHint'));};$('#clearLocationButton').onclick=()=>{state.userLocation=null;localStorage.removeItem('tv16-location');renderPersonalImpact();updateMapData();};
   const handle=$('#sheetHandle');let startY=0,startSheet='collapsed';handle.onclick=()=>setSheet(state.sheet==='collapsed'?'half':state.sheet==='half'?'full':'collapsed');handle.onpointerdown=e=>{startY=e.clientY;startSheet=state.sheet;handle.setPointerCapture(e.pointerId);};handle.onpointerup=e=>{const dy=e.clientY-startY;if(dy<-55)setSheet(startSheet==='collapsed'?'half':'full');else if(dy>55)setSheet(startSheet==='full'?'half':'collapsed');};
-  matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{if(state.theme==='system')applyTheme();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(innerWidth<=920){$('#stormRail').classList.remove('is-open');setSheet('collapsed');}else{toggleRail(true);toggleInsight(false);}$('#layerPanel').hidden=true;}});matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{if(state.theme==='system')applyTheme();});
 }
 function startPlay(){
   if(state.playing)return;state.playing=true;state.playLastTs=performance.now();state.radarAccum=0;$('#playButton').textContent='❚❚';
@@ -583,8 +589,9 @@ function togglePlay(){state.playing?stopPlay():startPlay();}
 
 
 function fallbackWeatherConfig(){
-  const date=new Date(Date.now()-36*3600_000).toISOString().slice(0,10);
-  return {generatedAt:new Date().toISOString(),satellite:{status:'online',provider:'NASA GIBS',date,wmsTemplate:`https://gibs.earthdata.nasa.gov/wms/epsg3857/best/wms.cgi?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&LAYERS=VIIRS_SNPP_CorrectedReflectance_TrueColor&STYLES=&FORMAT=image/jpeg&TRANSPARENT=FALSE&HEIGHT=256&WIDTH=256&SRS=EPSG:3857&BBOX={bbox-epsg-3857}&TIME=${date}`},radar:{status:'offline',frames:[],coverageTemplate:null}};
+  const date=new Date(Date.now()-48*3600_000).toISOString().slice(0,10);
+  const tileTemplate=`https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_CorrectedReflectance_TrueColor/default/${date}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg`;
+  return {generatedAt:new Date().toISOString(),satellite:{status:'online',provider:'NASA GIBS',date,tileTemplate},radar:{status:'offline',frames:[],coverageTemplate:null}};
 }
 async function fetchWeatherDirect(){
   const fallback=fallbackWeatherConfig();
@@ -600,7 +607,7 @@ async function loadData() {
   if(!(state.weather?.radar?.frames||[]).length){const direct=await fetchWeatherDirect();if((direct.radar?.frames||[]).length)state.weather.radar=direct.radar;if(!state.weather.satellite)state.weather.satellite=direct.satellite;}
   $('#satelliteTime').textContent=`NASA GIBS · ${state.weather.satellite?.date||'latest'}`;$('#radarTime').textContent=state.weather.radar?.generatedAt?fmtDate(state.weather.radar.generatedAt):tr('radarEmpty');
   const liveWithTrack=state.storms.find(storm=>sortedTrack(storm).length>=2);
-  if(!liveWithTrack){state.demo=true;localStorage.setItem('tv15-demo','true');}
+  if(!liveWithTrack){state.demo=true;localStorage.setItem('tv16-demo','true');}
   state.selected=liveWithTrack||demoStorms[0]||state.storms[0]||null;
   state.playProgress=progressForObservedEnd(state.selected);state.playIndex=Math.max(0,trackParts(state.selected).observed.length-1);renderAll();if(state.selected)fitSelected(false);ensureCycloneFX();
 }

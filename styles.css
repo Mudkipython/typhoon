@@ -603,3 +603,180 @@ body[data-visual="cinematic"] #map canvas.maplibregl-canvas{filter:saturate(1.06
   .map-toolbar .tool-button{min-width:38px;padding:0 8px}
   .timeline{bottom:82px}
 }
+
+/* =========================================================
+   Public v16 — map-first meteorological layout
+   ========================================================= */
+:root {
+  --topbar-h: 72px;
+  --rail-w: 340px;
+  --panel-w: 460px;
+  --surface: rgba(255,255,255,.94);
+  --shadow: 0 22px 65px rgba(28,57,69,.18);
+}
+html[data-theme="dark"] { --surface: rgba(10,32,42,.95); }
+
+.app-shell { position: relative; display: block !important; height: calc(100dvh - var(--topbar-h)); }
+.map-workspace { position: absolute !important; inset: 0; width: 100%; height: 100%; }
+#map { position: absolute; inset: 0; }
+
+.storm-rail,
+.insight-panel {
+  position: absolute !important;
+  z-index: 160 !important;
+  top: 14px !important;
+  bottom: 14px !important;
+  height: auto !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 22px !important;
+  background: color-mix(in srgb, var(--surface-solid) 96%, transparent) !important;
+  backdrop-filter: blur(20px);
+  box-shadow: var(--shadow) !important;
+  transition: transform .26s cubic-bezier(.2,.8,.2,1), opacity .2s ease !important;
+}
+.storm-rail {
+  left: 14px !important;
+  width: min(var(--rail-w), calc(100vw - 28px)) !important;
+  padding: 20px 16px 24px !important;
+  overflow-y: auto !important;
+  transform: translateX(0) !important;
+  opacity: 1;
+}
+body.rail-collapsed .storm-rail {
+  transform: translateX(calc(-100% - 24px)) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+.insight-panel {
+  right: 14px !important;
+  left: auto !important;
+  width: min(var(--panel-w), calc(100vw - 28px)) !important;
+  overflow: hidden !important;
+  transform: translateX(calc(100% + 24px)) !important;
+}
+body.insight-open .insight-panel { transform: translateX(0) !important; }
+.rail-close { display: grid !important; place-items: center; }
+.insight-close {
+  position: absolute; z-index: 8; top: 12px; right: 12px;
+  width: 38px; height: 38px; border: 1px solid var(--border);
+  border-radius: 12px; background: var(--surface-soft); color: var(--text);
+  font-size: 23px; line-height: 1; cursor: pointer;
+}
+.insight-scroll { padding-top: 54px !important; }
+
+.map-top-left { top: 16px !important; left: 50% !important; transform: translateX(-50%); width: max-content; max-width: calc(100% - 180px); }
+.map-toolbar {
+  background: color-mix(in srgb, var(--surface-solid) 94%, transparent) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 12px 34px rgba(20,50,64,.14) !important;
+  padding: 5px !important;
+}
+.tool-button { min-height: 42px !important; font-size: 14px !important; padding: 0 13px !important; }
+.tool-button.is-active { background: var(--primary-soft) !important; color: var(--primary-strong) !important; }
+
+body[data-visual="cinematic"] .map-toolbar,
+body[data-visual="cinematic"] .storm-summary,
+body[data-visual="cinematic"] .map-legend,
+body[data-visual="cinematic"] .playback-bar,
+body[data-visual="cinematic"] .source-agreement {
+  filter: none !important;
+  opacity: 1 !important;
+  display: initial;
+}
+body[data-visual="cinematic"] .storm-summary { display: block !important; }
+body[data-visual="cinematic"] .cinematic-vignette,
+.cinematic-hud { display: none !important; }
+
+.storm-summary {
+  top: 76px !important;
+  left: 22px !important;
+  bottom: auto !important;
+  width: min(370px, calc(100% - 44px)) !important;
+  padding: 17px 18px !important;
+  border-radius: 19px !important;
+  background: color-mix(in srgb, var(--surface-solid) 94%, transparent) !important;
+  box-shadow: 0 16px 46px rgba(20,50,64,.15) !important;
+}
+.storm-summary h1 { font-size: clamp(24px,2vw,30px) !important; margin: 8px 0 6px !important; }
+.storm-summary > p { font-size: 14px !important; line-height: 1.55 !important; display: -webkit-box !important; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.summary-metrics { margin: 12px 0 10px !important; }
+.summary-metrics span { font-size: 10px !important; }
+.summary-metrics strong { font-size: 13px !important; }
+.primary-button { min-height: 42px !important; font-size: 13px !important; }
+
+.map-edge-button { top: 16px !important; z-index: 150 !important; min-height: 44px !important; background: var(--surface-solid) !important; }
+.map-edge-left { left: 16px !important; }
+.map-edge-right { right: 16px !important; }
+
+.cyclone-fx-canvas.meteorological-overlay {
+  position: absolute; inset: 0; z-index: 7 !important; pointer-events: none;
+  mix-blend-mode: normal !important; filter: none !important;
+}
+.maplibregl-canvas { z-index: 1; }
+.maplibregl-control-container { position: relative; z-index: 15; }
+
+.map-legend {
+  right: 18px !important; bottom: 82px !important;
+  max-width: min(540px, calc(100% - 36px));
+  background: color-mix(in srgb, var(--surface-solid) 94%, transparent) !important;
+}
+.playback-bar {
+  bottom: 16px !important; width: min(760px, calc(100% - 40px)) !important;
+  background: color-mix(in srgb, var(--surface-solid) 96%, transparent) !important;
+  box-shadow: 0 14px 40px rgba(20,50,64,.16) !important;
+}
+.source-agreement { left: 18px !important; bottom: 82px !important; }
+.fx-legend { color: var(--muted) !important; }
+.fx-legend .legend-orbit { border-color: #0ea5e9 !important; box-shadow: none !important; }
+
+.weather-auth-note {
+  margin: 12px 0 8px; padding: 10px 12px; border-radius: 12px;
+  background: var(--surface-soft); color: var(--muted); font-size: 12px; line-height: 1.5;
+}
+.layer-panel { max-height: min(760px, calc(100dvh - 110px)); overflow-y: auto; }
+
+/* Larger readable panel typography */
+.storm-rail, .insight-panel { font-size: 15px; }
+.storm-card-copy strong { font-size: 17px !important; }
+.storm-card-copy small, .agency-card p, .city-item small, .source-item small { font-size: 13px !important; }
+.insight-section h2 { font-size: 24px !important; }
+.insight-section p, .hazard-card small, .advice-step p { font-size: 14px !important; line-height: 1.62 !important; }
+
+@media (max-width: 920px) {
+  :root { --topbar-h: 64px; }
+  .topbar { height: var(--topbar-h); grid-template-columns: 1fr auto; padding: 0 10px; }
+  .source-health { display: none; }
+  .brand-copy small { display: none; }
+  .brand-copy strong { font-size: 16px; }
+  .brand-mark { width: 38px; height: 38px; }
+  .top-actions .segmented { display: none; }
+  .icon-button { min-height: 40px; padding: 0 10px; }
+
+  .storm-rail { top: 0 !important; bottom: 0 !important; left: 0 !important; border-radius: 0 20px 20px 0 !important; width: min(88vw,350px) !important; transform: translateX(-105%) !important; opacity: 0 !important; pointer-events: none !important; }
+  .storm-rail.is-open { transform: translateX(0) !important; opacity: 1 !important; pointer-events: auto !important; }
+  body.rail-collapsed .storm-rail.is-open { transform: translateX(0) !important; opacity: 1 !important; pointer-events: auto !important; }
+
+  .insight-panel {
+    left: 0 !important; right: 0 !important; top: auto !important; bottom: 0 !important;
+    width: 100% !important; height: 86dvh !important; border-radius: 22px 22px 0 0 !important;
+    transform: translateY(calc(100% - 76px)) !important;
+  }
+  body.insight-open .insight-panel { transform: translateY(calc(100% - 76px)) !important; }
+  .insight-panel[data-sheet="half"] { transform: translateY(46%) !important; }
+  .insight-panel[data-sheet="full"] { transform: translateY(0) !important; }
+  .insight-close { top: 9px; right: 12px; }
+  .sheet-handle { display: grid !important; }
+
+  .map-top-left { top: 8px !important; left: 58px !important; right: 54px; transform: none; max-width: none; width: auto; }
+  .map-toolbar { width: 100%; justify-content: flex-start !important; overflow-x: auto; }
+  .map-toolbar .tool-button span { display: none; }
+  .tool-button { min-width: 40px; padding: 0 9px !important; }
+  .map-edge-button { top: 8px !important; min-height: 42px !important; }
+  .map-edge-left { left: 8px !important; }
+  .map-edge-right { right: 8px !important; }
+  .storm-summary { display: none !important; }
+  .source-agreement { display: none !important; }
+  .map-legend { left: 8px !important; right: 8px !important; bottom: 86px !important; padding: 7px 9px !important; overflow-x: auto; white-space: nowrap; }
+  .playback-bar { left: 8px !important; right: 8px !important; bottom: 10px !important; width: auto !important; }
+  .insight-section h2 { font-size: 21px !important; }
+}
