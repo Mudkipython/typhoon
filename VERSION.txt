@@ -1,2 +1,2 @@
-Typhoon Vision Public v17
-Map-first redesign with always-on meteorological cyclone structure, city-only labels, mutually exclusive panels, and Open-Meteo cloud/precipitation fields.
+Typhoon Vision Public v11
+Professional map-first redesign informed by NHC, HKO, CWA and PAGASA products.

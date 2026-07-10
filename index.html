@@ -1,104 +1,319 @@
 <!doctype html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN" data-theme="system" data-view="simple" data-map="world">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#eaf5f8" />
-  <title>Typhoon Vision · 全球热带气旋</title>
-  <meta name="description" content="全球热带气旋路径、风圈、城市影响、云量与降水可视化。" />
-  <link rel="preconnect" href="https://a.basemaps.cartocdn.com" />
-  <link href="./vendor/maplibre-gl.css" rel="stylesheet" />
-  <link href="./styles.css" rel="stylesheet" />
+  <meta name="theme-color" content="#edf4f8" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="description" content="Typhoon Vision — 面向公众与专业用户的全球热带气旋轨迹、风险与多来源交叉验证界面。" />
+  <title>Typhoon Vision · Public v11</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230f6b83'/%3E%3Cpath d='M13 33c8-18 29-19 38-5-9-4-17-2-20 5-3 7 2 13 11 14-17 6-33-2-29-14Z' fill='%23fff'/%3E%3Ccircle cx='34' cy='33' r='4' fill='%230f6b83'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <header class="topbar">
-    <button class="brand" id="brandButton" type="button" aria-label="打开气旋列表">
-      <span class="brand-mark" aria-hidden="true">◔</span>
-      <span class="brand-copy"><strong>Typhoon Vision <span class="version-pill">Public v17</span></strong><small data-i18n="tagline">全球热带气旋与个人影响</small></span>
-    </button>
-    <div class="source-health" id="sourceHealth" role="status"><i></i><span><strong data-i18n="connecting">正在连接权威来源</strong><small id="sourceUpdated">—</small></span></div>
-    <nav class="top-actions">
-      <button class="header-button" id="languageButton" type="button">🌐 <span id="languageLabel">中文</span></button>
-      <button class="header-button" id="themeButton" type="button">☼ <span data-i18n="appearance">外观</span></button>
-    </nav>
-  </header>
+  <a class="skip-link" href="#mainMap" data-i18n="skip">跳到地图</a>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Typhoon Vision">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M6 21C10 9 27 7 34 17c-7-3-13 0-14 6-1 5 3 9 9 9C19 37 5 31 6 21Z"/><circle cx="21" cy="21" r="2.7"/></svg></span>
+        <span class="brand-copy"><strong>Typhoon Vision <em class="version-badge">Public v11</em></strong><small data-i18n="tagline">全球台风简报</small></span>
+      </a>
 
-  <main class="app-shell">
-    <section class="map-stage" aria-label="全球热带气旋地图">
-      <div id="map"></div>
-      <canvas id="cycloneCanvas" aria-hidden="true"></canvas>
-
-      <div class="map-actions map-actions-left">
-        <button class="map-button" id="systemsButton" type="button">☰ <span data-i18n="systems">气旋</span></button>
-        <button class="storm-chip" id="stormChip" type="button"><i></i><span><strong id="chipName">—</strong><small id="chipMeta">—</small></span></button>
+      <div class="freshness-pill" id="freshnessPill" aria-live="polite">
+        <span class="status-dot loading"></span>
+        <div><strong data-i18n="connecting">正在连接权威来源</strong><small id="freshnessTime">—</small></div>
       </div>
 
-      <div class="map-actions map-actions-center">
-        <button class="map-button" id="focusButton" type="button">⌖ <span data-i18n="focus">聚焦</span></button>
-        <button class="map-button" id="layersButton" type="button">◈ <span data-i18n="layers">图层</span></button>
+      <div class="topbar-actions">
+        <button class="control-button insight-toggle desktop-only" id="insightToggle" aria-controls="insightPanel" aria-expanded="false"><span>☰</span><strong data-i18n="riskBrief">风险简报</strong></button>
+        <div class="segmented compact" role="group" aria-label="视图模式">
+          <button class="active" data-view-mode="simple" aria-pressed="true" data-i18n="simpleView">公众视图</button>
+          <button data-view-mode="pro" aria-pressed="false" data-i18n="proView">专业视图</button>
+        </div>
+        <button class="control-button language-control" id="languageToggle" aria-label="切换语言" aria-haspopup="menu" aria-expanded="false">
+          <span class="language-globe" aria-hidden="true">◎</span><strong id="languageLabel">中文</strong><svg class="chevron" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>
+        </button>
+        <button class="control-button theme-control" id="themeButton" aria-label="切换主题" aria-haspopup="menu" aria-expanded="false">
+          <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span data-i18n="appearance">外观</span>
+        </button>
+        <button class="icon-button mobile-only" id="mobileMenuButton" aria-label="打开菜单">
+          <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
       </div>
+    </header>
 
-      <div class="map-actions map-actions-right">
-        <button class="map-button" id="detailsButton" type="button"><span data-i18n="details">详情</span> ☷</button>
-      </div>
+    <aside class="sidebar" id="sidebar" aria-label="台风与区域">
+      <section class="sidebar-section region-section">
+        <div class="section-label"><span data-i18n="region">关注区域</span><button class="text-button" id="locateButton" data-i18n="global">全球</button></div>
+        <div class="region-grid">
+          <button class="region-card selected" data-region="global"><span>🌍</span><div><strong data-i18n="globalOverview">全球概览</strong><small data-i18n="allBasins">所有海域</small></div></button>
+          <button class="region-card" data-region="wpac"><span>🌊</span><div><strong data-i18n="westPacific">西北太平洋</strong><small>JMA · HKO</small></div></button>
+          <button class="region-card" data-region="atl"><span>🌀</span><div><strong data-i18n="atlantic">大西洋</strong><small>NOAA · NHC</small></div></button>
+        </div>
+      </section>
 
-      <aside class="drawer systems-drawer" id="systemsDrawer" aria-hidden="true">
-        <header class="drawer-header"><div><span class="eyebrow" data-i18n="activeSystems">活跃系统</span><h2><span id="stormCount">0</span> <span data-i18n="systemsWorldwide">个全球系统</span></h2></div><button class="close-button" data-close="systemsDrawer">×</button></header>
-        <div class="basin-tabs" id="basinTabs"></div>
-        <div class="storm-list" id="stormList"></div>
-        <label class="demo-toggle"><input id="demoToggle" type="checkbox" /><span><strong data-i18n="showDemo">显示演示系统</strong><small data-i18n="demoExplain">没有官方活动系统时用于体验功能</small></span></label>
-        <section class="authority-card"><span class="eyebrow" data-i18n="authority">所属权威机构</span><h3 id="agencyName">—</h3><p id="agencyDescription">—</p><a id="agencyLink" target="_blank" rel="noreferrer" data-i18n="officialSite">官网 ↗</a></section>
-      </aside>
+      <section class="sidebar-section storm-section">
+        <div class="section-label"><span data-i18n="systems">当前系统</span><span class="count-badge" id="stormCount">0</span></div>
+        <div class="storm-list" id="stormList">
+          <div class="storm-skeleton"><i></i><div><b></b><span></span></div></div>
+          <div class="storm-skeleton"><i></i><div><b></b><span></span></div></div>
+        </div>
+        <button class="demo-toggle" id="demoToggle" aria-pressed="true">
+          <span class="toggle-track"><i></i></span>
+          <span><strong data-i18n="demoScenario">显示演示情景</strong><small data-i18n="demoExplain">无活跃台风时用于体验界面</small></span>
+        </button>
+      </section>
 
-      <aside class="drawer details-drawer" id="detailsDrawer" aria-hidden="true">
-        <header class="drawer-header"><div><span class="eyebrow" data-i18n="publicBrief">公众简报</span><h2 id="detailsTitle">—</h2></div><button class="close-button" data-close="detailsDrawer">×</button></header>
-        <div class="drawer-scroll">
-          <section class="brief-card"><p id="briefText">—</p><div class="brief-grid"><div><span data-i18n="direction">移动方向</span><strong id="briefDirection">—</strong></div><div><span data-i18n="maxWind">最大风速</span><strong id="briefWind">—</strong></div><div><span data-i18n="pressure">中心气压</span><strong id="briefPressure">—</strong></div><div><span data-i18n="updated">更新时间</span><strong id="briefUpdated">—</strong></div></div></section>
+      <section class="sidebar-section source-mini">
+        <div class="section-label"><span data-i18n="sourceHealth">数据来源</span><button class="text-button" id="openSources" data-i18n="details">详情</button></div>
+        <div class="source-stack" id="sourceStack"></div>
+        <p class="source-note" data-i18n="sourceNote">主预报以所属海域的官方气象机构为准，其他来源只作交叉验证。</p>
+      </section>
+    </aside>
 
-          <section class="detail-section"><div class="section-heading"><span class="eyebrow" data-i18n="personalImpact">个人影响</span><h3 data-i18n="whatMeans">这对我意味着什么？</h3></div><div class="location-card"><strong id="locationStatus" data-i18n="locationNotSet">尚未设置</strong><div class="location-actions"><button id="locateButton" type="button" data-i18n="useLocation">使用定位</button><button id="pickLocationButton" type="button" data-i18n="pickOnMap">地图点选</button><button id="clearLocationButton" type="button" data-i18n="clear">清除</button></div></div><div class="impact-grid"><div><span data-i18n="nearestDistance">距路径最近</span><strong id="nearestDistance">—</strong></div><div><span data-i18n="closestTime">预计最接近</span><strong id="closestTime">—</strong></div><div><span data-i18n="impactWindow">可能影响时段</span><strong id="impactWindow">—</strong></div><div><span data-i18n="confidence">估算可信度</span><strong id="confidence">—</strong></div></div><div id="hazardList" class="hazard-list"></div></section>
+    <main class="workspace">
+      <section class="map-panel" id="mainMap" aria-label="全球热带气旋地图">
+        <canvas id="mapCanvas"></canvas>
+        <div class="map-atmosphere" aria-hidden="true"></div>
 
-          <section class="detail-section"><div class="section-heading"><span class="eyebrow" data-i18n="historicalReference">历史参考</span><h3 data-i18n="similarCyclones">相似气旋</h3></div><p class="muted" data-i18n="historyDisclaimer">历史相似仅用于理解风险，不代表本次结果相同。</p><div id="analogCards" class="analog-list"></div></section>
+        <div class="map-toolbar">
+          <div class="segmented map-mode" role="group" aria-label="地图模式">
+            <button class="active" data-map-mode="world" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M3 5h18v14H3z"/><path d="M8 5c-2 4-2 10 0 14m8-14c2 4 2 10 0 14M3 12h18"/></svg><span data-i18n="worldMap">世界地图</span></button>
+            <button data-map-mode="globe" aria-pressed="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg><span data-i18n="globe3d">3D 地球</span></button>
+          </div>
+          <button class="map-action" id="globalViewButton"><svg viewBox="0 0 24 24"><path d="M4 6h6V3M20 6h-6V3M4 18h6v3M20 18h-6v3"/></svg><span data-i18n="fitWorld">查看全球</span></button>
+          <button class="map-action" id="focusButton"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></svg><span data-i18n="focusStorm">聚焦台风</span></button>
+          <button class="map-action layer-button" id="layerButton" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="m12 3 8 4-8 4-8-4 8-4Z"/><path d="m4 12 8 4 8-4M4 17l8 4 8-4"/></svg><span data-i18n="layers">图层</span></button>
+        </div>
 
-          <section class="detail-section"><div class="section-heading"><span class="eyebrow" data-i18n="professionalData">专业数据</span><h3 data-i18n="dataSources">数据与来源</h3></div><dl class="pro-grid"><div><dt data-i18n="coordinates">中心坐标</dt><dd id="proCoordinates">—</dd></div><div><dt data-i18n="classification">强度分类</dt><dd id="proClass">—</dd></div><div><dt data-i18n="trackPoints">路径节点</dt><dd id="proTrackPoints">—</dd></div><div><dt data-i18n="primaryAgency">主权威机构</dt><dd id="proAgency">—</dd></div></dl><div id="sourceList" class="source-list"></div><div id="regionalTools" class="regional-tools"></div></section>
+        <div class="hazard-dock" id="hazardDock" aria-label="专业气象图层快捷入口">
+          <button class="active" data-hazard="track"><span>🌀</span><b data-i18n="hazardTrack">路径</b></button>
+          <button data-hazard="wind"><span>🌬️</span><b data-i18n="hazardWind">风圈</b></button>
+          <button data-hazard="rain"><span>🌧️</span><b data-i18n="hazardRain">降雨</b></button>
+          <button data-hazard="coast"><span>🌊</span><b data-i18n="hazardCoast">沿海</b></button>
+          <button data-hazard="satellite"><span>🛰️</span><b data-i18n="hazardSatellite">云图</b></button>
+          <button data-hazard="radar"><span>📡</span><b data-i18n="hazardRadar">雷达</b></button>
+        </div>
+
+        <div class="layer-panel" id="layerPanel" role="dialog" aria-label="地图图层">
+          <div class="layer-panel-head"><strong data-i18n="stormLayers">台风图层</strong><small data-i18n="layerHint">选择地图上要显示的信息</small></div>
+          <label><input type="checkbox" data-layer-toggle="track" checked><span><b data-i18n="trackLayer">实况与预报路径</b><small data-i18n="trackLayerHint">中心位置、路径节点与时间</small></span></label>
+          <label><input type="checkbox" data-layer-toggle="cone" checked><span><b data-i18n="coneLayer">预报可能范围</b><small data-i18n="coneLayerHint">仅在官方预报点充分时显示</small></span></label>
+          <label><input type="checkbox" data-layer-toggle="wind" checked><span><b data-i18n="windLayer">风圈与波及范围</b><small data-i18n="windLayerHint">无官方风圈数据时显示估算范围</small></span></label>
+          <label><input type="checkbox" data-layer-toggle="labels" checked><span><b data-i18n="labelLayer">地图标注</b><small data-i18n="labelLayerHint">台风名称、节点时间与风圈标签</small></span></label>
+          <p><span>i</span><small data-i18n="estimatedRangeNote">标有“估算”的风圈仅用于帮助理解，不是官方警戒范围。</small></p>
+        </div>
+
+        <div class="map-zoom">
+          <button id="zoomIn" aria-label="放大">＋</button>
+          <button id="zoomOut" aria-label="缩小">−</button>
+        </div>
+
+        <div class="audience-switch-mobile" role="group" aria-label="内容视图">
+          <button class="active" data-view-mode="simple" aria-pressed="true"><span>☺</span><b data-i18n="simpleView">公众视图</b></button>
+          <button data-view-mode="pro" aria-pressed="false"><span>⌁</span><b data-i18n="proView">专业视图</b></button>
+        </div>
+
+        <article class="public-brief" id="publicBrief">
+          <div class="brief-kicker"><span class="risk-dot"></span><span id="briefKicker" data-i18n="demoLabel">演示情景 · 非官方预警</span></div>
+          <h1 id="briefTitle" data-i18n="demoTitle">台风“曙光”正在向西北移动</h1>
+          <p id="briefSummary" data-i18n="demoSummary">未来两天可能靠近台湾北部与东海沿岸。路径仍会变化，应关注当地气象部门后续更新。</p>
+          <div class="plain-facts">
+            <div><span class="fact-icon direction">↖</span><p><small data-i18n="headingTo">往哪里走</small><strong id="plainDirection" data-i18n="northwest">西北方向</strong></p></div>
+            <div><span class="fact-icon timing">◷</span><p><small data-i18n="closestTime">何时最接近</small><strong id="plainTiming" data-i18n="within48">约 24–48 小时</strong></p></div>
+            <div><span class="fact-icon action">✓</span><p><small data-i18n="whatToDo">现在怎么做</small><strong id="plainAction" data-i18n="followLocal">留意当地预警</strong></p></div>
+          </div>
+          <div class="personal-impact-preview" id="personalImpactPreview">
+            <span class="personal-pin" aria-hidden="true">⌖</span>
+            <p><small data-i18n="yourLocationImpact">与你的位置</small><strong id="personalImpactHeadline" data-i18n="locationPromptShort">定位后查看何时可能受影响</strong><span id="personalImpactDetail" data-i18n="locationPrivacyShort">位置只保存在这台设备上</span></p>
+            <button class="small-primary" id="quickLocateButton" data-i18n="useMyLocation">使用我的位置</button>
+          </div>
+          <button class="primary-button" id="readMoreButton"><span data-i18n="understandImpact">看懂可能影响</span><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg></button>
+        </article>
+
+        <article class="pro-readout" id="proReadout" aria-label="专业数据">
+          <div class="pro-head"><div><small data-i18n="currentFix">当前定位</small><strong id="proName">AURORA · TY-08</strong></div><span id="proStatus">DEMO</span></div>
+          <div class="metric-grid">
+            <div><small data-i18n="coordinates">坐标</small><strong id="metricCoord">25.2°N · 124.8°E</strong></div>
+            <div><small data-i18n="maxWind">最大风速</small><strong id="metricWind">58 <em>m/s</em></strong></div>
+            <div><small data-i18n="pressure">中心气压</small><strong id="metricPressure">960 <em>hPa</em></strong></div>
+            <div><small data-i18n="movement">移动</small><strong id="metricMove">NW · 18 <em>km/h</em></strong></div>
+          </div>
+          <div class="agreement-bar"><div><span data-i18n="agencySpread">机构定位差异</span><strong id="spreadValue">≤ 85 km</strong></div><i><b id="spreadBar" style="width:78%"></b></i><small data-i18n="spreadExplain">差异越小，路径判断越一致</small></div>
+        </article>
+
+        <div class="verification-strip" id="verificationStrip">
+          <div class="verification-score"><span id="verificationRing">3</span><p><strong id="verificationTitle" data-i18n="sourcesAgree">3 个来源结论接近</strong><small id="verificationText" data-i18n="agreementExplain">位置与移动方向大致一致</small></p></div>
+          <button id="verificationButton"><span data-i18n="howVerified">如何交叉验证</span><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg></button>
+        </div>
+
+        <div class="track-player" id="trackPlayer" aria-label="台风路径播放控制">
+          <button class="player-play" id="mapPlayButton" aria-label="播放路径"><span id="mapPlayIcon">▶</span></button>
+          <div class="player-main">
+            <div class="player-head"><strong id="playerTime">—</strong><span id="playerPhase">实况</span><div class="forecast-horizon" role="group" aria-label="预报时效"><button class="active" data-horizon="72">72h</button><button data-horizon="120">120h</button></div></div>
+            <input id="trackRange" type="range" min="0" max="0" value="0" step="1" aria-label="路径时间进度" />
+            <div class="player-scale"><span id="playerStart">—</span><span id="playerSourceLabel">官方数据</span><span id="playerEnd">—</span></div>
+          </div>
+          <button class="player-speed" id="playerSpeed" aria-label="播放速度">1×</button>
+        </div>
+
+        <div class="track-status" id="trackStatus" aria-live="polite"></div>
+        <div class="map-legend">
+          <span><i class="observed"></i><b data-i18n="observed">实况（蓝色实线）</b></span>
+          <span id="forecastLegend"><i class="forecast"></i><b data-i18n="forecast">官方预报（橙色虚线）</b></span>
+          <span><i class="uncertainty"></i><b data-i18n="uncertainty">预报范围</b></span>
+          <span><i class="wind-range"></i><b data-i18n="windRange">风圈/可能波及范围</b></span>
+          <span class="intensity-key"><em class="td"></em><em class="ts"></em><em class="sts"></em><em class="ty"></em><em class="sty"></em><b data-i18n="intensityLegend">节点颜色＝强度</b></span>
+        </div>
+        <div class="map-tip" id="mapTip" data-i18n="mapTip">拖动地图 · 滚轮或双指缩放 · 点击路径节点</div>
+        <div class="point-tooltip" id="pointTooltip"></div>
+        <article class="node-card" id="nodeCard" hidden>
+          <button id="nodeCardClose" aria-label="关闭">×</button>
+          <small id="nodeCardType">实况位置</small>
+          <h3 id="nodeCardTitle">—</h3>
+          <div class="node-card-grid"><p><span data-i18n="coordinates">坐标</span><strong id="nodeCardCoord">—</strong></p><p><span data-i18n="maxWind">最大风速</span><strong id="nodeCardWind">—</strong></p><p><span data-i18n="pressure">中心气压</span><strong id="nodeCardPressure">—</strong></p><p><span data-i18n="intensity">强度</span><strong id="nodeCardIntensity">—</strong></p></div>
+          <p class="node-card-note" id="nodeCardNote"></p>
+        </article>
+      </section>
+
+      <aside class="insight-panel" id="insightPanel" data-open="false">
+        <div class="desktop-drawer-head">
+          <div><small data-i18n="decisionCentre">决策中心</small><strong data-i18n="riskAndAdvice">风险、时间与行动建议</strong></div>
+          <button id="insightClose" aria-label="关闭">×</button>
+        </div>
+        <nav class="drawer-tabs" aria-label="详情分类">
+          <button class="active" data-drawer-target="impactSection" data-i18n="brief">简报</button>
+          <button data-drawer-target="personalSection" data-i18n="personalMode">个人影响</button>
+          <button data-drawer-target="timelineSection" data-i18n="proView">专业视图</button>
+          <button data-drawer-target="sourcesSection" data-i18n="sources">来源</button>
+        </nav>
+        <button class="sheet-handle" id="sheetHandle" aria-label="上滑展开详情" aria-expanded="false">
+          <i></i><span id="sheetHandleLabel">上滑查看影响、时间与建议</span><b id="sheetHandleState">收起</b>
+        </button>
+        <div class="insight-scroll">
+          <section class="insight-section simple-only" id="impactSection" tabindex="-1">
+            <div class="section-title"><div><small data-i18n="plainLanguage">用一句话说明</small><h2 data-i18n="shouldWorry">现在需要担心吗？</h2></div><span class="level-badge moderate" id="publicRiskBadge" data-i18n="stayAware">保持关注</span></div>
+            <p class="lead" id="publicLead" data-i18n="publicLead">目前更需要关注路径变化，而不是立刻恐慌。预测范围内的沿海地区应检查当地气象部门通知。</p>
+            <div class="impact-list">
+              <div><span>🌬️</span><p><strong data-i18n="windImpact">大风</strong><small id="windImpactText" data-i18n="windImpactText">沿海与高处可能先感到风力增强</small></p></div>
+              <div><span>🌧️</span><p><strong data-i18n="rainImpact">强降雨</strong><small id="rainImpactText" data-i18n="rainImpactText">实际雨量取决于台风大小与地形</small></p></div>
+              <div><span>🌊</span><p><strong data-i18n="coastalImpact">沿海风险</strong><small id="coastalImpactText" data-i18n="coastalImpactText">风暴潮风险不能只看中心路径</small></p></div>
+            </div>
+          </section>
+
+          <section class="insight-section personal-section" id="personalSection" tabindex="-1">
+            <div class="section-title personal-title"><div><small data-i18n="personalMode">个人影响模式</small><h2 data-i18n="whenAffectMe">什么时候可能波及我？</h2></div><span class="level-badge neutral" id="personalRiskBadge" data-i18n="locationNeeded">需要定位</span></div>
+            <p class="lead" id="personalSummary" data-i18n="personalIntro">授权浏览器定位，或直接在地图上点选位置。系统会计算与预测路径的最近距离和可能影响时间窗。</p>
+            <div class="location-actions">
+              <button class="location-button primary" id="useLocationButton"><span>⌖</span><p><strong data-i18n="useMyLocation">使用我的位置</strong><small data-i18n="browserLocation">由浏览器请求定位权限</small></p></button>
+              <button class="location-button" id="pickLocationButton"><span>＋</span><p><strong data-i18n="pickOnMap">在地图上点选</strong><small data-i18n="pickOnMapHint">适合拒绝定位或查看其他地点</small></p></button>
+              <button class="location-button danger subtle" id="clearLocationButton" hidden><span>×</span><p><strong data-i18n="clearLocation">清除位置</strong><small data-i18n="clearLocationHint">删除本机保存的位置</small></p></button>
+            </div>
+            <p class="privacy-note"><span>🔒</span><span data-i18n="locationPrivacy">位置仅在你的浏览器中计算和保存，不会上传到本站服务器。</span></p>
+            <div class="personal-metrics" id="personalMetrics" hidden>
+              <div><small data-i18n="distanceToTrack">距预测路径最近</small><strong id="nearestDistance">—</strong></div>
+              <div><small data-i18n="closestApproach">预计最接近</small><strong id="closestApproach">—</strong></div>
+              <div><small data-i18n="possibleWindow">可能影响时段</small><strong id="impactWindow">—</strong></div>
+              <div><small data-i18n="estimateConfidence">估算可信度</small><strong id="impactConfidence">—</strong></div>
+            </div>
+            <div class="profile-picker">
+              <div class="profile-heading"><p><small data-i18n="chooseProfile">选择你的活动画像</small><strong data-i18n="profileAdviceTitle">建议会随场景变化</strong></p><span id="profileHint" data-i18n="profileHint">可随时切换</span></div>
+              <div class="profile-chips" role="group" aria-label="活动画像">
+                <button class="active" data-profile="commute"><span>🚇</span><b data-i18n="profileCommute">通勤上班</b></button>
+                <button data-profile="outdoor"><span>🏃</span><b data-i18n="profileOutdoor">户外运动</b></button>
+                <button data-profile="office"><span>💻</span><b data-i18n="profileOffice">室内办公</b></button>
+                <button data-profile="driving"><span>🚗</span><b data-i18n="profileDriving">驾车出行</b></button>
+                <button data-profile="family"><span>👨‍👩‍👧</span><b data-i18n="profileFamily">老人儿童照护</b></button>
+                <button data-profile="coastal"><span>🌊</span><b data-i18n="profileCoastal">沿海居住</b></button>
+              </div>
+            </div>
+            <div class="profile-advice" id="profileAdvice"></div>
+            <div class="estimate-note"><span>i</span><p><strong data-i18n="estimateOnly">这是路径距离估算，不是到达时间预报</strong><small data-i18n="estimateNote">影响范围取决于台风大小、地形、降雨和当地预警。任何疏散、停课、停工或交通决定都以当地政府和气象部门为准。</small></p></div>
+          </section>
+
+
+          <section class="insight-section simple-only history-section" id="historySection" tabindex="-1">
+            <div class="section-title history-title"><div><small data-i18n="historyReference">历史参考</small><h2 data-i18n="similarStorms">过去有哪些相似台风？</h2></div><span class="level-badge neutral" data-i18n="referenceOnly">仅供理解</span></div>
+            <p class="lead" data-i18n="historyLead">系统会按路径走向、强度和可能影响区域寻找相近案例，帮助理解可能出现的风险类型，而不是预测本次一定重演。</p>
+            <div class="history-summary" id="historySummary"></div>
+            <div class="analog-cards" id="analogCards"></div>
+            <div class="history-caveat"><span>≠</span><p><strong data-i18n="historyNotForecast">历史相似不等于结果相同</strong><small data-i18n="historyCaveat">台风大小、速度、潮位、地形和防灾能力都会改变实际影响。请始终优先参考当前官方预报和所在地预警。</small></p></div>
+          </section>
+
+          <section class="insight-section simple-only">
+            <div class="section-title"><div><small data-i18n="nextSteps">建议动作</small><h2 data-i18n="threeThings">普通人先做这三件事</h2></div></div>
+            <ol class="action-list">
+              <li><span>1</span><p><strong data-i18n="actionOne">确认所在地官方预警</strong><small data-i18n="actionOneText">不同城市的风险和信号并不相同</small></p></li>
+              <li><span>2</span><p><strong data-i18n="actionTwo">不要把圆锥当成影响边界</strong><small data-i18n="actionTwoText">大风和暴雨可能出现在预测范围之外</small></p></li>
+              <li><span>3</span><p><strong data-i18n="actionThree">记住下一次更新时间</strong><small data-i18n="actionThreeText">路径可能随新观测明显调整</small></p></li>
+            </ol>
+          </section>
+
+          <section class="insight-section pro-only" id="timelineSection">
+            <div class="section-title"><div><small data-i18n="trackTimeline">路径时间轴</small><h2 data-i18n="historyForecast">实况与预测</h2></div><button class="text-button" id="playTrack" data-i18n="play">播放</button></div>
+            <div class="timeline" id="timeline"></div>
+          </section>
+
+          <section class="insight-section sources-section" id="sourcesSection">
+            <div class="section-title"><div><small data-i18n="verification">交叉验证</small><h2 data-i18n="whatSourcesSay">各来源怎么说</h2></div><span class="updated-label" id="sourceUpdate">—</span></div>
+            <div class="source-cards" id="sourceCards"></div>
+            <div class="method-note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 10v6m0-9h.01"/></svg><p><strong data-i18n="notAverage">不会把不同机构预警简单平均</strong><small data-i18n="methodExplain">所属海域的官方机构作为主来源；其余来源用于检查位置、更新时间和影响评估是否一致。</small></p></div>
+          </section>
+
+          <section class="insight-section professional-links">
+            <div class="section-title"><div><small data-i18n="officialTools">官方工具</small><h2 data-i18n="openProfessionalMaps">打开专业气象图层</h2></div></div>
+            <div class="official-link-grid">
+              <a href="https://www.jma.go.jp/bosai/map.html#contents=typhoon" target="_blank" rel="noreferrer"><b>JMA</b><span data-i18n="officialTrackMap">官方路径图</span></a>
+              <a href="https://www.hko.gov.hk/en/wxinfo/currwx/tc_gis.htm" target="_blank" rel="noreferrer"><b>HKO</b><span data-i18n="satRadarTrack">路径·卫星·雷达</span></a>
+              <a href="https://www.cwa.gov.tw/V8/E/P/Typhoon/TY_WARN.html" target="_blank" rel="noreferrer"><b>CWA</b><span data-i18n="rainWindWarning">降雨·风力·警报</span></a>
+              <a href="https://www.nhc.noaa.gov/gis/" target="_blank" rel="noreferrer"><b>NHC</b><span data-i18n="gisProducts">GIS 与概率产品</span></a>
+              <a href="https://www.pagasa.dost.gov.ph/tropical-cyclone/severe-weather-bulletin" target="_blank" rel="noreferrer"><b>PAGASA</b><span data-i18n="impactProducts">风雨·风暴潮·影响预报</span></a>
+            </div>
+          </section>
+
+          <footer class="disclaimer">
+            <strong data-i18n="disclaimerTitle">重要说明</strong>
+            <p data-i18n="disclaimerText">本网站用于信息整合与可视化，不替代任何国家或地区气象部门发布的官方预警和应急指令。</p>
+          </footer>
         </div>
       </aside>
+    </main>
 
-      <aside class="layer-panel" id="layerPanel" hidden>
-        <header><div><span class="eyebrow" data-i18n="mapLayers">地图图层</span><h3 data-i18n="weatherLayers">气象与风险图层</h3></div><button class="close-button" data-close="layerPanel">×</button></header>
-        <label><input type="checkbox" data-layer="cyclone" checked /><span><strong data-i18n="cycloneStructure">气旋结构</strong><small data-i18n="cycloneStructureNote">按风速、气压和风圈绘制</small></span></label>
-        <label><input type="checkbox" data-layer="track" checked /><span><strong data-i18n="trackLayer">路径与节点</strong><small data-i18n="trackLayerNote">实况、官方预报和趋势参考</small></span></label>
-        <label><input type="checkbox" data-layer="wind" checked /><span><strong data-i18n="windLayer">风圈</strong><small data-i18n="windLayerNote">无官方半径时明确标记估算</small></span></label>
-        <label><input type="checkbox" data-layer="cities" checked /><span><strong data-i18n="cityLayer">主要城市</strong><small data-i18n="cityLayerNote">底图不显示国家标签</small></span></label>
-        <label><input type="checkbox" data-layer="cloud" /><span><strong data-i18n="cloudLayer">云量</strong><small>Open-Meteo</small></span></label>
-        <label><input type="checkbox" data-layer="precip" /><span><strong data-i18n="precipLayer">降水</strong><small>Open-Meteo</small></span></label>
-        <p class="layer-note" data-i18n="weatherNote">云量和降水来自数值天气模式，不是地面雷达回波。区域官方雷达入口位于详情页。</p>
-      </aside>
-
-      <div class="weather-status" id="weatherStatus" hidden><i></i><span><strong id="weatherStatusTitle">—</strong><small id="weatherStatusText">—</small></span><button id="weatherStatusClose">×</button></div>
-
-      <div class="map-legend" id="mapLegend">
-        <span><i class="legend-line observed"></i><b data-i18n="observed">实况</b></span>
-        <span><i class="legend-line forecast"></i><b data-i18n="forecast">官方预报</b></span>
-        <span><i class="legend-line trend"></i><b data-i18n="trend">趋势参考</b></span>
-        <span><i class="legend-ring"></i><b data-i18n="windArea">风圈</b></span>
-      </div>
-
-      <div class="timeline" id="timeline">
-        <button class="play-button" id="playButton" type="button" aria-label="播放">▶</button>
-        <div class="timeline-main"><div class="timeline-labels"><strong id="timelineTime">—</strong><small id="timelineKind">—</small></div><input id="timelineRange" type="range" min="0" max="1000" value="0" /></div>
-        <button class="speed-button" id="speedButton" type="button">1×</button>
-      </div>
-    </section>
-  </main>
-
-  <div class="menu-popover" id="languageMenu" hidden>
-    <button data-language="zh">简体中文</button><button data-language="en">English</button><button data-language="ja">日本語</button><button data-language="ko">한국어</button><button data-language="es">Español</button><button data-language="fr">Français</button>
+    <nav class="mobile-nav" aria-label="移动导航">
+      <button class="active" data-mobile-tab="map"><svg viewBox="0 0 24 24"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15m6-12v15"/></svg><span data-i18n="map">地图</span></button>
+      <button data-mobile-tab="brief"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 8h8m-8 4h8m-8 4h5"/></svg><span data-i18n="brief">简报</span></button>
+      <button data-mobile-tab="sources"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="m8.6 10.5 6.8-3M8.6 13.5l6.8 3"/></svg><span data-i18n="sources">来源</span></button>
+      <button data-mobile-tab="more"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg><span data-i18n="more">更多</span></button>
+    </nav>
   </div>
-  <div class="menu-popover" id="themeMenu" hidden><button data-theme-choice="system" data-i18n="themeSystem">跟随系统</button><button data-theme-choice="light" data-i18n="themeLight">浅色</button><button data-theme-choice="dark" data-i18n="themeDark">深色</button></div>
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="./vendor/maplibre-gl.js"></script>
-  <script src="./cyclone-viz.js"></script>
-  <script src="./app.js"></script>
+  <dialog class="source-dialog" id="sourceDialog">
+    <div class="dialog-head"><div><small data-i18n="dataMethod">数据方法</small><h2 data-i18n="verificationLogic">交叉验证逻辑</h2></div><button class="dialog-close" aria-label="关闭">×</button></div>
+    <div class="dialog-body">
+      <div class="logic-step"><span>1</span><p><strong data-i18n="logicPrimary">先确定主权威来源</strong><small data-i18n="logicPrimaryText">西北太平洋优先使用 JMA/RSMC Tokyo；大西洋和东北太平洋优先使用 NOAA/NHC。</small></p></div>
+      <div class="logic-step"><span>2</span><p><strong data-i18n="logicCompare">再比较其他来源</strong><small data-i18n="logicCompareText">检查中心位置、移动方向、更新时间与影响等级是否相近。</small></p></div>
+      <div class="logic-step"><span>3</span><p><strong data-i18n="logicExplain">保留差异，不制造假共识</strong><small data-i18n="logicExplainText">风速平均时段与分级标准不同，页面会显示差异而不是直接取平均。</small></p></div>
+      <div class="source-full-list" id="sourceFullList"></div>
+    </div>
+  </dialog>
+
+  <div class="language-menu" id="languageMenu" role="menu" aria-label="Language">
+    <div class="menu-caption" data-i18n="chooseLanguage">选择语言</div>
+    <button data-lang-value="zh"><span>简</span><div><strong>简体中文</strong><small>Chinese</small></div><i>✓</i></button>
+    <button data-lang-value="en"><span>EN</span><div><strong>English</strong><small>English</small></div><i>✓</i></button>
+    <button data-lang-value="ja"><span>日</span><div><strong>日本語</strong><small>Japanese</small></div><i>✓</i></button>
+    <button data-lang-value="ko"><span>한</span><div><strong>한국어</strong><small>Korean</small></div><i>✓</i></button>
+    <button data-lang-value="es"><span>ES</span><div><strong>Español</strong><small>Spanish</small></div><i>✓</i></button>
+    <button data-lang-value="fr"><span>FR</span><div><strong>Français</strong><small>French</small></div><i>✓</i></button>
+  </div>
+
+  <div class="theme-menu" id="themeMenu" role="menu">
+    <button data-theme-value="system"><span>◐</span><div><strong data-i18n="themeSystem">跟随系统</strong><small data-i18n="themeSystemText">自动适配设备外观</small></div></button>
+    <button data-theme-value="light"><span>☀</span><div><strong data-i18n="themeLight">浅色</strong><small data-i18n="themeLightText">清爽明亮的地图</small></div></button>
+    <button data-theme-value="dark"><span>☾</span><div><strong data-i18n="themeDark">深色</strong><small data-i18n="themeDarkText">低光环境更舒适</small></div></button>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="./app.js" type="module"></script>
 </body>
 </html>
