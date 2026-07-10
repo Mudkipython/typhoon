@@ -100,6 +100,43 @@ Object.assign(i18n.en, {
   actionLow:'Continue normal monitoring', actionWatch:'Watch the track and local alerts', actionMedium:'Adjust non-essential plans early', actionHigh:'Prepare to reduce travel and follow official measures', actionSevere:'Prioritize evacuation and closure instructions from local authorities'
 });
 
+
+Object.assign(i18n.zh, {
+  historyReference:'历史参考', similarStorms:'哪些历史台风与当前情景相似？', referenceOnly:'仅作背景参考',
+  historyLead:'案例会根据路径方向、强度和可能影响区域进行匹配，用来解释风险类型，而不是预测历史会重演。',
+  historyNotForecast:'相似不代表结果相同', historyCaveat:'台风大小、移动速度、潮位、地形和防灾条件都会改变实际影响。请始终优先参考当前官方预报与所在地预警。',
+  historySummaryTitle:'为什么显示这些案例', historySummaryText:'这些案例帮助理解大风、暴雨、风暴潮和内陆洪水等可能风险。相似度只反映部分路径与强度特征。',
+  similarPath:'路径方向相似', similarIntensity:'强度区间相似', similarRegion:'影响区域相似', pastImpact:'历史主要影响', lesson:'可参考的经验', overlayTrack:'叠加历史路径', removeOverlay:'移除历史路径', noAnalog:'当前路径信息不足，暂时无法推荐历史案例。'
+});
+Object.assign(i18n.ja, {
+  historyReference:'過去の参考例', similarStorms:'どの過去の台風が似ていますか？', referenceOnly:'参考情報のみ',
+  historyLead:'進路方向・強度・影響地域が近い事例を示します。過去と同じ結果になるという予測ではありません。',
+  historyNotForecast:'類似していても結果は同じとは限りません', historyCaveat:'台風の大きさ、速度、潮位、地形、防災状況により影響は大きく変わります。現在の公式予報を優先してください。',
+  historySummaryTitle:'これらの事例を表示する理由', historySummaryText:'風、雨、高潮、内陸洪水などのリスクを理解するための参考例です。',
+  similarPath:'進路方向が類似', similarIntensity:'強度が類似', similarRegion:'影響地域が類似', pastImpact:'過去の主な影響', lesson:'参考になる点', overlayTrack:'過去の進路を重ねる', removeOverlay:'重ね表示を解除', noAnalog:'比較に十分な進路情報がありません。'
+});
+Object.assign(i18n.ko, {
+  historyReference:'과거 사례 참고', similarStorms:'어떤 과거 태풍과 비슷한가요?', referenceOnly:'참고용',
+  historyLead:'이동 방향, 강도, 예상 영향 지역이 비슷한 사례를 보여 줍니다. 과거 결과가 반복된다는 예측은 아닙니다.',
+  historyNotForecast:'비슷해도 결과는 같지 않습니다', historyCaveat:'태풍 크기, 속도, 조위, 지형, 대비 수준에 따라 영향이 크게 달라집니다. 현재 공식 예보를 우선하세요.',
+  historySummaryTitle:'이 사례를 보여 주는 이유', historySummaryText:'강풍, 폭우, 폭풍해일, 내륙 홍수 위험을 이해하기 위한 참고 사례입니다.',
+  similarPath:'이동 경로가 비슷함', similarIntensity:'강도 범위가 비슷함', similarRegion:'영향 지역이 비슷함', pastImpact:'과거 주요 영향', lesson:'참고할 점', overlayTrack:'과거 경로 겹쳐 보기', removeOverlay:'겹쳐 보기 해제', noAnalog:'비교할 경로 정보가 충분하지 않습니다.'
+});
+Object.assign(i18n.es, {
+  historyReference:'Referencia histórica', similarStorms:'¿Qué ciclones anteriores fueron parecidos?', referenceOnly:'Solo contexto',
+  historyLead:'Los casos se comparan por dirección, intensidad y zona de impacto. No predicen que la historia se repita.',
+  historyNotForecast:'Una trayectoria similar no implica el mismo resultado', historyCaveat:'El tamaño, la velocidad, la marea, el terreno y la preparación pueden cambiar mucho los impactos. Priorice siempre los avisos oficiales actuales.',
+  historySummaryTitle:'Por qué se muestran estos casos', historySummaryText:'Sirven para comprender posibles riesgos de viento, lluvia, marejada e inundaciones interiores.',
+  similarPath:'Dirección parecida', similarIntensity:'Intensidad parecida', similarRegion:'Región de impacto parecida', pastImpact:'Impacto histórico principal', lesson:'Lección útil', overlayTrack:'Superponer trayectoria', removeOverlay:'Quitar trayectoria', noAnalog:'No hay suficiente información de trayectoria para comparar casos.'
+});
+Object.assign(i18n.fr, {
+  historyReference:'Référence historique', similarStorms:'Quels cyclones passés étaient similaires ?', referenceOnly:'Contexte uniquement',
+  historyLead:'Les cas sont rapprochés selon la trajectoire, l’intensité et la zone d’impact. Ils ne prédisent pas une répétition de l’histoire.',
+  historyNotForecast:'Une similarité ne signifie pas le même résultat', historyCaveat:'La taille, la vitesse, la marée, le relief et la préparation peuvent fortement modifier les impacts. Les prévisions officielles actuelles restent prioritaires.',
+  historySummaryTitle:'Pourquoi ces cas sont affichés', historySummaryText:'Ils aident à comprendre les risques possibles de vent, pluie, submersion et inondation intérieure.',
+  similarPath:'Direction similaire', similarIntensity:'Intensité similaire', similarRegion:'Zone d’impact similaire', pastImpact:'Impact historique principal', lesson:'Enseignement utile', overlayTrack:'Superposer la trajectoire', removeOverlay:'Retirer la trajectoire', noAnalog:'Les informations de trajectoire sont insuffisantes pour proposer des cas.'
+});
+
 const demoStorm = {
   id: 'demo-aurora', name: 'AURORA', localName: '曙光', number: '2600', basin: 'Western North Pacific', classification: 'Strong typhoon', alertLevel: 'orange', lat: 25.2, lon: 124.8, windMs: 58, pressureHpa: 960, updatedAt: '2026-07-10T12:00:00Z', demo: true,
   track: [
@@ -566,8 +603,8 @@ function projectWorld(lat,lon) {
   const scale = worldScale();
   return {x:state.width/2+normalizeLon(lon-state.centerLon)*scale,y:state.height/2-(lat-state.centerLat)*scale,visible:true};
 }
-function globeRadius(){return Math.min(state.width,state.height)*(isMobile()?.41:.43)*state.zoom;}
-function globeCenter(){return {x:state.width*(isMobile()?.5:.56),y:state.height*.5};}
+function globeRadius(){return Math.min(state.width,state.height)*(isMobile()?.37:.36)*state.zoom;}
+function globeCenter(){return {x:state.width*.5,y:state.height*.5};}
 function projectGlobe(lat,lon) {
   const r=globeRadius(), c=globeCenter(), phi=rad(lat), phi0=rad(state.centerLat), lambda=rad(normalizeLon(lon-state.centerLon));
   const cosPhi=Math.cos(phi),sinPhi=Math.sin(phi),cosPhi0=Math.cos(phi0),sinPhi0=Math.sin(phi0),z=sinPhi0*sinPhi+cosPhi0*cosPhi*Math.cos(lambda);
@@ -591,15 +628,60 @@ function drawGrid(colors) {
 }
 function traceGeoLine(points,close=false){ctx.beginPath();let started=false,last=null;for(const [lat,lon] of points){const p=project(lat,lon);if(!p.visible){started=false;last=null;continue;}if(last&&Math.abs(p.x-last.x)>state.width*.45){started=false;}if(!started){ctx.moveTo(p.x,p.y);started=true;}else ctx.lineTo(p.x,p.y);last=p;}if(close)ctx.closePath();ctx.stroke();}
 function drawLand(colors) {
-  if(!state.land?.features?.length)return; const geometry=state.land.features[0].geometry; const polygons=geometry.type==='MultiPolygon'?geometry.coordinates:[geometry.coordinates];
-  ctx.fillStyle=colors.land;ctx.strokeStyle=colors.landStroke;ctx.lineWidth=.65;
-  for(const polygon of polygons){for(const ring of polygon){ctx.beginPath();let started=false,last=null;for(const [lon,lat] of ring){const p=project(lat,lon);if(!p.visible){started=false;last=null;continue;}if(last&&Math.abs(p.x-last.x)>state.width*.45)started=false;if(!started){ctx.moveTo(p.x,p.y);started=true;}else ctx.lineTo(p.x,p.y);last=p;}if(started){ctx.closePath();ctx.fill();ctx.stroke();}}}
+  if(!state.land?.features?.length)return;
+  const geometry=state.land.features[0].geometry;
+  const polygons=geometry.type==='MultiPolygon'?geometry.coordinates:[geometry.coordinates];
+  if(state.mapMode!=='globe'){
+    ctx.fillStyle=colors.land;ctx.strokeStyle=colors.landStroke;ctx.lineWidth=.65;
+    for(const polygon of polygons){for(const ring of polygon){
+      ctx.beginPath();let started=false,last=null;
+      for(const [lon,lat] of ring){const p=project(lat,lon);if(!p.visible){started=false;last=null;continue;}if(last&&Math.abs(p.x-last.x)>state.width*.45)started=false;if(!started){ctx.moveTo(p.x,p.y);started=true;}else ctx.lineTo(p.x,p.y);last=p;}
+      if(started){ctx.closePath();ctx.fill('evenodd');ctx.stroke();}
+    }}
+    return;
+  }
+  // Safe globe rendering: only fill rings that are entirely on the visible hemisphere.
+  // Rings crossing the horizon are drawn as separated coastline runs, so Canvas never
+  // closes a partial polygon with a giant diagonal triangle across the globe.
+  ctx.save();ctx.lineJoin='round';ctx.lineCap='round';
+  for(const polygon of polygons){for(const ring of polygon){
+    const projected=ring.map(([lon,lat])=>projectGlobe(lat,lon));
+    const fullyVisible=projected.length>2&&projected.every(p=>p.visible);
+    if(fullyVisible){
+      ctx.beginPath();projected.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();
+      ctx.fillStyle=colors.land;ctx.fill('evenodd');ctx.strokeStyle=colors.landStroke;ctx.lineWidth=.75;ctx.stroke();
+      continue;
+    }
+    const runs=[];let run=[];
+    projected.forEach((p,i)=>{
+      const prev=i?projected[i-1]:null;
+      const broken=!p.visible||(prev&&Math.hypot(p.x-prev.x,p.y-prev.y)>globeRadius()*.35);
+      if(broken){if(run.length>1)runs.push(run);run=[];if(p.visible)run=[p];}
+      else run.push(p);
+    });
+    if(run.length>1)runs.push(run);
+    for(const segment of runs){
+      ctx.beginPath();segment.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
+      ctx.strokeStyle=colorAlpha(colors.land,.72);ctx.lineWidth=3.2;ctx.stroke();
+      ctx.strokeStyle=colors.landStroke;ctx.lineWidth=.8;ctx.stroke();
+    }
+  }}
+  ctx.restore();
 }
 function drawCone(colors) {
   const storm=state.selectedStorm;if(!storm?.track?.length)return;const points=storm.track.filter(p=>p.forecast);if(points.length<2)return;
   const widths=points.map((_,i)=>30+i*28);const left=[],right=[];
   points.forEach((p,i)=>{const prev=points[Math.max(0,i-1)],next=points[Math.min(points.length-1,i+1)];const angle=Math.atan2(next.lat-prev.lat,normalizeLon(next.lon-prev.lon));const km=widths[i],dLat=km/111,dLon=km/(111*Math.max(.25,Math.cos(rad(p.lat))));left.push([p.lat-Math.sin(angle)*dLat,p.lon+Math.cos(angle)*dLon]);right.push([p.lat+Math.sin(angle)*dLat,p.lon-Math.cos(angle)*dLon]);});
-  const polygon=[...left,...right.reverse()];ctx.save();ctx.fillStyle=colorAlpha(colors.warning,.14);ctx.strokeStyle=colorAlpha(colors.warning,.3);ctx.lineWidth=1;ctx.beginPath();let started=false;polygon.forEach(([lat,lon])=>{const q=project(lat,lon);if(!q.visible)return;if(!started){ctx.moveTo(q.x,q.y);started=true;}else ctx.lineTo(q.x,q.y);});if(started){ctx.closePath();ctx.fill();ctx.stroke();}ctx.restore();
+  const polygon=[...left,...right.reverse()];ctx.save();ctx.fillStyle=colorAlpha(colors.warning,.14);ctx.strokeStyle=colorAlpha(colors.warning,.45);ctx.lineWidth=1;
+  const projected=polygon.map(([lat,lon])=>project(lat,lon));
+  if(state.mapMode!=='globe'||projected.every(p=>p.visible)){
+    ctx.beginPath();projected.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.closePath();ctx.fill();ctx.stroke();
+  }else{
+    // At the globe horizon, show the cone edge only; never close a partial polygon.
+    let started=false,last=null;ctx.beginPath();
+    projected.forEach(q=>{if(!q.visible||(last&&Math.hypot(q.x-last.x,q.y-last.y)>globeRadius()*.4)){started=false;last=null;return;}if(!started){ctx.moveTo(q.x,q.y);started=true;}else ctx.lineTo(q.x,q.y);last=q;});ctx.stroke();
+  }
+  ctx.restore();
 }
 function drawTrack(colors) {
   const storm=state.selectedStorm;if(!storm?.track?.length)return;const observed=storm.track.filter(p=>!p.forecast),forecast=storm.track.filter((p,i)=>p.forecast||(!p.forecast&&storm.track[i+1]?.forecast));
@@ -671,7 +753,22 @@ $('#readMoreButton').addEventListener('click',()=>{
 $('#personalImpactPreview').addEventListener('click',e=>{if(e.target.closest('button'))return;scrollInsightTo($('#personalSection'));});
 $('#mobileMenuButton').addEventListener('click',()=>$('#sidebar').classList.toggle('open'));$('#sheetHandle').addEventListener('click',()=>$('#insightPanel').classList.toggle('open'));
 $$('[data-mobile-tab]').forEach(btn=>btn.addEventListener('click',()=>{$$('[data-mobile-tab]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const tab=btn.dataset.mobileTab;if(tab==='map'){$('#insightPanel').classList.remove('open');$('#sidebar').classList.remove('open');}else if(tab==='brief'){$('#insightPanel').classList.add('open');$('.insight-scroll').scrollTo({top:0,behavior:'smooth'});}else if(tab==='sources'){$('#insightPanel').classList.add('open');$('.sources-section').scrollIntoView({behavior:'smooth'});}else $('#sidebar').classList.toggle('open');}));
-$$('[data-region]').forEach(btn=>btn.addEventListener('click',()=>{$$('[data-region]').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');const r=btn.dataset.region;if(r==='global')fitWorld();else if(r==='wpac'){state.targetLon=135;state.targetLat=20;state.targetZoom=state.mapMode==='world'?1.8:1;}else{state.targetLon=-55;state.targetLat=20;state.targetZoom=state.mapMode==='world'?1.7:1;}state.needsRender=true;}));
+function stormMatchesRegion(storm,region){
+  if(region==='global')return true;
+  const basin=String(storm?.basin||'').toLowerCase();
+  const lon=Number(storm?.lon??storm?.track?.at?.(-1)?.lon);
+  if(region==='wpac')return basin.includes('western')||basin.includes('northwest')||(Number.isFinite(lon)&&lon>100);
+  return basin.includes('atlantic')||basin.includes('eastern north pacific')||(Number.isFinite(lon)&&lon<20);
+}
+$$('[data-region]').forEach(btn=>btn.addEventListener('click',()=>{
+  $$('[data-region]').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');const r=btn.dataset.region;
+  const match=availableStorms().find(storm=>stormMatchesRegion(storm,r));
+  if(r==='global'){fitWorld();}
+  else if(match){selectStorm(match,true);}
+  else if(r==='wpac'){state.targetLon=135;state.targetLat=20;state.targetZoom=state.mapMode==='world'?1.8:1;}
+  else{state.targetLon=-55;state.targetLat=20;state.targetZoom=state.mapMode==='world'?1.7:1;}
+  state.needsRender=true;
+}));
 $('#locateButton').addEventListener('click',()=>fitWorld());
 $('#playTrack').addEventListener('click',()=>{const storm=state.selectedStorm;if(!storm?.track?.length)return;state.playing=!state.playing;$('#playTrack').textContent=state.playing?(state.lang==='zh'?'暂停':'Pause'):t('play');clearInterval(playTimer);if(state.playing)playTimer=setInterval(()=>{state.activeTrackIndex=(state.activeTrackIndex+1)%storm.track.length;renderPro();renderTimeline();},850);});
 

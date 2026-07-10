@@ -1,4 +1,4 @@
-# Typhoon Vision Public v7
+# Typhoon Vision Public v8
 
 面向普通用户与专业用户的全球台风路径、个人影响估算和多来源交叉验证网站。
 
@@ -38,7 +38,7 @@ netlify/
 ## 推荐部署方式：GitHub → Netlify
 
 1. 解压 ZIP。
-2. 将上面这些文件和文件夹直接上传到 GitHub 仓库根目录，不能再套一层 `typhoon-vision-public-v7/`。
+2. 将上面这些文件和文件夹直接上传到 GitHub 仓库根目录，不能再套一层 `typhoon-vision-public-v8/`。
 3. Netlify 的 Base directory 留空。
 4. Build command 留空。
 5. Publish directory 使用 `.`。
@@ -69,6 +69,14 @@ https://typhoon-vision.netlify.app/api/cyclones
 
 ## Historical analogs / 历史相似台风
 
-Public v7 adds a historical-reference section. Similarity is based on selected track direction, intensity range, endpoint region and optionally the user's locally stored position. It is an explanatory aid only and must not be interpreted as a forecast of damage or landfall.
+Public v8 adds a historical-reference section. Similarity is based on selected track direction, intensity range, endpoint region and optionally the user's locally stored position. It is an explanatory aid only and must not be interpreted as a forecast of damage or landfall.
 
-Public v7 新增历史相似台风参考。系统仅依据部分路径方向、强度、影响区域及用户本地位置进行解释性匹配，不能据此推断本次台风一定产生相同影响。
+Public v8 新增历史相似台风参考。系统仅依据部分路径方向、强度、影响区域及用户本地位置进行解释性匹配，不能据此推断本次台风一定产生相同影响。
+
+
+## v8 fixes
+
+- Prevents flashing triangular land artifacts in 3D globe mode by using horizon-safe coastline rendering.
+- Reduces and recenters the globe so it stays visible between side panels.
+- Adds complete translations for the historical-analogue section.
+- Keeps selected ocean region and selected storm synchronized.
