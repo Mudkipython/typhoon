@@ -84,7 +84,7 @@ const agencyDirectory = {
 };
 
 const cities = [
-  ['Tokyo','Japan',35.68,139.69],['Osaka','Japan',34.69,135.50],['Naha','Japan',26.21,127.68],['Taipei','Taiwan',25.03,121.56],['Kaohsiung','Taiwan',22.63,120.30],['Hong Kong','China',22.32,114.17],['Shanghai','China',31.23,121.47],['Fuzhou','China',26.07,119.30],['Xiamen','China',24.48,118.09],['Guangzhou','China',23.13,113.26],['Manila','Philippines',14.60,120.98],['Cebu','Philippines',10.32,123.90],['Hanoi','Vietnam',21.03,105.85],['Da Nang','Vietnam',16.05,108.20],['Busan','South Korea',35.18,129.08],['Seoul','South Korea',37.57,126.98],
+  ['Tokyo','Japan',35.68,139.69],['Osaka','Japan',34.69,135.50],['Naha','Japan',26.21,127.68],['Taipei','Taiwan area',25.03,121.56],['Kaohsiung','Taiwan area',22.63,120.30],['Hong Kong','China',22.32,114.17],['Shanghai','China',31.23,121.47],['Fuzhou','China',26.07,119.30],['Xiamen','China',24.48,118.09],['Guangzhou','China',23.13,113.26],['Manila','Philippines',14.60,120.98],['Cebu','Philippines',10.32,123.90],['Hanoi','Vietnam',21.03,105.85],['Da Nang','Vietnam',16.05,108.20],['Busan','South Korea',35.18,129.08],['Seoul','South Korea',37.57,126.98],
   ['Miami','United States',25.76,-80.19],['Tampa','United States',27.95,-82.46],['New Orleans','United States',29.95,-90.07],['Houston','United States',29.76,-95.37],['Charleston','United States',32.78,-79.93],['New York','United States',40.71,-74.01],['Halifax','Canada',44.65,-63.57],['Bermuda','Bermuda',32.30,-64.78],['Havana','Cuba',23.11,-82.37],['San Juan','Puerto Rico',18.47,-66.11],['Nassau','Bahamas',25.05,-77.35],['Cancún','Mexico',21.16,-86.85],['Acapulco','Mexico',16.85,-99.91],['Honolulu','United States',21.31,-157.86],
   ['Kolkata','India',22.57,88.36],['Chennai','India',13.08,80.27],['Mumbai','India',19.08,72.88],['Dhaka','Bangladesh',23.81,90.41],['Chattogram','Bangladesh',22.36,91.78],['Yangon','Myanmar',16.87,96.20],['Karachi','Pakistan',24.86,67.01],['Muscat','Oman',23.59,58.41],
   ['Antananarivo','Madagascar',-18.88,47.51],['Toamasina','Madagascar',-18.15,49.40],['Maputo','Mozambique',-25.97,32.58],['Port Louis','Mauritius',-20.16,57.50],['Saint-Denis','Réunion',-20.88,55.45],
@@ -106,25 +106,34 @@ const demoStorms = [
     {lat:-13.2,lon:179,time:hours(-48),windMs:18,pressureHpa:995,forecast:false,source:'demo'}, {lat:-15.4,lon:176.5,time:hours(-24),windMs:25,pressureHpa:986,forecast:false,source:'demo'}, {lat:-18.5,lon:171.8,time:hours(0),windMs:31,pressureHpa:978,forecast:false,source:'demo'}, {lat:-21.5,lon:168,time:hours(24),windMs:29,pressureHpa:983,forecast:true,source:'demo'}, {lat:-25,lon:164,time:hours(48),windMs:22,pressureHpa:990,forecast:true,source:'demo'} ] },
 ];
 
+const historicalAnalogCatalog = [
+  {id:'morakot-2009',name:'MORAKOT',year:2009,localZh:'莫拉克',basin:'Western North Pacific',peakWind:40,regionZh:'台湾地区及华南沿海',regionEn:'Taiwan area and the South China coast',impactZh:'移动较慢并带来长时间强降雨，山区洪水和滑坡风险突出。',impactEn:'Slow movement contributed to prolonged heavy rain and serious flood and landslide risk.',lessonZh:'不要只看中心风力；移动速度、地形和持续降雨可能成为更主要的危险。',lessonEn:'Do not focus only on centre wind; forward speed, terrain and prolonged rainfall may dominate.',track:[{lat:17.5,lon:139},{lat:19.2,lon:133},{lat:21.2,lon:128},{lat:22.8,lon:124.5},{lat:23.5,lon:121},{lat:24,lon:118}]},
+  {id:'mangkhut-2018',name:'MANGKHUT',year:2018,localZh:'山竹',basin:'Western North Pacific',peakWind:55,regionZh:'菲律宾北部、香港及广东沿海',regionEn:'Northern Philippines, Hong Kong and Guangdong coast',impactZh:'强风、巨浪和风暴潮对沿海及高层建筑环境造成显著影响。',impactEn:'Strong winds, waves and storm surge caused major coastal and urban impacts.',lessonZh:'沿海风险不能只看中心路径；潮位、海岸形状和暴露度同样关键。',lessonEn:'Coastal risk cannot be inferred from the centre line alone; tide and exposure matter.',track:[{lat:13.5,lon:145},{lat:14.7,lon:139},{lat:16,lon:132},{lat:17.5,lon:125},{lat:19.2,lon:119},{lat:21.5,lon:113}]},
+  {id:'doksuri-2023',name:'DOKSURI',year:2023,localZh:'杜苏芮',basin:'Western North Pacific',peakWind:50,regionZh:'菲律宾北部、台湾海峡及福建',regionEn:'Northern Philippines, Taiwan Strait and Fujian',impactZh:'强降雨、沿海大风和内陆洪涝影响范围较广。',impactEn:'Heavy rain, coastal wind and inland flooding affected a broad area.',lessonZh:'登陆后风险不会立刻结束，内陆洪水可能滞后发展。',lessonEn:'Risk does not end at landfall; inland flooding can develop later.',track:[{lat:10.5,lon:136},{lat:13,lon:131},{lat:16,lon:126},{lat:19.5,lon:122.5},{lat:23,lon:119.5},{lat:25,lon:117.5}]},
+  {id:'hagibis-2019',name:'HAGIBIS',year:2019,localZh:'海贝思',basin:'Western North Pacific',peakWind:55,regionZh:'日本关东及中部地区',regionEn:'Kanto and central Japan',impactZh:'大范围暴雨与河流洪水成为主要影响。',impactEn:'Widespread heavy rain and river flooding were major impacts.',lessonZh:'强度相似不代表风险相同，降雨分布和地形会重塑影响。',lessonEn:'Similar intensity does not mean similar risk; rainfall and terrain reshape impacts.',track:[{lat:13,lon:157},{lat:17,lon:150},{lat:21,lon:143},{lat:26,lon:138},{lat:31,lon:136},{lat:36,lon:139}]},
+  {id:'haiyan-2013',name:'HAIYAN',year:2013,localZh:'海燕',basin:'Western North Pacific',peakWind:65,regionZh:'菲律宾中部',regionEn:'Central Philippines',impactZh:'极端大风和风暴潮对沿海低洼地区造成严重影响。',impactEn:'Extreme winds and storm surge severely affected low-lying coasts.',lessonZh:'风暴潮撤离必须服从当地官方命令，不能等待中心接近。',lessonEn:'Storm-surge evacuation orders should be followed before the centre approaches.',track:[{lat:7,lon:148},{lat:8,lon:140},{lat:9.5,lon:132},{lat:10.8,lon:125},{lat:12,lon:118},{lat:14,lon:110}]},
+  {id:'leki​ma-2019'.replace('​',''),name:'LEKIMA',year:2019,localZh:'利奇马',basin:'Western North Pacific',peakWind:52,regionZh:'浙江、上海及华东内陆',regionEn:'Zhejiang, Shanghai and inland eastern China',impactZh:'沿海强风、持续降雨和内陆洪涝共同造成影响。',impactEn:'Coastal wind, prolonged rain and inland flooding combined.',lessonZh:'路径附近以外地区也可能因外围雨带和地形受到严重影响。',lessonEn:'Outer rainbands and terrain can cause serious impacts away from the centre line.',track:[{lat:16,lon:134},{lat:19,lon:129},{lat:22,lon:124},{lat:25,lon:121},{lat:28,lon:120},{lat:32,lon:120}]}
+];
+
 const state = {
-  lang: localStorage.getItem('tv13-lang') || 'zh',
-  theme: localStorage.getItem('tv13-theme') || 'system',
-  view: localStorage.getItem('tv13-view') || 'public',
-  demo: localStorage.getItem('tv13-demo') === 'true',
+  lang: localStorage.getItem('tv14-lang') || 'zh',
+  theme: localStorage.getItem('tv14-theme') || 'system',
+  view: localStorage.getItem('tv14-view') || 'public',
+  demo: localStorage.getItem('tv14-demo') === 'true',
   basin:'global', storms:[], sources:[], selected:null, weather:null,
   map:null, mapReady:false, projection:'mercator', styleReloading:false,
   layers:{track:true,cone:true,wind:true,cities:true,satellite:false,radar:false,coverage:false},
-  opacity:Number(localStorage.getItem('tv13-opacity') || 62) / 100,
+  opacity:Number(localStorage.getItem('tv14-opacity') || 62) / 100,
   playMode:'track', playIndex:0, playing:false, speed:1, timer:null,
-  userLocation:(() => { try { return JSON.parse(localStorage.getItem('tv13-location') || 'null'); } catch { return null; } })(),
-  pickLocation:false, profile:localStorage.getItem('tv13-profile') || 'commute', sheet:'collapsed',
-  visualMode: localStorage.getItem('tv13-visual-mode') || 'map',
-  fxQuality: localStorage.getItem('tv13-fx-quality') || 'auto',
-  fxParticles: localStorage.getItem('tv13-fx-particles') !== 'false',
-  fxEyewall: localStorage.getItem('tv13-fx-eyewall') !== 'false',
-  fxTrail: localStorage.getItem('tv13-fx-trail') !== 'false',
-  fxFollow: localStorage.getItem('tv13-fx-follow') !== 'false',
-  fxLastFollowAt: 0,
+  userLocation:(() => { try { return JSON.parse(localStorage.getItem('tv14-location') || 'null'); } catch { return null; } })(),
+  pickLocation:false, profile:localStorage.getItem('tv14-profile') || 'commute', sheet:'collapsed',
+  visualMode: localStorage.getItem('tv14-visual-mode') || 'map',
+  fxQuality: localStorage.getItem('tv14-fx-quality') || 'auto',
+  fxParticles: localStorage.getItem('tv14-fx-particles') !== 'false',
+  fxEyewall: localStorage.getItem('tv14-fx-eyewall') !== 'false',
+  fxTrail: localStorage.getItem('tv14-fx-trail') !== 'false',
+  fxFollow: localStorage.getItem('tv14-fx-follow') !== 'false',
+  fxLastFollowAt: 0, activeAnalogId:null, insightOpen:false, railCollapsed:false,
 };
 
 function tr(key) {
@@ -227,15 +236,34 @@ function toast(message) { const el=$('#toast'); el.textContent=message; el.class
 function applyI18n() {
   document.documentElement.lang={zh:'zh-CN',en:'en',ja:'ja',ko:'ko',es:'es',fr:'fr'}[state.lang]||'en';
   $$('[data-i18n]').forEach(el=>{ const text=tr(el.dataset.i18n); if(text) el.textContent=text; });
-  $('#languageLabel').textContent=languageNames[state.lang]||'English'; renderAll();
+  $('#languageLabel').textContent=languageNames[state.lang]||'English'; renderAll();applyNeutralGeographyLabels();
 }
 function resolvedTheme() { return state.theme==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):state.theme; }
 function applyTheme(reloadMap=true) {
-  document.documentElement.dataset.theme=resolvedTheme(); localStorage.setItem('tv13-theme',state.theme);
+  document.documentElement.dataset.theme=resolvedTheme(); localStorage.setItem('tv14-theme',state.theme);
   if(reloadMap&&state.map) { state.styleReloading=true; state.map.setStyle(`https://tiles.openfreemap.org/styles/${resolvedTheme()==='dark'?'dark':'positron'}`); state.map.once('style.load',()=>{ state.styleReloading=false; installMapLayers(); ensureCycloneFX(); }); }
 }
-function setView(view) { state.view=view; localStorage.setItem('tv13-view',view); document.body.dataset.view=view; $$('[data-view-mode]').forEach(b=>b.classList.toggle('is-active',b.dataset.viewMode===view)); }
+function setView(view) { state.view=view; localStorage.setItem('tv14-view',view); document.body.dataset.view=view; $$('[data-view-mode]').forEach(b=>b.classList.toggle('is-active',b.dataset.viewMode===view)); }
 
+function neutralAreaLabel(){return state.lang==='zh'?'台湾地区':state.lang==='ja'?'台湾地域':state.lang==='ko'?'대만 지역':state.lang==='es'?'Área de Taiwán':state.lang==='fr'?'Zone de Taïwan':'Taiwan area';}
+function applyNeutralGeographyLabels(){
+  if(!state.map?.isStyleLoaded?.())return;
+  const blocked=['Taiwan','台湾','臺灣','Taiwan, Province of China'];
+  for(const layer of state.map.getStyle()?.layers||[]){
+    if(layer.type!=='symbol')continue;
+    const id=String(layer.id||'').toLowerCase(),sourceLayer=String(layer['source-layer']||'').toLowerCase();
+    if(!id.includes('country')&&!id.includes('place')&&!sourceLayer.includes('place'))continue;
+    try{const old=state.map.getFilter(layer.id);const exclusion=['!', ['in',['coalesce',['get','name:en'],['get','name'],''],['literal',blocked]]];state.map.setFilter(layer.id,old?['all',old,exclusion]:exclusion);}catch{}
+  }
+  setSourceData('tv-neutral-labels',featureCollection([{type:'Feature',properties:{label:neutralAreaLabel()},geometry:{type:'Point',coordinates:[121.0,23.65]}}]));
+}
+function toggleInsight(open=!state.insightOpen){state.insightOpen=!!open;document.body.classList.toggle('insight-open',state.insightOpen);$('#insightToggleFloat')?.classList.toggle('is-active',state.insightOpen);setTimeout(()=>state.map?.resize(),260);}
+function toggleRail(collapsed=!state.railCollapsed){state.railCollapsed=!!collapsed;document.body.classList.toggle('rail-collapsed',state.railCollapsed);setTimeout(()=>state.map?.resize(),260);}
+function trackDirection(points){if(!points||points.length<2)return 0;return bearing(points[0],points.at(-1));}
+function analogScore(storm,analog){const parts=trackParts(storm),pts=parts.observed.length?parts.observed:parts.all;if(pts.length<2)return 0;const directionDiff=Math.abs(((trackDirection(pts)-trackDirection(analog.track)+540)%360)-180);let score=Math.max(0,45-directionDiff/4);const wind=Number(storm?.windMs||pts.at(-1)?.windMs||0);score+=Math.max(0,35-Math.abs(wind-analog.peakWind));if(inferBasin(storm)===inferBasin({basin:analog.basin,lat:analog.track[0].lat,lon:analog.track[0].lon}))score+=20;if(state.userLocation){const d=Math.min(...analog.track.map(p=>distanceKm(state.userLocation,p)));if(d<800)score+=15;}return clamp(Math.round(score),1,99);}
+function analogReasons(storm,analog){const pts=trackParts(storm).observed;const reasons=[];if(pts.length>1&&Math.abs(((trackDirection(pts)-trackDirection(analog.track)+540)%360)-180)<55)reasons.push(tr('similarPath'));if(Math.abs(Number(storm?.windMs||0)-analog.peakWind)<=16)reasons.push(tr('similarIntensity'));if(state.userLocation&&Math.min(...analog.track.map(p=>distanceKm(state.userLocation,p)))<800)reasons.push(tr('similarRegion'));return reasons.length?reasons:[tr('similarPath')];}
+function renderHistoricalAnalogs(){const container=$('#analogCards'),summary=$('#historySummary');if(!container||!summary)return;const storm=state.selected;if(!storm||trackParts(storm).all.length<2){summary.innerHTML='';container.innerHTML=`<div class="empty-card">${escapeHtml(tr('noAnalog'))}</div>`;return;}const ranked=historicalAnalogCatalog.map(a=>({...a,score:analogScore(storm,a)})).sort((a,b)=>b.score-a.score).slice(0,3);summary.innerHTML=`<span>↔</span><p><strong>${escapeHtml(tr('historySummaryTitle'))}</strong><small>${escapeHtml(tr('historySummaryText'))}</small></p>`;container.innerHTML=ranked.map(a=>{const reasons=analogReasons(storm,a).map(r=>`<span>${escapeHtml(r)}</span>`).join('');const region=state.lang==='zh'?a.regionZh:a.regionEn,impact=state.lang==='zh'?a.impactZh:a.impactEn,lesson=state.lang==='zh'?a.lessonZh:a.lessonEn;return `<article class="analog-card"><header><div><small>${a.year}</small><strong>${state.lang==='zh'?escapeHtml(a.localZh)+'（'+a.name+'）':a.name}</strong><span>${escapeHtml(region)}</span></div><b>${a.score}%</b></header><div class="analog-reasons">${reasons}</div><p><em>${tr('pastImpact')}</em>${escapeHtml(impact)}</p><p><em>${tr('lesson')}</em>${escapeHtml(lesson)}</p><button data-analog-id="${a.id}" class="analog-button${state.activeAnalogId===a.id?' is-active':''}">${state.activeAnalogId===a.id?tr('removeOverlay'):tr('overlayTrack')}</button></article>`;}).join('');$$('[data-analog-id]',container).forEach(btn=>btn.onclick=()=>{state.activeAnalogId=state.activeAnalogId===btn.dataset.analogId?null:btn.dataset.analogId;renderHistoricalAnalogs();updateMapData();});}
+function showWeatherStatus(title,message,stateName='loading'){const el=$('#weatherLayerStatus');if(!el)return;el.hidden=false;el.dataset.state=stateName;$('#weatherLayerTitle').textContent=title;$('#weatherLayerMessage').textContent=message;}
 function ensureCycloneFX() {
   if (!state.map || !window.CycloneFX?.isAvailable?.()) return false;
   window.CycloneFX.attach(state.map);
@@ -293,7 +321,7 @@ function syncCycloneFX(followCamera=true) {
 
 function applyVisualMode(mode,animate=true) {
   state.visualMode=mode==='cinematic'?'cinematic':'map';
-  localStorage.setItem('tv13-visual-mode',state.visualMode);
+  localStorage.setItem('tv14-visual-mode',state.visualMode);
   document.body.dataset.visual=state.visualMode;
   $('#cyclone3dButton')?.classList.toggle('is-active',state.visualMode==='cinematic');
   $('#flatButton')?.classList.toggle('is-active',state.visualMode==='map'&&state.projection==='mercator');
@@ -303,6 +331,7 @@ function applyVisualMode(mode,animate=true) {
   window.CycloneFX?.setEnabled(state.visualMode==='cinematic');
   if(!state.map) return;
   if(state.visualMode==='cinematic') {
+    if(innerWidth>920){toggleRail(true);toggleInsight(false);}
     if(!ensureCycloneFX()) { toast(tr('fxUnavailable')); state.visualMode='map'; document.body.dataset.visual='map'; return; }
     state.projection='mercator';
     try{state.map.setProjection({type:'mercator'});}catch{}
@@ -323,14 +352,14 @@ function initMap() {
   state.map=new maplibregl.Map({container:'map',style:`https://tiles.openfreemap.org/styles/${resolvedTheme()==='dark'?'dark':'positron'}`,center:[130,20],zoom:2.2,attributionControl:true,maxPitch:72,canvasContextAttributes:{antialias:true}});
   state.map.addControl(new maplibregl.NavigationControl({showCompass:true,showZoom:true}),'right');
   state.map.on('load',()=>{ state.mapReady=true; installMapLayers(); bindMapEvents(); ensureCycloneFX(); applyVisualMode(state.visualMode,false); fitSelected(false); });
-  state.map.on('error',(event)=>{ if(event?.error?.message) console.warn('Map error',event.error.message); });
+  state.map.on('error',(event)=>{if(event?.error?.message)console.warn('Map error',event.error.message);const sourceId=event?.sourceId||event?.error?.sourceId||'';if(String(sourceId).includes('satellite')||String(sourceId).includes('radar'))showWeatherStatus(state.lang==='zh'?'天气图层暂不可用':'Weather layer unavailable',tr('weatherFailed'),'error');});
 }
 function firstSymbolLayer() { return state.map?.getStyle()?.layers?.find(l=>l.type==='symbol')?.id; }
 function ensureGeoSource(id) { if(!state.map.getSource(id)) state.map.addSource(id,{type:'geojson',data:featureCollection()}); }
 function addLayerSafe(layer,before) { if(!state.map.getLayer(layer.id)) state.map.addLayer(layer,before); }
 function installMapLayers() {
   if(!state.map||!state.map.isStyleLoaded()) return;
-  ['tv-cone','tv-wind','tv-observed','tv-forecast','tv-trend','tv-points','tv-cities','tv-user','tv-user-link'].forEach(ensureGeoSource);
+  ['tv-cone','tv-wind','tv-observed','tv-forecast','tv-trend','tv-points','tv-cities','tv-user','tv-user-link','tv-history','tv-neutral-labels'].forEach(ensureGeoSource);
   addLayerSafe({id:'tv-cone-fill',type:'fill',source:'tv-cone',paint:{'fill-color':'#f97316','fill-opacity':0.13}},firstSymbolLayer());
   addLayerSafe({id:'tv-cone-outline',type:'line',source:'tv-cone',paint:{'line-color':'#f97316','line-width':1.5,'line-dasharray':[3,2]}},firstSymbolLayer());
   addLayerSafe({id:'tv-wind-fill',type:'fill',source:'tv-wind',paint:{'fill-color':'#f59e0b','fill-opacity':0.09}},firstSymbolLayer());
@@ -341,16 +370,18 @@ function installMapLayers() {
   addLayerSafe({id:'tv-track-points',type:'circle',source:'tv-points',paint:{'circle-radius':['case',['==',['get','current'],true],9,6],'circle-color':['get','color'],'circle-stroke-color':'#fff','circle-stroke-width':2,'circle-opacity':0.98}},firstSymbolLayer());
   addLayerSafe({id:'tv-city-circles',type:'circle',source:'tv-cities',paint:{'circle-radius':6,'circle-color':['get','color'],'circle-stroke-color':'#fff','circle-stroke-width':1.5}},firstSymbolLayer());
   addLayerSafe({id:'tv-city-labels',type:'symbol',source:'tv-cities',layout:{'text-field':['get','label'],'text-size':12,'text-offset':[0,1.15],'text-anchor':'top','text-allow-overlap':false},paint:{'text-color':resolvedTheme()==='dark'?'#f4fbff':'#183440','text-halo-color':resolvedTheme()==='dark'?'#071720':'#fff','text-halo-width':1.5}},undefined);
+  addLayerSafe({id:'tv-history-line',type:'line',source:'tv-history',paint:{'line-color':'#64748b','line-width':3,'line-dasharray':[2,3],'line-opacity':0.78}},firstSymbolLayer());
+  addLayerSafe({id:'tv-neutral-label',type:'symbol',source:'tv-neutral-labels',layout:{'text-field':['get','label'],'text-size':15,'text-allow-overlap':false},paint:{'text-color':resolvedTheme()==='dark'?'#d9edf5':'#52666e','text-halo-color':resolvedTheme()==='dark'?'#071720':'#ffffff','text-halo-width':2}},undefined);
   addLayerSafe({id:'tv-user-link-line',type:'line',source:'tv-user-link',paint:{'line-color':'#087f98','line-width':2,'line-dasharray':[2,2]}},firstSymbolLayer());
   addLayerSafe({id:'tv-user-point',type:'circle',source:'tv-user',paint:{'circle-radius':8,'circle-color':'#087f98','circle-stroke-color':'#fff','circle-stroke-width':3}},undefined);
-  syncRasterLayers(); updateMapData(); ensureCycloneFX();
+  syncRasterLayers(); updateMapData(); applyNeutralGeographyLabels(); ensureCycloneFX();
 }
 function setSourceData(id,data) { const s=state.map?.getSource(id); if(s?.setData) s.setData(data); }
 function setVisibility(layerIds,visible) { layerIds.forEach(id=>{ if(state.map?.getLayer(id)) state.map.setLayoutProperty(id,'visibility',visible?'visible':'none'); }); }
 function currentPlaybackPoints() { const p=trackParts(state.selected); const all=p.all; if(state.playMode==='radar') return all; return all.slice(0,Math.min(all.length,state.playIndex+1)); }
 function updateMapData() {
   if(!state.mapReady||state.styleReloading) return;
-  if(!state.selected){['tv-cone','tv-wind','tv-observed','tv-forecast','tv-trend','tv-points','tv-cities','tv-user-link'].forEach(id=>setSourceData(id,featureCollection()));updateUserMap();window.CycloneFX?.setEnabled(false);return;}
+  if(!state.selected){['tv-cone','tv-wind','tv-observed','tv-forecast','tv-trend','tv-points','tv-cities','tv-user-link','tv-history'].forEach(id=>setSourceData(id,featureCollection()));updateUserMap();window.CycloneFX?.setEnabled(false);return;}
   const parts=trackParts(state.selected); const shown=currentPlaybackPoints();
   const observed=shown.filter(p=>!p.forecast), official=shown.filter(p=>p.forecast&&!p.trend), trend=shown.filter(p=>p.trend);
   setSourceData('tv-observed',observed.length>1?featureCollection([lineFeature(observed)]):featureCollection());
@@ -363,11 +394,12 @@ function updateMapData() {
   const current=parts.observed.at(-1)||state.selected; const windRadius=state.selected.windRadii?.radiusKm||clamp(140+(state.selected.windMs||25)*6,180,520); const wind=circlePolygon(current,windRadius);
   wind.properties={estimated:!state.selected.windRadii,radiusKm:windRadius}; setSourceData('tv-wind',featureCollection([wind]));
   const near=nearbyCities(state.selected); setSourceData('tv-cities',featureCollection(near.slice(0,12).map(item=>({type:'Feature',properties:{label:`${item.name} · ${Math.round(item.distance)} km`,color:item.level==='high'?'#ef4444':item.level==='medium'?'#f59e0b':'#16a36a'},geometry:{type:'Point',coordinates:[item.lon,item.lat]}}))));
+  const analog=historicalAnalogCatalog.find(a=>a.id===state.activeAnalogId);setSourceData('tv-history',analog?featureCollection([lineFeature(analog.track,{name:analog.name})]):featureCollection());
   updateUserMap();
   setVisibility(['tv-observed-line','tv-forecast-line','tv-trend-line','tv-track-points'],state.layers.track);
   setVisibility(['tv-cone-fill','tv-cone-outline'],state.layers.cone);
   setVisibility(['tv-wind-fill','tv-wind-outline'],state.layers.wind);
-  setVisibility(['tv-city-circles','tv-city-labels'],state.layers.cities);
+  setVisibility(['tv-city-circles','tv-city-labels'],state.layers.cities);setVisibility(['tv-history-line'],Boolean(state.activeAnalogId));
   syncCycloneFX();
 }
 function updateUserMap() {
@@ -378,9 +410,9 @@ function updateUserMap() {
 function removeRaster(id) { if(state.map?.getLayer(id)) state.map.removeLayer(id); if(state.map?.getSource(id)) state.map.removeSource(id); }
 function addRaster(id,tiles,maxzoom=9,opacity=state.opacity) {
   if(!state.mapReady||!tiles?.length) return; removeRaster(id); const before=state.map.getLayer('tv-cone-fill')?'tv-cone-fill':firstSymbolLayer();
-  state.map.addSource(id,{type:'raster',tiles,tileSize:256,maxzoom}); state.map.addLayer({id,type:'raster',source:id,paint:{'raster-opacity':opacity,'raster-fade-duration':200}},before);
+  state.map.addSource(id,{type:'raster',tiles,tileSize:256,minzoom:0,maxzoom,scheme:'xyz'}); state.map.addLayer({id,type:'raster',source:id,paint:{'raster-opacity':opacity,'raster-fade-duration':350,'raster-resampling':'linear','raster-saturation':id==='tv-satellite'?.12:.25,'raster-contrast':id==='tv-radar'?.18:.08}},before);
 }
-function radarTile(frame) { return state.weather?.radar?.host&&frame ? `${state.weather.radar.host}${frame.path}/256/{z}/{x}/{y}/2/1_1.png` : null; }
+function radarTile(frame) { if(!frame)return null;return frame.tileTemplate||((state.weather?.radar?.host&&frame.path)?`${state.weather.radar.host}${frame.path}/256/{z}/{x}/{y}/6/1_1.png`:null); }
 function syncRasterLayers() {
   if(!state.mapReady) return;
   if(state.layers.satellite&&state.weather?.satellite?.tileTemplate){const s=state.weather.satellite;addRaster('tv-satellite',[s.tileTemplate.replace('{date}',s.date)],9,state.opacity);}else removeRaster('tv-satellite');
@@ -391,7 +423,7 @@ function syncRasterLayers() {
 function bindMapEvents() {
   state.map.on('click','tv-track-points',e=>{const f=e.features?.[0];if(!f)return;const c=f.geometry.coordinates.slice();new maplibregl.Popup({offset:12}).setLngLat(c).setHTML(`<div class="node-popup"><header><h3>${escapeHtml(displayName(state.selected))}</h3><span class="kind">${escapeHtml(tr(f.properties.kind==='observed'?'trackKindObserved':f.properties.kind==='forecast'?'trackKindForecast':'trackKindTrend'))}</span></header><dl><div><dt>${tr('updated')}</dt><dd>${escapeHtml(fmtDate(f.properties.time))}</dd></div><div><dt>${tr('maxWind')}</dt><dd>${f.properties.wind?`${Math.round(f.properties.wind)} m/s`:'—'}</dd></div><div><dt>${tr('pressure')}</dt><dd>${f.properties.pressure?`${Math.round(f.properties.pressure)} hPa`:'—'}</dd></div><div><dt>${tr('coordinates')}</dt><dd>${c[1].toFixed(1)}°, ${c[0].toFixed(1)}°</dd></div></dl></div>`).addTo(state.map);});
   state.map.on('mouseenter','tv-track-points',()=>state.map.getCanvas().style.cursor='pointer'); state.map.on('mouseleave','tv-track-points',()=>state.map.getCanvas().style.cursor='');
-  state.map.on('click',e=>{if(!state.pickLocation)return;state.userLocation={lat:e.lngLat.lat,lon:e.lngLat.lng};localStorage.setItem('tv13-location',JSON.stringify(state.userLocation));state.pickLocation=false;renderPersonalImpact();updateMapData();toast(tr('locationSaved'));});
+  state.map.on('click',e=>{if(!state.pickLocation)return;state.userLocation={lat:e.lngLat.lat,lon:e.lngLat.lng};localStorage.setItem('tv14-location',JSON.stringify(state.userLocation));state.pickLocation=false;renderPersonalImpact();updateMapData();toast(tr('locationSaved'));});
 }
 function fitSelected(animate=true) {
   if(!state.map||!state.selected)return; const pts=trackParts(state.selected).all; if(!pts.length)return;
@@ -402,7 +434,7 @@ function fitSelected(animate=true) {
     return;
   }
   const bounds=new maplibregl.LngLatBounds();pts.forEach(p=>bounds.extend([p.lon,p.lat])); if(state.userLocation)bounds.extend([state.userLocation.lon,state.userLocation.lat]);
-  state.map.fitBounds(bounds,{padding:{top:170,bottom:120,left:70,right:70},maxZoom:6,duration:animate?700:0});
+  state.map.fitBounds(bounds,{padding:{top:105,bottom:115,left:75,right:75},maxZoom:6,duration:animate?700:0});
 }
 
 function renderBasins() {
@@ -426,7 +458,7 @@ function renderSummary() {
   $('#summaryDirection').textContent=movementText(s);$('#summaryClosest').textContent=state.userLocation?(personalImpact(s)?.closestText||'—'):tr('locationNotSet');$('#summaryAdvice').textContent=summaryAdvice(s);
 }
 function nearbyCities(storm) { const pts=trackParts(storm).all;if(!pts.length)return[];return cities.map(c=>{const best=nearestToTrack(c,pts);return {...c,distance:best.distance,level:riskLevel(best.distance),closest:best.point};}).filter(c=>c.distance<950).sort((a,b)=>a.distance-b.distance); }
-function renderCities() { const rows=nearbyCities(state.selected).slice(0,8);$('#cityList').innerHTML=rows.length?rows.map(c=>`<article class="city-item"><div><strong>${escapeHtml(c.name)}</strong><small>${escapeHtml(c.country)} · ${escapeHtml(fmtDate(c.closest.time))}</small></div><span class="city-distance">${Math.round(c.distance)} km</span></article>`).join(''):`<div class="empty-card">${tr('noNearbyCity')}</div>`; }
+function renderCities() { const rows=nearbyCities(state.selected).slice(0,8);$('#cityList').innerHTML=rows.length?rows.map(c=>`<article class="city-item"><div><strong>${escapeHtml(c.name)}</strong><small>${escapeHtml(c.country==='Taiwan area'?neutralAreaLabel():c.country)} · ${escapeHtml(fmtDate(c.closest.time))}</small></div><span class="city-distance">${Math.round(c.distance)} km</span></article>`).join(''):`<div class="empty-card">${tr('noNearbyCity')}</div>`; }
 function personalImpact(storm) {
   const loc=state.userLocation,pts=trackParts(storm).all;if(!loc||!pts.length)return null;const n=nearestToTrack(loc,pts),level=riskLevel(n.distance);const time=n.point.time?new Date(n.point.time):null;const span=level==='high'?12:level==='medium'?18:24;
   return {nearest:n,level,closestText:time?fmtDate(time.toISOString()):'—',windowText:time?`${fmtDate(new Date(time.getTime()-span*3600_000))} – ${fmtDate(new Date(time.getTime()+span*3600_000))}`:'—',confidence:pts.filter(p=>p.forecast).length>=2?tr('high'):pts.length>=3?tr('medium'):tr('low')};
@@ -446,7 +478,7 @@ const adviceCopy={
   family:{zh:['确认老人、儿童、宠物和常用药需求。','提前完成接送与采购，准备照明和饮水。','保持家人联系，及时执行疏散或停课要求。'],en:['Check needs for older adults, children, pets and medicine.','Finish pick-ups and shopping early; prepare lighting and water.','Keep family contact and follow evacuation or school-closure orders.']},
   coastProfile:{zh:['确认风暴潮区、地下空间和疏散路线。','转移车辆与室外物品，停止海上活动。','远离岸线，官方要求撤离时立即行动。'],en:['Check surge zones, underground spaces and evacuation routes.','Move vehicles and outdoor items; stop marine activity.','Stay away from the shoreline and evacuate immediately when ordered.']}
 };
-function renderProfiles() { const ids=['commute','outdoor','office','drive','family','coastProfile'];$('#profileTabs').innerHTML=ids.map(id=>`<button class="profile-tab${state.profile===id?' is-active':''}" data-profile="${id}">${tr(id)}</button>`).join('');$$('[data-profile]').forEach(b=>b.onclick=()=>{state.profile=b.dataset.profile;localStorage.setItem('tv13-profile',state.profile);renderAdvice(personalImpact(state.selected)?.level||'low');renderProfiles();}); }
+function renderProfiles() { const ids=['commute','outdoor','office','drive','family','coastProfile'];$('#profileTabs').innerHTML=ids.map(id=>`<button class="profile-tab${state.profile===id?' is-active':''}" data-profile="${id}">${tr(id)}</button>`).join('');$$('[data-profile]').forEach(b=>b.onclick=()=>{state.profile=b.dataset.profile;localStorage.setItem('tv14-profile',state.profile);renderAdvice(personalImpact(state.selected)?.level||'low');renderProfiles();}); }
 function renderAdvice(level) { const lang=state.lang==='zh'?'zh':'en',copy=adviceCopy[state.profile]?.[lang]||adviceCopy.commute[lang];$('#adviceTimeline').innerHTML=[[tr('now'),copy[0]],[tr('before'),copy[1]],[tr('during'),copy[2]]].map(([label,text],i)=>`<article class="advice-step"><span>${label}</span><div><strong>${level==='high'&&i>0?(state.lang==='zh'?'优先执行':'Priority'):tr(state.profile)}</strong><p>${escapeHtml(text)}</p></div></article>`).join(''); }
 function renderPro() { const s=state.selected,a=authorityFor(s),parts=trackParts(s);$('#proStormName').textContent=displayName(s);$('#proCoordinates').textContent=s?`${(+s.lat).toFixed(1)}°N · ${(+s.lon).toFixed(1)}°E`:'—';$('#proWind').textContent=Number.isFinite(+s?.windMs)?`${Math.round(s.windMs)} m/s`:'—';$('#proPressure').textContent=Number.isFinite(+s?.pressureHpa)?`${Math.round(s.pressureHpa)} hPa`:'—';$('#proClass').textContent=s?.classification||'—';$('#proTrackCount').textContent=`${parts.observed.length} + ${parts.forecast.length||parts.trend.length}`;$('#proAgency').textContent=a.name;
   $('#sourceList').innerHTML=state.sources.map(src=>`<article class="source-row"><div><strong>${escapeHtml(src.name)}</strong><small>${escapeHtml(src.message||src.role||'')}</small></div><span class="source-state">${escapeHtml(src.status||'—')}</span></article>`).join(''); }
@@ -456,35 +488,35 @@ function renderTimeline() {
   const parts=trackParts(state.selected);const max=state.playMode==='radar'?(state.weather?.radar?.frames?.length||0)-1:parts.all.length-1;state.playIndex=clamp(state.playIndex,0,Math.max(0,max));$('#timelineRange').max=Math.max(0,max);$('#timelineRange').value=state.playIndex;
   if(state.playMode==='radar'){const frame=state.weather?.radar?.frames?.[state.playIndex];$('#playbackTime').textContent=frame?fmtDate(frame.time*1000):tr('radarEmpty');$('#playbackKind').textContent=tr('radarPlayback');}else{const p=parts.all[state.playIndex];$('#playbackTime').textContent=p?fmtDate(p.time):'—';$('#playbackKind').textContent=p?.trend?tr('trackKindTrend'):p?.forecast?tr('trackKindForecast'):tr('trackKindObserved');}
   $('#playButton').textContent=state.playing?'❚❚':'▶';$('#speedButton').textContent=`${state.speed}×`;syncRasterLayers();updateMapData(); }
-function renderAll() { if ($('#demoToggle')) $('#demoToggle').checked=state.demo; renderBasins();renderStormList();renderAuthority();renderSummary();renderPersonalImpact();renderProfiles();renderPro();renderCities();renderAgencies();renderSourceHealth();renderTimeline();updateMapData(); }
+function renderAll() { if ($('#demoToggle')) $('#demoToggle').checked=state.demo; renderBasins();renderStormList();renderAuthority();renderSummary();renderPersonalImpact();renderProfiles();renderHistoricalAnalogs();renderPro();renderCities();renderAgencies();renderSourceHealth();renderTimeline();updateMapData(); }
 
 function setSheet(sheet) { state.sheet=sheet;$('#insightPanel').dataset.sheet=sheet; }
 function bindUI() {
-  $('#brandButton').onclick=()=>$('#stormRail').classList.add('is-open');$('#railClose').onclick=()=>$('#stormRail').classList.remove('is-open');
+  $('#brandButton').onclick=()=>$('#stormRail').classList.add('is-open');$('#railClose').onclick=()=>$('#stormRail').classList.remove('is-open');$('#railToggleFloat').onclick=()=>{if(innerWidth<=920)$('#stormRail').classList.toggle('is-open');else toggleRail();};$('#insightToggleFloat').onclick=()=>{if(innerWidth<=920)setSheet(state.sheet==='collapsed'?'half':'collapsed');else toggleInsight();};$('#weatherLayerClose').onclick=()=>$('#weatherLayerStatus').hidden=true;
   $$('[data-view-mode]').forEach(b=>b.onclick=()=>{setView(b.dataset.viewMode);if(innerWidth<=920)setSheet('half');});
   $('#languageButton').onclick=e=>{e.stopPropagation();$('#languageMenu').hidden=!$('#languageMenu').hidden;$('#themeMenu').hidden=true;};
   $('#themeButton').onclick=e=>{e.stopPropagation();$('#themeMenu').hidden=!$('#themeMenu').hidden;$('#languageMenu').hidden=true;};
-  $$('[data-language]').forEach(b=>b.onclick=()=>{state.lang=b.dataset.language;localStorage.setItem('tv13-lang',state.lang);$('#languageMenu').hidden=true;applyI18n();});
+  $$('[data-language]').forEach(b=>b.onclick=()=>{state.lang=b.dataset.language;localStorage.setItem('tv14-lang',state.lang);$('#languageMenu').hidden=true;applyI18n();});
   $$('[data-theme-choice]').forEach(b=>b.onclick=()=>{state.theme=b.dataset.themeChoice;$('#themeMenu').hidden=true;applyTheme();});
   document.addEventListener('click',()=>{$('#languageMenu').hidden=true;$('#themeMenu').hidden=true;});
-  $('#demoToggle').checked=state.demo;$('#demoToggle').onchange=e=>{state.demo=e.target.checked;localStorage.setItem('tv13-demo',state.demo);state.selected=null;renderAll();if(state.selected)fitSelected();};
+  $('#demoToggle').checked=state.demo;$('#demoToggle').onchange=e=>{state.demo=e.target.checked;localStorage.setItem('tv14-demo',state.demo);state.selected=null;renderAll();if(state.selected)fitSelected();};
   $('#flatButton').onclick=()=>{state.projection='mercator';applyVisualMode('map',false);state.map?.setProjection({type:'mercator'});$('#flatButton').classList.add('is-active');$('#globeButton').classList.remove('is-active');};
   $('#globeButton').onclick=()=>{try{state.projection='globe';applyVisualMode('map',false);state.map?.setProjection({type:'globe'});$('#globeButton').classList.add('is-active');$('#flatButton').classList.remove('is-active');}catch{toast('Globe projection is not supported by this browser.');}};
   $('#cyclone3dButton').onclick=()=>applyVisualMode(state.visualMode==='cinematic'?'map':'cinematic');
   $('#fitStormButton').onclick=()=>fitSelected();$('#fitWorldButton').onclick=()=>state.map?.flyTo({center:[0,10],zoom:1.4,duration:700});
   $('#layersButton').onclick=e=>{e.stopPropagation();$('#layerPanel').hidden=!$('#layerPanel').hidden;};$$('[data-close-panel]').forEach(b=>b.onclick=()=>$('#'+b.dataset.closePanel).hidden=true);
-  $$('[data-layer-toggle]').forEach(input=>{input.checked=state.layers[input.dataset.layerToggle];input.onchange=()=>{state.layers[input.dataset.layerToggle]=input.checked;syncRasterLayers();updateMapData();};});
-  $('#weatherOpacity').value=Math.round(state.opacity*100);$('#weatherOpacity').oninput=e=>{state.opacity=e.target.value/100;localStorage.setItem('tv13-opacity',e.target.value);['tv-satellite','tv-radar'].forEach(id=>{if(state.map?.getLayer(id))state.map.setPaintProperty(id,'raster-opacity',state.opacity);});};
-  $('#fxQuality').value=state.fxQuality;$('#fxQuality').onchange=e=>{state.fxQuality=e.target.value;localStorage.setItem('tv13-fx-quality',state.fxQuality);window.CycloneFX?.setQuality(state.fxQuality);syncCycloneFX(false);};
-  $('#fxParticles').checked=state.fxParticles;$('#fxParticles').onchange=e=>{state.fxParticles=e.target.checked;localStorage.setItem('tv13-fx-particles',String(state.fxParticles));syncCycloneFX(false);};
-  $('#fxEyewall').checked=state.fxEyewall;$('#fxEyewall').onchange=e=>{state.fxEyewall=e.target.checked;localStorage.setItem('tv13-fx-eyewall',String(state.fxEyewall));syncCycloneFX(false);};
-  $('#fxTrail').checked=state.fxTrail;$('#fxTrail').onchange=e=>{state.fxTrail=e.target.checked;localStorage.setItem('tv13-fx-trail',String(state.fxTrail));syncCycloneFX(false);};
-  $('#fxFollow').checked=state.fxFollow;$('#fxFollow').onchange=e=>{state.fxFollow=e.target.checked;localStorage.setItem('tv13-fx-follow',String(state.fxFollow));};
+  $$('[data-layer-toggle]').forEach(input=>{input.checked=state.layers[input.dataset.layerToggle];input.onchange=()=>{const key=input.dataset.layerToggle;state.layers[key]=input.checked;if(key==='satellite'&&input.checked){if(!state.weather?.satellite?.tileTemplate){input.checked=false;state.layers[key]=false;showWeatherStatus(tr('satelliteLayer'),tr('weatherFailed'),'error');}else showWeatherStatus(tr('satelliteLayer'),tr('satelliteLoading'),'loading');}if(key==='radar'&&input.checked){if(!state.weather?.radar?.frames?.length){input.checked=false;state.layers[key]=false;showWeatherStatus(tr('radarLayer'),tr('radarEmpty'),'error');}else{state.playMode='radar';state.playIndex=state.weather.radar.frames.length-1;$$('[data-play-mode]').forEach(x=>x.classList.toggle('is-active',x.dataset.playMode==='radar'));showWeatherStatus(tr('radarLayer'),tr('radarNoEcho'),'ready');}}syncRasterLayers();renderTimeline();updateMapData();};});
+  $('#weatherOpacity').value=Math.round(state.opacity*100);$('#weatherOpacity').oninput=e=>{state.opacity=e.target.value/100;localStorage.setItem('tv14-opacity',e.target.value);['tv-satellite','tv-radar'].forEach(id=>{if(state.map?.getLayer(id))state.map.setPaintProperty(id,'raster-opacity',state.opacity);});};
+  $('#fxQuality').value=state.fxQuality;$('#fxQuality').onchange=e=>{state.fxQuality=e.target.value;localStorage.setItem('tv14-fx-quality',state.fxQuality);window.CycloneFX?.setQuality(state.fxQuality);syncCycloneFX(false);};
+  $('#fxParticles').checked=state.fxParticles;$('#fxParticles').onchange=e=>{state.fxParticles=e.target.checked;localStorage.setItem('tv14-fx-particles',String(state.fxParticles));syncCycloneFX(false);};
+  $('#fxEyewall').checked=state.fxEyewall;$('#fxEyewall').onchange=e=>{state.fxEyewall=e.target.checked;localStorage.setItem('tv14-fx-eyewall',String(state.fxEyewall));syncCycloneFX(false);};
+  $('#fxTrail').checked=state.fxTrail;$('#fxTrail').onchange=e=>{state.fxTrail=e.target.checked;localStorage.setItem('tv14-fx-trail',String(state.fxTrail));syncCycloneFX(false);};
+  $('#fxFollow').checked=state.fxFollow;$('#fxFollow').onchange=e=>{state.fxFollow=e.target.checked;localStorage.setItem('tv14-fx-follow',String(state.fxFollow));};
   $$('[data-play-mode]').forEach(b=>b.onclick=()=>{state.playMode=b.dataset.playMode;state.playIndex=0;$$('[data-play-mode]').forEach(x=>x.classList.toggle('is-active',x===b));renderTimeline();});
   $('#timelineRange').oninput=e=>{state.playIndex=Number(e.target.value);renderTimeline();};$('#playButton').onclick=togglePlay;$('#speedButton').onclick=()=>{state.speed=state.speed===1?1.5:state.speed===1.5?2:1;renderTimeline();if(state.playing){stopPlay();startPlay();}};
-  $('#impactButton').onclick=()=>{setSheet(innerWidth<=920?'full':'half');$('#impactSection').scrollIntoView({behavior:'smooth',block:'start'});};$('#sourcesButton').onclick=()=>{$('#methodSection').scrollIntoView({behavior:'smooth'});setSheet(innerWidth<=920?'full':'half');};
-  $('#locateButton').onclick=()=>navigator.geolocation?.getCurrentPosition(pos=>{state.userLocation={lat:pos.coords.latitude,lon:pos.coords.longitude};localStorage.setItem('tv13-location',JSON.stringify(state.userLocation));renderPersonalImpact();updateMapData();fitSelected();toast(tr('locationSaved'));},()=>toast(tr('locationDenied')),{enableHighAccuracy:false,timeout:8000,maximumAge:600000});
-  $('#pickLocationButton').onclick=()=>{state.pickLocation=true;toast(tr('pickHint'));};$('#clearLocationButton').onclick=()=>{state.userLocation=null;localStorage.removeItem('tv13-location');renderPersonalImpact();updateMapData();};
+  $('#impactButton').onclick=()=>{if(innerWidth>920)toggleInsight(true);setSheet(innerWidth<=920?'full':'half');$('#impactSection').scrollIntoView({behavior:'smooth',block:'start'});};$('#sourcesButton').onclick=()=>{if(innerWidth>920)toggleInsight(true);$('#methodSection').scrollIntoView({behavior:'smooth'});setSheet(innerWidth<=920?'full':'half');};
+  $('#locateButton').onclick=()=>navigator.geolocation?.getCurrentPosition(pos=>{state.userLocation={lat:pos.coords.latitude,lon:pos.coords.longitude};localStorage.setItem('tv14-location',JSON.stringify(state.userLocation));renderPersonalImpact();updateMapData();fitSelected();toast(tr('locationSaved'));},()=>toast(tr('locationDenied')),{enableHighAccuracy:false,timeout:8000,maximumAge:600000});
+  $('#pickLocationButton').onclick=()=>{state.pickLocation=true;toast(tr('pickHint'));};$('#clearLocationButton').onclick=()=>{state.userLocation=null;localStorage.removeItem('tv14-location');renderPersonalImpact();updateMapData();};
   const handle=$('#sheetHandle');let startY=0,startSheet='collapsed';handle.onclick=()=>setSheet(state.sheet==='collapsed'?'half':state.sheet==='half'?'full':'collapsed');handle.onpointerdown=e=>{startY=e.clientY;startSheet=state.sheet;handle.setPointerCapture(e.pointerId);};handle.onpointerup=e=>{const dy=e.clientY-startY;if(dy<-55)setSheet(startSheet==='collapsed'?'half':'full');else if(dy>55)setSheet(startSheet==='full'?'half':'collapsed');};
   matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{if(state.theme==='system')applyTheme();});
 }
@@ -500,6 +532,6 @@ async function loadData() {
 }
 
 function boot() {
-  setView(state.view);document.body.dataset.visual=state.visualMode;applyTheme(false);bindUI();applyI18n();initMap();loadData();
+  setView(state.view);document.body.dataset.visual=state.visualMode;document.body.classList.toggle('insight-open',false);applyTheme(false);bindUI();applyI18n();initMap();loadData();
 }
 document.addEventListener('DOMContentLoaded',boot);

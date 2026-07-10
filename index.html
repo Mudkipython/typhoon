@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#eff7fb" />
-  <title>Typhoon Vision · 3D 全球热带气旋</title>
+  <title>Typhoon Vision · 全球热带气旋与 3D 风场</title>
   <meta name="description" content="全球热带气旋路径、风圈、卫星云图、雷达与个人影响可视化原型。" />
   <link rel="preconnect" href="https://unpkg.com" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
@@ -19,7 +19,7 @@
     <button class="brand" id="brandButton" aria-label="打开气旋列表">
       <span class="brand-mark" aria-hidden="true">◔</span>
       <span class="brand-copy">
-        <strong>Typhoon Vision <span class="version-pill">Public v13</span></strong>
+        <strong>Typhoon Vision <span class="version-pill">Public v14</span></strong>
         <small data-i18n="tagline">全球热带气旋与个人影响</small>
       </span>
     </button>
@@ -69,6 +69,9 @@
 
     <main class="map-workspace">
       <div id="map" aria-label="全球热带气旋地图"></div>
+      <button class="map-edge-button map-edge-left" id="railToggleFloat" aria-label="显示或隐藏气旋列表">☰ <span data-i18n="systems">气旋</span></button>
+      <button class="map-edge-button map-edge-right" id="insightToggleFloat" aria-label="显示或隐藏影响详情"><span data-i18n="details">详情</span> ☷</button>
+      <div class="weather-layer-status glass-panel" id="weatherLayerStatus" hidden><span class="status-dot"></span><div><strong id="weatherLayerTitle">—</strong><small id="weatherLayerMessage">—</small></div><button id="weatherLayerClose" aria-label="关闭">×</button></div>
 
       <div class="map-top-left">
         <div class="map-toolbar glass-panel">
@@ -135,7 +138,8 @@
           <label><input id="fxTrail" type="checkbox" checked /><span data-i18n="fxTrail">立体路径</span></label>
           <label><input id="fxFollow" type="checkbox" checked /><span data-i18n="fxFollow">镜头跟随播放</span></label>
         </section>
-        <p class="layer-disclaimer" data-i18n="layerDisclaimer">云图和雷达仅用于态势参考；预警以当地官方气象机构为准。</p>
+        <div class="weather-links"><a href="https://worldview.earthdata.nasa.gov/" target="_blank" rel="noreferrer">NASA Worldview ↗</a><a href="https://www.rainviewer.com/weather-radar-map-live.html" target="_blank" rel="noreferrer">RainViewer ↗</a></div>
+        <p class="layer-disclaimer" data-i18n="layerDisclaimer">云图和雷达仅用于态势参考；透明雷达区域可能代表无回波或覆盖不足，预警以当地官方气象机构为准。</p>
       </aside>
 
       <div class="map-bottom-left glass-panel source-agreement" id="sourceAgreement">
@@ -196,6 +200,14 @@
           <div class="advice-timeline" id="adviceTimeline"></div>
         </section>
 
+        <section class="insight-section public-only history-section" id="historySection">
+          <div class="section-title-row"><div><span class="eyebrow" data-i18n="historyReference">历史参考</span><h2 data-i18n="similarStorms">过去有哪些相似气旋？</h2></div><span class="reference-badge" data-i18n="referenceOnly">仅供理解</span></div>
+          <p class="history-lead" data-i18n="historyLead">按路径方向、强度和影响区域筛选案例，用于理解风险类型，不代表本次一定重演。</p>
+          <div class="history-summary" id="historySummary"></div>
+          <div class="analog-cards" id="analogCards"></div>
+          <div class="history-caveat"><span>≠</span><p><strong data-i18n="historyNotForecast">历史相似不等于结果相同</strong><small data-i18n="historyCaveat">速度、大小、潮位、地形和防灾条件都可能改变实际影响。当前官方预报始终优先。</small></p></div>
+        </section>
+
         <section class="insight-section pro-only" hidden>
           <span class="eyebrow" data-i18n="professionalData">专业数据</span>
           <h2 id="proStormName">—</h2>
@@ -237,14 +249,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js"
-      }
-    }
-  </script>
-  <script type="module" src="./cyclone3d.js"></script>
+  <script src="./cyclone3d.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>
