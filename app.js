@@ -1,620 +1,106 @@
 'use strict';
-
-const $ = (selector, root = document) => root.querySelector(selector);
-const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
-const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
-const DEG = Math.PI / 180;
-
-const UI = {
-  zh: {
-    tagline:'全球热带气旋与个人影响', connecting:'正在连接权威来源', publicView:'公众视图', proView:'专业视图', appearance:'外观',
-    activeSystems:'活跃系统', systemsWorldwide:'个全球系统', showDemo:'显示全球演示系统', demoExplain:'无活跃气旋时用于体验全部功能',
-    authority:'所属权威机构', officialSite:'官网 ↗', mapView:'地图', globeView:'地球', cyclone3d:'气旋结构', cinematicMode:'气旋风场结构', visualDemo:'风速、气压与风圈驱动', focusStorm:'聚焦气旋', viewWorld:'查看全球', layers:'图层',
-    mapLayers:'地图图层', weatherLayers:'气象与风险图层', trackLayer:'路径与节点', trackLayerNote:'实况、官方预报与趋势参考',
-    coneLayer:'预测可能范围', coneLayerNote:'中心路径的不确定性，不是影响边界', windLayer:'风圈与波及范围', windLayerNote:'无官方半径时会明确标为估算',
-    cityLayer:'受影响城市', cityLayerNote:'按路径距离筛选主要城市', satelliteLayer:'NASA 卫星云图', radarLayer:'全球雷达拼图',
-    coverageLayer:'雷达覆盖范围', coverageNote:'用于区分无回波与无雷达覆盖', weatherOpacity:'天气图层透明度',
-    layerDisclaimer:'云图和雷达仅用于态势参考；预警以当地官方气象机构为准。', visualEffects:'气象结构图', visualEffectsNote:'按风速、气压和风圈绘制，不模拟真实云体', qualityAuto:'自动', qualityHigh:'高', qualityBalanced:'均衡', qualityEco:'省电', fxParticles:'环流矢量', fxEyewall:'中心气压与强度标注', fxTrail:'动态轨迹', fxFollow:'播放时跟随中心', fxDataNote:'环流方向、风速、气压与风圈来自当前数据；缺少官方风圈时会标注估算。', fxUnavailable:'此设备无法启用气旋结构图', fxEnabled:'已开启气旋结构图', sourcesCompare:'个来源可用于对照', howVerified:'如何交叉验证 →',
-    observed:'实况', forecast:'官方预报', trend:'趋势参考', windArea:'风圈', affectedCity:'受影响城市', trackPlayback:'路径播放', radarPlayback:'雷达回放',
-    plainBrief:'公众简报', whatMeans:'这对我意味着什么？', yourLocation:'你的位置', locationNotSet:'尚未设置', useLocation:'使用定位', pickOnMap:'地图点选', clear:'清除',
-    nearestDistance:'距路径最近', closestTime:'预计最接近', impactWindow:'可能影响时段', confidence:'估算可信度', profileAdvice:'画像建议', chooseScenario:'选择你的活动场景',
-    professionalData:'专业数据', coordinates:'中心坐标', maxWind:'最大风速', pressure:'中心气压', classification:'强度分类', trackPoints:'路径节点', primaryAgency:'主权威机构',
-    cityImpact:'城市影响参考', nearbyCities:'路径附近主要城市', methodology:'数据方法', crossValidation:'全球机构交叉验证',
-    methodText:'先按海域确定 WMO 区域专业中心，再用当地气象机构、GDACS 等来源对照位置、更新时间与影响信息，不对不同风速标准进行简单平均。',
-    disclaimer:'本网站是信息整合与可视化原型，不替代任何国家或地区发布的官方预警、停工停课、撤离或应急指令。',
-    themeSystem:'跟随系统', themeLight:'浅色', themeDark:'深色', direction:'移动方向', closest:'最接近', adviceNow:'现在怎么做', understandImpact:'看懂可能影响',
-    noStorm:'当前没有可显示的活跃系统', demo:'演示', live:'官方数据', updated:'更新', online:'在线', unavailable:'暂不可用', noData:'暂无数据',
-    locationDenied:'定位未授权，可在地图上点选位置', locationSaved:'位置只保存在本机浏览器', pickHint:'请在地图上点击你的所在地', low:'较低', medium:'中等', high:'较高',
-    wind:'大风', rain:'强降雨', coast:'沿海风险', windLow:'当前距离较远，继续关注路径变化', windMedium:'外围阵风可能影响通勤与户外活动', windHigh:'可能进入强风影响范围，减少不必要外出',
-    rainLow:'当前直接降雨风险较低', rainMedium:'关注短时强降雨、积水和交通延误', rainHigh:'准备应对暴雨、内涝和山洪地质灾害',
-    coastLow:'当前沿海直接风险较低', coastMedium:'沿海、港口和海上活动需关注风浪', coastHigh:'避免海边观浪，并服从风暴潮或撤离指令',
-    commute:'通勤', outdoor:'户外', office:'办公', drive:'驾车', family:'家庭照护', coastProfile:'沿海居住',
-    now:'现在', before:'影响前', during:'影响期间', noOfficialForecast:'官方预报节点暂不可用，紫色趋势线仅用于方向参考',
-    trackKindObserved:'历史实况', trackKindForecast:'官方预报', trackKindTrend:'非官方趋势参考', radarEmpty:'当前雷达帧不可用', weatherNoLogin:'NASA GIBS 与 RainViewer 公共接口不需要登录', satelliteLoading:'正在加载 NASA 卫星影像', radarNoEcho:'雷达已开启；透明区域可能表示无回波或无覆盖', weatherFailed:'图层加载失败，请稍后重试', sourceConnected:'权威与辅助来源已连接',
-    global:'全球', westPacific:'西北太平洋', atlantic:'大西洋', eastPacific:'东北/中太平洋', northIndian:'北印度洋', southwestIndian:'西南印度洋', australia:'澳大利亚区域', southPacific:'南太平洋',
-    estimated:'估算', noNearbyCity:'当前筛选范围内没有主要城市', km:'公里', hours:'小时', sourceMethod:'主来源优先，其他来源仅作对照', details:'详情', systems:'气旋', historyReference:'历史参考', similarStorms:'过去有哪些相似气旋？', referenceOnly:'仅供理解', historyLead:'按路径方向、强度和影响区域筛选案例，用于理解风险类型，不代表本次一定重演。', historyNotForecast:'历史相似不等于结果相同', historyCaveat:'速度、大小、潮位、地形和防灾条件都可能改变实际影响。当前官方预报始终优先。',
-  },
-  en: {
-    tagline:'Global tropical cyclone and personal impact', connecting:'Connecting authoritative sources', publicView:'Public view', proView:'Professional view', appearance:'Appearance',
-    activeSystems:'Active systems', systemsWorldwide:'systems worldwide', showDemo:'Show global demo systems', demoExplain:'Explore all features when no live cyclone is active',
-    authority:'Responsible authority', officialSite:'Official site ↗', mapView:'Map', globeView:'Globe', cyclone3d:'Animated cyclone', cinematicMode:'Cyclone wind structure', visualDemo:'Driven by wind, pressure and radii', focusStorm:'Focus cyclone', viewWorld:'View world', layers:'Layers',
-    mapLayers:'Map layers', weatherLayers:'Weather and risk layers', trackLayer:'Track and points', trackLayerNote:'Observed, official forecast and trend reference',
-    coneLayer:'Forecast uncertainty', coneLayerNote:'Possible centre-track area, not an impact boundary', windLayer:'Wind and impact area', windLayerNote:'Estimated values are clearly labelled',
-    cityLayer:'Affected cities', cityLayerNote:'Major cities screened by track distance', satelliteLayer:'NASA satellite imagery', radarLayer:'Global radar mosaic',
-    coverageLayer:'Radar coverage', coverageNote:'Distinguishes no echoes from no radar coverage', weatherOpacity:'Weather-layer opacity',
-    layerDisclaimer:'Satellite and radar layers are situational references. Follow local official warnings.', visualEffects:'Meteorological structure', visualEffectsNote:'Wind-vector and radii display; not a simulated cloud volume', qualityAuto:'Auto', qualityHigh:'High', qualityBalanced:'Balanced', qualityEco:'Battery saver', fxParticles:'Circulation vectors', fxEyewall:'Centre pressure and intensity label', fxTrail:'Animated track', fxFollow:'Follow centre during playback', fxDataNote:'Circulation, wind, pressure and wind radii use current data; missing official radii are labelled estimated.', fxUnavailable:'Cyclone-structure rendering is unavailable on this device', fxEnabled:'Cyclone structure enabled', sourcesCompare:'sources available for comparison', howVerified:'How it is checked →',
-    observed:'Observed', forecast:'Official forecast', trend:'Trend reference', windArea:'Wind area', affectedCity:'Affected city', trackPlayback:'Track playback', radarPlayback:'Radar replay',
-    plainBrief:'Public brief', whatMeans:'What does this mean for me?', yourLocation:'Your location', locationNotSet:'Not set', useLocation:'Use location', pickOnMap:'Pick on map', clear:'Clear',
-    nearestDistance:'Nearest track distance', closestTime:'Closest approach', impactWindow:'Possible impact window', confidence:'Estimate confidence', profileAdvice:'Profile advice', chooseScenario:'Choose your activity',
-    professionalData:'Professional data', coordinates:'Centre coordinates', maxWind:'Maximum wind', pressure:'Central pressure', classification:'Classification', trackPoints:'Track points', primaryAgency:'Primary authority',
-    cityImpact:'City impact reference', nearbyCities:'Major cities near the track', methodology:'Data method', crossValidation:'Global agency cross-check',
-    methodText:'The responsible WMO regional centre is selected by basin, then local agencies and GDACS are used to compare location, freshness and impact information. Different wind standards are not averaged.',
-    disclaimer:'This is an information integration prototype. It does not replace official warnings, closures, evacuation orders or emergency instructions.',
-    themeSystem:'System', themeLight:'Light', themeDark:'Dark', direction:'Direction', closest:'Closest', adviceNow:'What to do', understandImpact:'Understand impacts',
-    noStorm:'No active system is available to display', demo:'Demo', live:'Official data', updated:'Updated', online:'Online', unavailable:'Unavailable', noData:'No data',
-    locationDenied:'Location was not authorised. You can pick a point on the map.', locationSaved:'Location stays in this browser only', pickHint:'Click your location on the map', low:'Low', medium:'Medium', high:'High',
-    wind:'Strong wind', rain:'Heavy rain', coast:'Coastal risk', windLow:'Direct wind risk is currently low; monitor track changes', windMedium:'Outer winds may affect commuting and outdoor activity', windHigh:'Strong-wind impacts are possible; reduce unnecessary travel',
-    rainLow:'Direct rain risk is currently low', rainMedium:'Watch for downpours, ponding and travel delays', rainHigh:'Prepare for flooding, flash floods and landslides',
-    coastLow:'Direct coastal risk is currently low', coastMedium:'Coasts, ports and marine activity should monitor waves', coastHigh:'Stay away from the shoreline and follow surge or evacuation orders',
-    commute:'Commute', outdoor:'Outdoor', office:'Office', drive:'Driving', family:'Family care', coastProfile:'Coastal resident',
-    now:'Now', before:'Before impact', during:'During impact', noOfficialForecast:'Official forecast points are unavailable; the purple trend is directional only',
-    trackKindObserved:'Observed history', trackKindForecast:'Official forecast', trackKindTrend:'Non-official trend reference', radarEmpty:'Radar frames are currently unavailable', weatherNoLogin:'NASA GIBS and the RainViewer public endpoint do not require sign-in', satelliteLoading:'Loading NASA satellite imagery', radarNoEcho:'Radar is on; transparent areas may mean no echo or no coverage', weatherFailed:'Layer failed to load; please try again later', sourceConnected:'Authoritative and supporting sources connected',
-    global:'Global', westPacific:'Western North Pacific', atlantic:'Atlantic', eastPacific:'Eastern/Central Pacific', northIndian:'North Indian Ocean', southwestIndian:'Southwest Indian Ocean', australia:'Australian region', southPacific:'South Pacific',
-    estimated:'Estimated', noNearbyCity:'No major city is inside the current screening range', km:'km', hours:'hours', sourceMethod:'Primary authority first; other sources are cross-checks', details:'Details', systems:'Cyclones', historyReference:'Historical context', similarStorms:'Which past cyclones were similar?', referenceOnly:'Context only', historyLead:'Cases are screened by track direction, intensity and impact area to explain risk types—not to predict a repeat.', historyNotForecast:'Historical similarity is not a forecast', historyCaveat:'Size, speed, tide, terrain and preparedness can change the outcome. Current official forecasts always take priority.',
-  },
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const DEG=Math.PI/180;
+const LANG_NAMES={zh:'中文',en:'English',ja:'日本語',ko:'한국어',es:'Español',fr:'Français'};
+const T={
+zh:{tagline:'全球热带气旋与个人影响',connecting:'正在连接权威来源',connected:'权威与辅助来源已连接',appearance:'外观',systems:'气旋',focus:'聚焦',layers:'图层',details:'详情',activeSystems:'活跃系统',systemsWorldwide:'个全球系统',showDemo:'显示演示系统',demoExplain:'没有官方活动系统时用于体验功能',authority:'所属权威机构',officialSite:'官网 ↗',publicBrief:'公众简报',direction:'移动方向',maxWind:'最大风速',pressure:'中心气压',updated:'更新时间',personalImpact:'个人影响',whatMeans:'这对我意味着什么？',locationNotSet:'尚未设置',useLocation:'使用定位',pickOnMap:'地图点选',clear:'清除',nearestDistance:'距路径最近',closestTime:'预计最接近',impactWindow:'可能影响时段',confidence:'估算可信度',historicalReference:'历史参考',similarCyclones:'相似气旋',historyDisclaimer:'历史相似仅用于理解风险，不代表本次结果相同。',professionalData:'专业数据',dataSources:'数据与来源',coordinates:'中心坐标',classification:'强度分类',trackPoints:'路径节点',primaryAgency:'主权威机构',mapLayers:'地图图层',weatherLayers:'气象与风险图层',cycloneStructure:'气旋结构',cycloneStructureNote:'按风速、气压和风圈绘制',trackLayer:'路径与节点',trackLayerNote:'实况、官方预报和趋势参考',windLayer:'风圈',windLayerNote:'无官方半径时明确标记估算',cityLayer:'主要城市',cityLayerNote:'底图不显示国家标签',cloudLayer:'云量',precipLayer:'降水',weatherNote:'云量和降水来自数值天气模式，不是地面雷达回波。区域官方雷达入口位于详情页。',observed:'实况',forecast:'官方预报',trend:'趋势参考',windArea:'风圈',themeSystem:'跟随系统',themeLight:'浅色',themeDark:'深色',global:'全球',westPacific:'西北太平洋',atlantic:'大西洋',eastPacific:'东北/中太平洋',northIndian:'北印度洋',southwestIndian:'西南印度洋',australian:'澳大利亚区域',southPacific:'南太平洋',noStorm:'当前没有可显示的活动系统',demo:'演示',official:'官方数据',locationSaved:'位置只保存在此浏览器',locationDenied:'无法取得定位，可在地图上点选',pickHint:'请在地图上点击你的位置',low:'较低',medium:'中等',high:'较高',wind:'大风',rain:'强降雨',coast:'沿海风险',windLow:'当前距离较远，继续关注路径变化',windMedium:'外围阵风可能影响通勤和户外活动',windHigh:'可能进入强风影响范围，减少不必要外出',rainLow:'当前直接降雨风险较低',rainMedium:'关注短时强降雨、积水和交通延误',rainHigh:'准备应对暴雨、内涝和山洪地质灾害',coastLow:'当前沿海直接风险较低',coastMedium:'沿海、港口和海上活动需关注风浪',coastHigh:'避免海边观浪并服从风暴潮或撤离指令',estimated:'估算',noForecast:'官方预报节点暂不可用，紫色趋势仅作方向参考',noAnalog:'路径信息不足，暂不能匹配历史案例',pastImpact:'历史主要影响',lesson:'可参考经验',overlayTrack:'叠加历史路径',removeOverlay:'移除叠加',similarPath:'路径方向相似',similarIntensity:'强度区间相近',similarRegion:'影响区域接近',weatherLoading:'正在读取云量与降水',weatherReady:'云量与降水数据已更新',weatherFailed:'天气模式数据暂不可用',regionalRadar:'区域官方雷达/卫星',currentTime:'当前节点',sourceMethod:'主权威机构优先，其他来源仅作交叉核对'},
+en:{tagline:'Global tropical cyclones and personal impact',connecting:'Connecting authoritative sources',connected:'Authoritative and supporting sources connected',appearance:'Appearance',systems:'Cyclones',focus:'Focus',layers:'Layers',details:'Details',activeSystems:'Active systems',systemsWorldwide:'systems worldwide',showDemo:'Show demo systems',demoExplain:'Explore features when no official active system is available',authority:'Responsible authority',officialSite:'Official site ↗',publicBrief:'Public brief',direction:'Movement',maxWind:'Maximum wind',pressure:'Central pressure',updated:'Updated',personalImpact:'Personal impact',whatMeans:'What does this mean for me?',locationNotSet:'Not set',useLocation:'Use location',pickOnMap:'Pick on map',clear:'Clear',nearestDistance:'Nearest track distance',closestTime:'Closest approach',impactWindow:'Possible impact window',confidence:'Estimate confidence',historicalReference:'Historical reference',similarCyclones:'Similar cyclones',historyDisclaimer:'Historical similarity explains risk; it does not predict the same outcome.',professionalData:'Professional data',dataSources:'Data and sources',coordinates:'Centre coordinates',classification:'Classification',trackPoints:'Track points',primaryAgency:'Primary authority',mapLayers:'Map layers',weatherLayers:'Weather and risk layers',cycloneStructure:'Cyclone structure',cycloneStructureNote:'Driven by wind, pressure and wind radii',trackLayer:'Track and points',trackLayerNote:'Observed, official forecast and trend reference',windLayer:'Wind radii',windLayerNote:'Estimates are labelled when official radii are absent',cityLayer:'Major cities',cityLayerNote:'The basemap has no country labels',cloudLayer:'Cloud cover',precipLayer:'Precipitation',weatherNote:'Cloud and precipitation are model fields, not ground-radar echoes. Regional official radar links are in Details.',observed:'Observed',forecast:'Official forecast',trend:'Trend reference',windArea:'Wind radii',themeSystem:'System',themeLight:'Light',themeDark:'Dark',global:'Global',westPacific:'Western North Pacific',atlantic:'Atlantic',eastPacific:'Eastern/Central Pacific',northIndian:'North Indian Ocean',southwestIndian:'Southwest Indian Ocean',australian:'Australian region',southPacific:'South Pacific',noStorm:'No active system is available',demo:'Demo',official:'Official data',locationSaved:'Location stays in this browser',locationDenied:'Location unavailable; pick a point on the map',pickHint:'Click your location on the map',low:'Low',medium:'Medium',high:'High',wind:'Strong wind',rain:'Heavy rain',coast:'Coastal risk',windLow:'Direct wind risk is currently low; monitor track changes',windMedium:'Outer winds may affect travel and outdoor activity',windHigh:'Strong-wind impacts are possible; reduce unnecessary travel',rainLow:'Direct rain risk is currently low',rainMedium:'Watch for downpours, ponding and travel delays',rainHigh:'Prepare for flooding, flash floods and landslides',coastLow:'Direct coastal risk is currently low',coastMedium:'Coasts, ports and marine activity should monitor waves',coastHigh:'Stay away from the shoreline and follow surge or evacuation orders',estimated:'Estimated',noForecast:'Official forecast points are unavailable; the purple trend is directional only',noAnalog:'Not enough track information for historical matching',pastImpact:'Past impact',lesson:'Useful lesson',overlayTrack:'Overlay historical track',removeOverlay:'Remove overlay',similarPath:'Similar track direction',similarIntensity:'Similar intensity range',similarRegion:'Similar impact region',weatherLoading:'Loading cloud and precipitation fields',weatherReady:'Cloud and precipitation fields updated',weatherFailed:'Weather-model fields are unavailable',regionalRadar:'Regional official radar/satellite',currentTime:'Current point',sourceMethod:'Primary authority first; other sources are cross-checks'},
+ja:{tagline:'世界の熱帯低気圧と個人影響',connecting:'公的情報源に接続中',connected:'公的・補助情報源に接続済み',appearance:'外観',systems:'サイクロン',focus:'中心へ',layers:'レイヤー',details:'詳細',activeSystems:'活動中',systemsWorldwide:'個の世界システム',showDemo:'デモを表示',demoExplain:'公式の活動中システムがない場合に機能を体験',authority:'担当機関',officialSite:'公式サイト ↗',publicBrief:'一般向け概要',direction:'移動',maxWind:'最大風速',pressure:'中心気圧',updated:'更新',personalImpact:'個人への影響',whatMeans:'自分への影響は？',locationNotSet:'未設定',useLocation:'位置情報',pickOnMap:'地図で選択',clear:'消去',nearestDistance:'経路までの最短距離',closestTime:'最接近予想',impactWindow:'影響の可能性',confidence:'推定信頼度',historicalReference:'過去の参考',similarCyclones:'類似サイクロン',historyDisclaimer:'過去の類似性はリスク理解用で、同じ結果を予測するものではありません。',professionalData:'専門データ',dataSources:'データと情報源',coordinates:'中心座標',classification:'分類',trackPoints:'経路点',primaryAgency:'主担当機関',mapLayers:'地図レイヤー',weatherLayers:'気象・リスクレイヤー',cycloneStructure:'サイクロン構造',cycloneStructureNote:'風速・気圧・強風域で描画',trackLayer:'経路と点',trackLayerNote:'実況・公式予報・傾向参考',windLayer:'強風域',windLayerNote:'公式値がない場合は推定表示',cityLayer:'主要都市',cityLayerNote:'国名を表示しない地図',cloudLayer:'雲量',precipLayer:'降水',weatherNote:'雲量と降水は数値予報であり、地上レーダー反射ではありません。',observed:'実況',forecast:'公式予報',trend:'傾向参考',windArea:'強風域',themeSystem:'システム',themeLight:'ライト',themeDark:'ダーク',global:'世界',westPacific:'北西太平洋',atlantic:'大西洋',eastPacific:'東部・中部太平洋',northIndian:'北インド洋',southwestIndian:'南西インド洋',australian:'豪州域',southPacific:'南太平洋',noStorm:'表示できる活動中システムはありません',demo:'デモ',official:'公式データ',locationSaved:'位置はこのブラウザ内だけに保存されます',locationDenied:'位置情報を取得できません。地図で選択してください',pickHint:'地図上で位置をクリックしてください',low:'低',medium:'中',high:'高',wind:'強風',rain:'大雨',coast:'沿岸リスク',estimated:'推定',noForecast:'公式予報点がないため、紫線は方向参考のみです',noAnalog:'経路情報が不足しています',pastImpact:'過去の影響',lesson:'参考点',overlayTrack:'過去経路を表示',removeOverlay:'表示を削除',similarPath:'経路方向が類似',similarIntensity:'強度が類似',similarRegion:'影響地域が類似',weatherLoading:'雲量と降水を読込中',weatherReady:'雲量と降水を更新しました',weatherFailed:'気象モデルデータを利用できません',regionalRadar:'地域の公式レーダー・衛星',currentTime:'現在点',sourceMethod:'主担当機関を優先し、他は照合用'},
+ko:{tagline:'전 세계 열대저기압과 개인 영향',connecting:'공식 자료 연결 중',connected:'공식 및 보조 자료 연결됨',appearance:'화면',systems:'사이클론',focus:'초점',layers:'레이어',details:'상세',activeSystems:'활성 시스템',systemsWorldwide:'개 전 세계 시스템',showDemo:'데모 표시',demoExplain:'공식 활성 시스템이 없을 때 기능 체험',authority:'담당 기관',officialSite:'공식 사이트 ↗',publicBrief:'일반 브리핑',direction:'이동',maxWind:'최대 풍속',pressure:'중심 기압',updated:'업데이트',personalImpact:'개인 영향',whatMeans:'나에게 어떤 의미인가요?',locationNotSet:'미설정',useLocation:'위치 사용',pickOnMap:'지도 선택',clear:'지우기',nearestDistance:'경로 최단 거리',closestTime:'최접근 예상',impactWindow:'영향 가능 시간',confidence:'추정 신뢰도',historicalReference:'과거 참고',similarCyclones:'유사 사이클론',historyDisclaimer:'과거 유사성은 위험 이해용이며 동일한 결과를 예측하지 않습니다.',professionalData:'전문 데이터',dataSources:'데이터와 출처',coordinates:'중심 좌표',classification:'분류',trackPoints:'경로 지점',primaryAgency:'주요 기관',mapLayers:'지도 레이어',weatherLayers:'기상·위험 레이어',cycloneStructure:'사이클론 구조',cycloneStructureNote:'풍속·기압·강풍 반경 기반',trackLayer:'경로와 지점',trackLayerNote:'관측·공식 예보·추세 참고',windLayer:'강풍 반경',windLayerNote:'공식 값이 없으면 추정 표시',cityLayer:'주요 도시',cityLayerNote:'국가 라벨 없는 지도',cloudLayer:'운량',precipLayer:'강수',weatherNote:'운량과 강수는 수치예보이며 지상 레이더 반사가 아닙니다.',observed:'관측',forecast:'공식 예보',trend:'추세 참고',windArea:'강풍 반경',themeSystem:'시스템',themeLight:'라이트',themeDark:'다크',global:'전 세계',westPacific:'북서태평양',atlantic:'대서양',eastPacific:'동부/중부 태평양',northIndian:'북인도양',southwestIndian:'남서인도양',australian:'호주 해역',southPacific:'남태평양',noStorm:'표시할 활성 시스템이 없습니다',demo:'데모',official:'공식 데이터',locationSaved:'위치는 이 브라우저에만 저장됩니다',locationDenied:'위치를 가져올 수 없습니다. 지도에서 선택하세요',pickHint:'지도에서 위치를 클릭하세요',low:'낮음',medium:'보통',high:'높음',wind:'강풍',rain:'호우',coast:'해안 위험',estimated:'추정',noForecast:'공식 예보 지점이 없어 보라색 선은 방향 참고용입니다',noAnalog:'경로 정보가 부족합니다',pastImpact:'과거 영향',lesson:'참고점',overlayTrack:'과거 경로 겹치기',removeOverlay:'겹치기 제거',similarPath:'경로 방향 유사',similarIntensity:'강도 범위 유사',similarRegion:'영향 지역 유사',weatherLoading:'운량과 강수 불러오는 중',weatherReady:'운량과 강수 업데이트 완료',weatherFailed:'기상 모델 데이터를 사용할 수 없습니다',regionalRadar:'지역 공식 레이더/위성',currentTime:'현재 지점',sourceMethod:'주요 기관 우선, 기타 출처는 교차 확인'},
+es:{tagline:'Ciclones tropicales globales e impacto personal',connecting:'Conectando fuentes oficiales',connected:'Fuentes oficiales y auxiliares conectadas',appearance:'Apariencia',systems:'Ciclones',focus:'Centrar',layers:'Capas',details:'Detalles',activeSystems:'Sistemas activos',systemsWorldwide:'sistemas mundiales',showDemo:'Mostrar demostración',demoExplain:'Explorar funciones cuando no hay sistemas oficiales activos',authority:'Autoridad responsable',officialSite:'Sitio oficial ↗',publicBrief:'Resumen público',direction:'Movimiento',maxWind:'Viento máximo',pressure:'Presión central',updated:'Actualizado',personalImpact:'Impacto personal',whatMeans:'¿Qué significa para mí?',locationNotSet:'Sin configurar',useLocation:'Usar ubicación',pickOnMap:'Elegir en mapa',clear:'Borrar',nearestDistance:'Distancia mínima a la trayectoria',closestTime:'Máxima aproximación',impactWindow:'Ventana de impacto',confidence:'Confianza estimada',historicalReference:'Referencia histórica',similarCyclones:'Ciclones similares',historyDisclaimer:'La similitud histórica ayuda a entender el riesgo; no predice el mismo resultado.',professionalData:'Datos profesionales',dataSources:'Datos y fuentes',coordinates:'Coordenadas del centro',classification:'Clasificación',trackPoints:'Puntos de trayectoria',primaryAgency:'Autoridad principal',mapLayers:'Capas del mapa',weatherLayers:'Capas meteorológicas y de riesgo',cycloneStructure:'Estructura del ciclón',cycloneStructureNote:'Basada en viento, presión y radios',trackLayer:'Trayectoria y puntos',trackLayerNote:'Observado, pronóstico oficial y tendencia',windLayer:'Radios de viento',windLayerNote:'Las estimaciones se indican claramente',cityLayer:'Ciudades principales',cityLayerNote:'Mapa sin etiquetas de países',cloudLayer:'Nubosidad',precipLayer:'Precipitación',weatherNote:'Nubosidad y precipitación son campos de modelo, no ecos de radar terrestre.',observed:'Observado',forecast:'Pronóstico oficial',trend:'Tendencia',windArea:'Radios de viento',themeSystem:'Sistema',themeLight:'Claro',themeDark:'Oscuro',global:'Global',westPacific:'Pacífico noroccidental',atlantic:'Atlántico',eastPacific:'Pacífico oriental/central',northIndian:'Índico norte',southwestIndian:'Índico suroccidental',australian:'Región australiana',southPacific:'Pacífico sur',noStorm:'No hay sistemas activos para mostrar',demo:'Demo',official:'Datos oficiales',locationSaved:'La ubicación queda solo en este navegador',locationDenied:'No se pudo obtener la ubicación; elige un punto en el mapa',pickHint:'Haz clic en tu ubicación',low:'Bajo',medium:'Medio',high:'Alto',wind:'Viento fuerte',rain:'Lluvia intensa',coast:'Riesgo costero',estimated:'Estimado',noForecast:'No hay puntos oficiales; la línea morada es solo direccional',noAnalog:'Información de trayectoria insuficiente',pastImpact:'Impacto pasado',lesson:'Lección útil',overlayTrack:'Superponer trayectoria histórica',removeOverlay:'Quitar superposición',similarPath:'Dirección similar',similarIntensity:'Intensidad similar',similarRegion:'Región similar',weatherLoading:'Cargando nubosidad y precipitación',weatherReady:'Nubosidad y precipitación actualizadas',weatherFailed:'Datos del modelo no disponibles',regionalRadar:'Radar/satélite oficial regional',currentTime:'Punto actual',sourceMethod:'Autoridad principal primero; otras fuentes para contraste'},
+fr:{tagline:'Cyclones tropicaux mondiaux et impact personnel',connecting:'Connexion aux sources officielles',connected:'Sources officielles et complémentaires connectées',appearance:'Apparence',systems:'Cyclones',focus:'Centrer',layers:'Couches',details:'Détails',activeSystems:'Systèmes actifs',systemsWorldwide:'systèmes mondiaux',showDemo:'Afficher la démo',demoExplain:'Explorer les fonctions sans système officiel actif',authority:'Autorité responsable',officialSite:'Site officiel ↗',publicBrief:'Bulletin public',direction:'Déplacement',maxWind:'Vent maximal',pressure:'Pression centrale',updated:'Mise à jour',personalImpact:'Impact personnel',whatMeans:'Quel impact pour moi ?',locationNotSet:'Non défini',useLocation:'Utiliser la position',pickOnMap:'Choisir sur la carte',clear:'Effacer',nearestDistance:'Distance minimale à la trajectoire',closestTime:'Approche maximale',impactWindow:'Fenêtre d’impact',confidence:'Confiance estimée',historicalReference:'Référence historique',similarCyclones:'Cyclones similaires',historyDisclaimer:'La similarité historique aide à comprendre le risque, sans prédire le même résultat.',professionalData:'Données professionnelles',dataSources:'Données et sources',coordinates:'Coordonnées du centre',classification:'Classification',trackPoints:'Points de trajectoire',primaryAgency:'Autorité principale',mapLayers:'Couches cartographiques',weatherLayers:'Couches météo et risque',cycloneStructure:'Structure du cyclone',cycloneStructureNote:'Basée sur le vent, la pression et les rayons',trackLayer:'Trajectoire et points',trackLayerNote:'Observé, prévision officielle et tendance',windLayer:'Rayons de vent',windLayerNote:'Les estimations sont signalées',cityLayer:'Grandes villes',cityLayerNote:'Fond sans noms de pays',cloudLayer:'Nébulosité',precipLayer:'Précipitations',weatherNote:'Nébulosité et précipitations sont issues de modèles, pas d’échos radar au sol.',observed:'Observé',forecast:'Prévision officielle',trend:'Tendance',windArea:'Rayons de vent',themeSystem:'Système',themeLight:'Clair',themeDark:'Sombre',global:'Monde',westPacific:'Pacifique nord-ouest',atlantic:'Atlantique',eastPacific:'Pacifique est/central',northIndian:'Océan Indien nord',southwestIndian:'Océan Indien sud-ouest',australian:'Région australienne',southPacific:'Pacifique sud',noStorm:'Aucun système actif à afficher',demo:'Démo',official:'Données officielles',locationSaved:'La position reste dans ce navigateur',locationDenied:'Position indisponible ; choisissez un point sur la carte',pickHint:'Cliquez sur votre position',low:'Faible',medium:'Modéré',high:'Élevé',wind:'Vent fort',rain:'Pluie intense',coast:'Risque côtier',estimated:'Estimé',noForecast:'Pas de points officiels ; la ligne violette est directionnelle',noAnalog:'Trajectoire insuffisante',pastImpact:'Impact passé',lesson:'Leçon utile',overlayTrack:'Superposer la trajectoire historique',removeOverlay:'Retirer la superposition',similarPath:'Direction similaire',similarIntensity:'Intensité similaire',similarRegion:'Région similaire',weatherLoading:'Chargement de la nébulosité et des précipitations',weatherReady:'Nébulosité et précipitations mises à jour',weatherFailed:'Données de modèle indisponibles',regionalRadar:'Radar/satellite officiel régional',currentTime:'Point actuel',sourceMethod:'Autorité principale d’abord ; autres sources pour comparaison'}
 };
-
-const languageNames = { zh:'中文', en:'English', ja:'日本語', ko:'한국어', es:'Español', fr:'Français' };
-const languageStatic = {
-  ja: { cyclone3d:'動くサイクロン', publicView:'一般向け', proView:'専門表示', appearance:'外観', activeSystems:'活動中のシステム', systemsWorldwide:'個の全球システム', mapView:'地図', globeView:'地球', focusStorm:'台風に移動', viewWorld:'世界表示', layers:'レイヤー', plainBrief:'一般向け速報', whatMeans:'自分への影響は？', useLocation:'位置情報', pickOnMap:'地図で選択', clear:'削除', methodology:'データ手法', themeSystem:'システム', themeLight:'ライト', themeDark:'ダーク' },
-  ko: { cyclone3d:'동적 사이클론', publicView:'일반 보기', proView:'전문 보기', appearance:'화면', activeSystems:'활성 시스템', systemsWorldwide:'개 전 세계 시스템', mapView:'지도', globeView:'지구', focusStorm:'사이클론 보기', viewWorld:'전 세계', layers:'레이어', plainBrief:'일반 브리핑', whatMeans:'나에게 어떤 의미인가요?', useLocation:'위치 사용', pickOnMap:'지도 선택', clear:'지우기', methodology:'데이터 방법', themeSystem:'시스템', themeLight:'라이트', themeDark:'다크' },
-  es: { cyclone3d:'Ciclón animado', publicView:'Vista pública', proView:'Vista profesional', appearance:'Apariencia', activeSystems:'Sistemas activos', systemsWorldwide:'sistemas globales', mapView:'Mapa', globeView:'Globo', focusStorm:'Enfocar ciclón', viewWorld:'Ver mundo', layers:'Capas', plainBrief:'Resumen público', whatMeans:'¿Qué significa para mí?', useLocation:'Usar ubicación', pickOnMap:'Elegir en mapa', clear:'Borrar', methodology:'Método de datos', themeSystem:'Sistema', themeLight:'Claro', themeDark:'Oscuro' },
-  fr: { cyclone3d:'Cyclone animé', publicView:'Vue publique', proView:'Vue professionnelle', appearance:'Apparence', activeSystems:'Systèmes actifs', systemsWorldwide:'systèmes mondiaux', mapView:'Carte', globeView:'Globe', focusStorm:'Centrer le cyclone', viewWorld:'Voir le monde', layers:'Couches', plainBrief:'Bulletin public', whatMeans:'Quel impact pour moi ?', useLocation:'Utiliser la position', pickOnMap:'Choisir sur la carte', clear:'Effacer', methodology:'Méthode des données', themeSystem:'Système', themeLight:'Clair', themeDark:'Sombre' },
-};
-
-const agencyDirectory = {
-  'western-north-pacific': { name:'JMA / RSMC Tokyo', url:'https://www.jma.go.jp/bosai/map.html#contents=typhoon', description:'西北太平洋和南海的 WMO 区域专业气象中心。', descriptionEn:'WMO Regional Specialized Meteorological Centre for the western North Pacific and South China Sea.' },
-  atlantic: { name:'NOAA / NHC Miami', url:'https://www.nhc.noaa.gov/', description:'大西洋热带气旋官方分析、预报、风圈和警报产品。', descriptionEn:'Official Atlantic tropical cyclone analysis, forecasts, wind fields and warnings.' },
-  'eastern-pacific': { name:'NOAA / NHC & CPHC', url:'https://www.nhc.noaa.gov/', description:'东北和中太平洋由 NHC 与 CPHC 负责。', descriptionEn:'NHC and CPHC cover the eastern and central North Pacific.' },
-  'north-indian': { name:'IMD / RSMC New Delhi', url:'https://rsmcnewdelhi.imd.gov.in/', description:'北印度洋区域专业气象中心。', descriptionEn:'Regional Specialized Meteorological Centre for the North Indian Ocean.' },
-  'southwest-indian': { name:'Météo-France / RSMC La Réunion', url:'https://meteofrance.re/fr/cyclone', description:'西南印度洋热带气旋专业中心。', descriptionEn:'Tropical cyclone centre for the southwest Indian Ocean.' },
-  australian: { name:'Australian BoM / regional TCWCs', url:'https://www.bom.gov.au/cyclone/', description:'澳大利亚周边由 BoM、雅加达和莫尔兹比港等中心协作。', descriptionEn:'The Australian region is covered by BoM and neighbouring tropical cyclone warning centres.' },
-  'south-pacific': { name:'RSMC Nadi / TCWC Wellington', url:'https://www.met.gov.fj/', description:'南太平洋由斐济 Nadi 与新西兰 Wellington 等中心负责。', descriptionEn:'The South Pacific is covered by RSMC Nadi and TCWC Wellington.' },
-  global: { name:'WMO tropical cyclone network', url:'https://public.wmo.int/topics/tropical-cyclone', description:'按海域使用对应的区域专业中心和国家气象机构。', descriptionEn:'The responsible regional centre and national service are selected by basin.' },
-};
-
-const cities = [
-  ['Tokyo','Japan',35.68,139.69],['Osaka','Japan',34.69,135.50],['Naha','Japan',26.21,127.68],['Taipei','Taiwan area',25.03,121.56],['Kaohsiung','Taiwan area',22.63,120.30],['Hong Kong','China',22.32,114.17],['Shanghai','China',31.23,121.47],['Fuzhou','China',26.07,119.30],['Xiamen','China',24.48,118.09],['Guangzhou','China',23.13,113.26],['Manila','Philippines',14.60,120.98],['Cebu','Philippines',10.32,123.90],['Hanoi','Vietnam',21.03,105.85],['Da Nang','Vietnam',16.05,108.20],['Busan','South Korea',35.18,129.08],['Seoul','South Korea',37.57,126.98],
-  ['Miami','United States',25.76,-80.19],['Tampa','United States',27.95,-82.46],['New Orleans','United States',29.95,-90.07],['Houston','United States',29.76,-95.37],['Charleston','United States',32.78,-79.93],['New York','United States',40.71,-74.01],['Halifax','Canada',44.65,-63.57],['Bermuda','Bermuda',32.30,-64.78],['Havana','Cuba',23.11,-82.37],['San Juan','Puerto Rico',18.47,-66.11],['Nassau','Bahamas',25.05,-77.35],['Cancún','Mexico',21.16,-86.85],['Acapulco','Mexico',16.85,-99.91],['Honolulu','United States',21.31,-157.86],
-  ['Kolkata','India',22.57,88.36],['Chennai','India',13.08,80.27],['Mumbai','India',19.08,72.88],['Dhaka','Bangladesh',23.81,90.41],['Chattogram','Bangladesh',22.36,91.78],['Yangon','Myanmar',16.87,96.20],['Karachi','Pakistan',24.86,67.01],['Muscat','Oman',23.59,58.41],
-  ['Antananarivo','Madagascar',-18.88,47.51],['Toamasina','Madagascar',-18.15,49.40],['Maputo','Mozambique',-25.97,32.58],['Port Louis','Mauritius',-20.16,57.50],['Saint-Denis','Réunion',-20.88,55.45],
-  ['Darwin','Australia',-12.46,130.84],['Cairns','Australia',-16.92,145.77],['Brisbane','Australia',-27.47,153.03],['Perth','Australia',-31.95,115.86],['Jakarta','Indonesia',-6.21,106.85],['Dili','Timor-Leste',-8.56,125.57],['Port Moresby','Papua New Guinea',-9.44,147.18],
-  ['Suva','Fiji',-18.14,178.44],['Nadi','Fiji',-17.78,177.42],['Nouméa','New Caledonia',-22.28,166.46],['Port Vila','Vanuatu',-17.73,168.32],['Apia','Samoa',-13.83,-171.75],['Auckland','New Zealand',-36.85,174.76]
-].map(([name,country,lat,lon]) => ({name,country,lat,lon}));
-
-
-const geographyLabels = [
-  {id:'china',zh:'中国',en:'China',lat:35.2,lon:103.5,kind:'country'},
-  {id:'japan',zh:'日本',en:'Japan',lat:37.2,lon:138.0,kind:'country'},
-  {id:'korea',zh:'朝鲜半岛',en:'Korean Peninsula',lat:38.2,lon:127.3,kind:'region'},
-  {id:'taiwan-area',zh:'台湾地区',en:'Taiwan area',lat:23.75,lon:121.0,kind:'region'},
-  {id:'philippines',zh:'菲律宾',en:'Philippines',lat:12.4,lon:122.2,kind:'country'},
-  {id:'vietnam',zh:'越南',en:'Vietnam',lat:16.2,lon:107.7,kind:'country'},
-  {id:'indonesia',zh:'印度尼西亚',en:'Indonesia',lat:-2.0,lon:118.0,kind:'country'},
-  {id:'australia',zh:'澳大利亚',en:'Australia',lat:-25.0,lon:134.0,kind:'country'},
-  {id:'india',zh:'印度',en:'India',lat:22.5,lon:79.0,kind:'country'},
-  {id:'usa',zh:'美国',en:'United States',lat:39.0,lon:-98.0,kind:'country'},
-  {id:'mexico',zh:'墨西哥',en:'Mexico',lat:23.0,lon:-102.0,kind:'country'},
-  {id:'caribbean',zh:'加勒比地区',en:'Caribbean',lat:18.0,lon:-74.0,kind:'region'},
-  {id:'brazil',zh:'巴西',en:'Brazil',lat:-10.0,lon:-52.0,kind:'country'},
-  {id:'madagascar',zh:'马达加斯加',en:'Madagascar',lat:-20.0,lon:47.0,kind:'country'},
-  {id:'southern-africa',zh:'非洲南部',en:'Southern Africa',lat:-24.0,lon:25.0,kind:'region'},
-  {id:'fiji',zh:'斐济',en:'Fiji',lat:-17.8,lon:178.1,kind:'country'},
-  {id:'new-zealand',zh:'新西兰',en:'New Zealand',lat:-41.0,lon:174.0,kind:'country'}
+function tr(k){return T[state.lang]?.[k]??T.en[k]??k;}
+const state={lang:localStorage.getItem('tv17-lang')||'zh',theme:localStorage.getItem('tv17-theme')||'system',storms:[],sources:[],selected:null,basin:'global',demo:localStorage.getItem('tv17-demo')!=='false',map:null,mapReady:false,playProgress:0,playing:false,speed:1,raf:0,lastTs:0,userLocation:JSON.parse(localStorage.getItem('tv17-location')||'null'),pickLocation:false,layers:{cyclone:true,track:true,wind:true,cities:true,cloud:false,precip:false},weather:null,weatherKey:'',activeAnalog:null,openPanel:null};
+const agencyDirectory={
+'western-north-pacific':{name:'JMA / RSMC Tokyo',url:'https://www.jma.go.jp/bosai/map.html#contents=typhoon',zh:'西北太平洋和南海的 WMO 区域专业气象中心。',en:'WMO Regional Specialized Meteorological Centre for the western North Pacific and South China Sea.'},atlantic:{name:'NOAA / NHC Miami',url:'https://www.nhc.noaa.gov/',zh:'大西洋热带气旋官方分析、预报和警报中心。',en:'Official Atlantic tropical cyclone analysis, forecasts and warnings.'},'eastern-pacific':{name:'NOAA / NHC & CPHC',url:'https://www.nhc.noaa.gov/',zh:'东北和中太平洋由 NHC 与 CPHC 负责。',en:'NHC and CPHC cover the eastern and central North Pacific.'},'north-indian':{name:'IMD / RSMC New Delhi',url:'https://rsmcnewdelhi.imd.gov.in/',zh:'北印度洋区域专业气象中心。',en:'Regional Specialized Meteorological Centre for the North Indian Ocean.'},'southwest-indian':{name:'Météo-France La Réunion',url:'https://meteofrance.re/fr/cyclone',zh:'西南印度洋区域专业气象中心。',en:'Regional cyclone centre for the southwest Indian Ocean.'},australian:{name:'Australian BoM / TCWCs',url:'https://www.bom.gov.au/cyclone/',zh:'澳大利亚及周边区域气旋预警中心。',en:'Cyclone warning centres for the Australian region.'},'south-pacific':{name:'RSMC Nadi / Wellington',url:'https://www.met.gov.fj/',zh:'南太平洋区域气旋预警中心。',en:'Regional tropical cyclone centres for the South Pacific.'},global:{name:'WMO tropical cyclone network',url:'https://public.wmo.int/topics/tropical-cyclone',zh:'按海域使用相应区域专业中心。',en:'The responsible regional centre is selected by basin.'}};
+const cities=[
+['Tokyo','东京',35.68,139.69],['Osaka','大阪',34.69,135.50],['Naha','那霸',26.21,127.68],['Taipei','台北',25.03,121.56],['Kaohsiung','高雄',22.63,120.30],['Hong Kong','香港',22.32,114.17],['Shanghai','上海',31.23,121.47],['Fuzhou','福州',26.07,119.30],['Xiamen','厦门',24.48,118.09],['Guangzhou','广州',23.13,113.26],['Manila','马尼拉',14.60,120.98],['Cebu','宿务',10.32,123.90],['Hanoi','河内',21.03,105.85],['Da Nang','岘港',16.05,108.20],['Busan','釜山',35.18,129.08],['Seoul','首尔',37.57,126.98],
+['Miami','迈阿密',25.76,-80.19],['Tampa','坦帕',27.95,-82.46],['New Orleans','新奥尔良',29.95,-90.07],['Houston','休斯敦',29.76,-95.37],['Halifax','哈利法克斯',44.65,-63.57],['Havana','哈瓦那',23.11,-82.37],['San Juan','圣胡安',18.47,-66.11],['Nassau','拿骚',25.05,-77.35],['Cancún','坎昆',21.16,-86.85],['Honolulu','檀香山',21.31,-157.86],
+['Kolkata','加尔各答',22.57,88.36],['Chennai','金奈',13.08,80.27],['Mumbai','孟买',19.08,72.88],['Dhaka','达卡',23.81,90.41],['Chattogram','吉大港',22.36,91.78],['Yangon','仰光',16.87,96.20],['Karachi','卡拉奇',24.86,67.01],['Muscat','马斯喀特',23.59,58.41],
+['Antananarivo','塔那那利佛',-18.88,47.51],['Toamasina','图阿马西纳',-18.15,49.40],['Maputo','马普托',-25.97,32.58],['Port Louis','路易港',-20.16,57.50],['Saint-Denis','圣但尼',-20.88,55.45],['Darwin','达尔文',-12.46,130.84],['Cairns','凯恩斯',-16.92,145.77],['Brisbane','布里斯班',-27.47,153.03],['Jakarta','雅加达',-6.21,106.85],['Port Moresby','莫尔兹比港',-9.44,147.18],['Suva','苏瓦',-18.14,178.44],['Nadi','楠迪',-17.78,177.42],['Nouméa','努美阿',-22.28,166.46],['Port Vila','维拉港',-17.73,168.32],['Auckland','奥克兰',-36.85,174.76]
+].map(([en,zh,lat,lon])=>({en,zh,lat,lon}));
+const now=Date.now(),hours=n=>new Date(now+n*3600000).toISOString();
+const demoStorms=[
+{id:'demo-bavi',name:'BAVI',localName:'巴威',demo:true,basin:'Western North Pacific',classification:'Typhoon',lat:23.9,lon:125.2,windMs:42,pressureHpa:955,updatedAt:hours(0),sources:['demo','jma'],track:[{lat:12.5,lon:152,time:hours(-72),windMs:16,pressureHpa:998},{lat:14,lon:148,time:hours(-60),windMs:22,pressureHpa:990},{lat:16.2,lon:143,time:hours(-48),windMs:28,pressureHpa:980},{lat:18.5,lon:137,time:hours(-36),windMs:34,pressureHpa:970},{lat:21,lon:130.5,time:hours(-18),windMs:39,pressureHpa:960},{lat:23.9,lon:125.2,time:hours(0),windMs:42,pressureHpa:955},{lat:26.2,lon:122.8,time:hours(12),windMs:41,pressureHpa:960,forecast:true},{lat:29.2,lon:121,time:hours(24),windMs:35,pressureHpa:970,forecast:true},{lat:33,lon:120,time:hours(48),windMs:24,pressureHpa:985,forecast:true}]},
+{id:'demo-atlantic',name:'ALPHA',demo:true,basin:'Atlantic',classification:'Hurricane',lat:22.1,lon:-62.5,windMs:39,pressureHpa:965,updatedAt:hours(0),sources:['demo','nhc'],track:[{lat:12.8,lon:-38,time:hours(-72),windMs:18,pressureHpa:998},{lat:15.2,lon:-45,time:hours(-48),windMs:25,pressureHpa:988},{lat:18.3,lon:-54,time:hours(-24),windMs:33,pressureHpa:975},{lat:22.1,lon:-62.5,time:hours(0),windMs:39,pressureHpa:965},{lat:25.5,lon:-69,time:hours(24),windMs:42,pressureHpa:958,forecast:true},{lat:29,lon:-73,time:hours(48),windMs:37,pressureHpa:968,forecast:true}]},
+{id:'demo-indian',name:'NIRA',demo:true,basin:'North Indian Ocean',classification:'Severe Cyclonic Storm',lat:17.8,lon:87,windMs:34,pressureHpa:972,updatedAt:hours(0),sources:['demo','imd'],track:[{lat:9,lon:91,time:hours(-54),windMs:18,pressureHpa:996},{lat:12,lon:89.7,time:hours(-36),windMs:24,pressureHpa:988},{lat:15,lon:88.2,time:hours(-18),windMs:30,pressureHpa:980},{lat:17.8,lon:87,time:hours(0),windMs:34,pressureHpa:972},{lat:20.3,lon:86,time:hours(18),windMs:31,pressureHpa:980,forecast:true},{lat:22.5,lon:85,time:hours(36),windMs:22,pressureHpa:990,forecast:true}]},
+{id:'demo-pacific',name:'KIRI',demo:true,basin:'South Pacific',classification:'Tropical Cyclone',lat:-18.5,lon:171.8,windMs:31,pressureHpa:978,updatedAt:hours(0),sources:['demo','nadi'],track:[{lat:-13.2,lon:179,time:hours(-48),windMs:18,pressureHpa:995},{lat:-15.4,lon:176.5,time:hours(-24),windMs:25,pressureHpa:986},{lat:-18.5,lon:171.8,time:hours(0),windMs:31,pressureHpa:978},{lat:-21.5,lon:168,time:hours(24),windMs:29,pressureHpa:983,forecast:true},{lat:-25,lon:164,time:hours(48),windMs:22,pressureHpa:990,forecast:true}]}
 ];
-function geographyText(item){
-  const localized={ja:{'taiwan-area':'台湾地域'},ko:{'taiwan-area':'대만 지역'},es:{'taiwan-area':'Área de Taiwán'},fr:{'taiwan-area':'Zone de Taïwan'}};
-  return localized[state.lang]?.[item.id] || (state.lang==='zh'?item.zh:item.en);
-}
-
-const now = Date.now();
-const hours = (n) => new Date(now + n * 3600_000).toISOString();
-const demoStorms = [
-  { id:'demo-bavi', name:'BAVI', localName:'巴威', number:'2609', demo:true, basin:'Western North Pacific', classification:'Typhoon', lat:23.9, lon:125.2, windMs:42, pressureHpa:955, updatedAt:hours(0), sources:['demo','jma'], track:[
-    {lat:12.5,lon:152,time:hours(-72),windMs:16,pressureHpa:998,forecast:false,source:'demo'}, {lat:14,lon:148,time:hours(-60),windMs:22,pressureHpa:990,forecast:false,source:'demo'}, {lat:16.2,lon:143,time:hours(-48),windMs:28,pressureHpa:980,forecast:false,source:'demo'}, {lat:18.5,lon:137,time:hours(-36),windMs:34,pressureHpa:970,forecast:false,source:'demo'}, {lat:21,lon:130.5,time:hours(-18),windMs:39,pressureHpa:960,forecast:false,source:'demo'}, {lat:23.9,lon:125.2,time:hours(0),windMs:42,pressureHpa:955,forecast:false,source:'demo'},
-    {lat:26.2,lon:122.8,time:hours(12),windMs:41,pressureHpa:960,forecast:true,source:'demo'}, {lat:29.2,lon:121,time:hours(24),windMs:35,pressureHpa:970,forecast:true,source:'demo'}, {lat:33,lon:120,time:hours(48),windMs:24,pressureHpa:985,forecast:true,source:'demo'} ] },
-  { id:'demo-atlantic', name:'ALPHA', demo:true, basin:'Atlantic', classification:'Hurricane', lat:22.1, lon:-62.5, windMs:39, pressureHpa:965, updatedAt:hours(0), sources:['demo','nhc'], track:[
-    {lat:12.8,lon:-38,time:hours(-72),windMs:18,pressureHpa:998,forecast:false,source:'demo'}, {lat:15.2,lon:-45,time:hours(-48),windMs:25,pressureHpa:988,forecast:false,source:'demo'}, {lat:18.3,lon:-54,time:hours(-24),windMs:33,pressureHpa:975,forecast:false,source:'demo'}, {lat:22.1,lon:-62.5,time:hours(0),windMs:39,pressureHpa:965,forecast:false,source:'demo'}, {lat:25.5,lon:-69,time:hours(24),windMs:42,pressureHpa:958,forecast:true,source:'demo'}, {lat:29,lon:-73,time:hours(48),windMs:37,pressureHpa:968,forecast:true,source:'demo'} ] },
-  { id:'demo-indian', name:'NIRA', demo:true, basin:'North Indian Ocean', classification:'Severe Cyclonic Storm', lat:17.8, lon:87.0, windMs:34, pressureHpa:972, updatedAt:hours(0), sources:['demo','imd'], track:[
-    {lat:9,lon:91,time:hours(-54),windMs:18,pressureHpa:996,forecast:false,source:'demo'}, {lat:12,lon:89.7,time:hours(-36),windMs:24,pressureHpa:988,forecast:false,source:'demo'}, {lat:15,lon:88.2,time:hours(-18),windMs:30,pressureHpa:980,forecast:false,source:'demo'}, {lat:17.8,lon:87,time:hours(0),windMs:34,pressureHpa:972,forecast:false,source:'demo'}, {lat:20.3,lon:86,time:hours(18),windMs:31,pressureHpa:980,forecast:true,source:'demo'}, {lat:22.5,lon:85,time:hours(36),windMs:22,pressureHpa:990,forecast:true,source:'demo'} ] },
-  { id:'demo-south-pacific', name:'KIRI', demo:true, basin:'South Pacific', classification:'Tropical Cyclone', lat:-18.5, lon:171.8, windMs:31, pressureHpa:978, updatedAt:hours(0), sources:['demo','nadi'], track:[
-    {lat:-13.2,lon:179,time:hours(-48),windMs:18,pressureHpa:995,forecast:false,source:'demo'}, {lat:-15.4,lon:176.5,time:hours(-24),windMs:25,pressureHpa:986,forecast:false,source:'demo'}, {lat:-18.5,lon:171.8,time:hours(0),windMs:31,pressureHpa:978,forecast:false,source:'demo'}, {lat:-21.5,lon:168,time:hours(24),windMs:29,pressureHpa:983,forecast:true,source:'demo'}, {lat:-25,lon:164,time:hours(48),windMs:22,pressureHpa:990,forecast:true,source:'demo'} ] },
+const analogs=[
+{id:'morakot',name:'MORAKOT',zh:'莫拉克',year:2009,basin:'Western North Pacific',peak:40,impact:'移动缓慢并带来长时间强降雨，山区洪水和滑坡风险突出。',lesson:'不要只看中心风力；移动速度、地形和持续降雨可能更危险。',track:[{lat:17.5,lon:139},{lat:19.2,lon:133},{lat:21.2,lon:128},{lat:22.8,lon:124.5},{lat:23.5,lon:121},{lat:24,lon:118}]},
+{id:'mangkhut',name:'MANGKHUT',zh:'山竹',year:2018,basin:'Western North Pacific',peak:55,impact:'强风、巨浪和风暴潮对沿海及高层建筑环境造成显著影响。',lesson:'沿海风险不能只看中心路径，潮位和海岸暴露度同样关键。',track:[{lat:13.5,lon:145},{lat:14.7,lon:139},{lat:16,lon:132},{lat:17.5,lon:125},{lat:19.2,lon:119},{lat:21.5,lon:113}]},
+{id:'doksuri',name:'DOKSURI',zh:'杜苏芮',year:2023,basin:'Western North Pacific',peak:50,impact:'强降雨、沿海大风和内陆洪涝影响范围较广。',lesson:'登陆后风险不会立即结束，内陆洪水可能滞后发展。',track:[{lat:10.5,lon:136},{lat:13,lon:131},{lat:16,lon:126},{lat:19.5,lon:122.5},{lat:23,lon:119.5},{lat:25,lon:117.5}]},
+{id:'irma',name:'IRMA',zh:'艾尔玛',year:2017,basin:'Atlantic',peak:80,impact:'加勒比和佛罗里达经历破坏性大风、风暴潮与长期停电。',lesson:'应同时关注风圈、风暴潮和基础设施中断。',track:[{lat:16,lon:-45},{lat:17,lon:-52},{lat:18,lon:-60},{lat:20,lon:-67},{lat:23,lon:-74},{lat:26,lon:-80}]}
 ];
-
-const historicalAnalogCatalog = [
-  {id:'morakot-2009',name:'MORAKOT',year:2009,localZh:'莫拉克',basin:'Western North Pacific',peakWind:40,regionZh:'台湾地区及华南沿海',regionEn:'Taiwan area and the South China coast',impactZh:'移动较慢并带来长时间强降雨，山区洪水和滑坡风险突出。',impactEn:'Slow movement contributed to prolonged heavy rain and serious flood and landslide risk.',lessonZh:'不要只看中心风力；移动速度、地形和持续降雨可能成为更主要的危险。',lessonEn:'Do not focus only on centre wind; forward speed, terrain and prolonged rainfall may dominate.',track:[{lat:17.5,lon:139},{lat:19.2,lon:133},{lat:21.2,lon:128},{lat:22.8,lon:124.5},{lat:23.5,lon:121},{lat:24,lon:118}]},
-  {id:'mangkhut-2018',name:'MANGKHUT',year:2018,localZh:'山竹',basin:'Western North Pacific',peakWind:55,regionZh:'菲律宾北部、香港及广东沿海',regionEn:'Northern Philippines, Hong Kong and Guangdong coast',impactZh:'强风、巨浪和风暴潮对沿海及高层建筑环境造成显著影响。',impactEn:'Strong winds, waves and storm surge caused major coastal and urban impacts.',lessonZh:'沿海风险不能只看中心路径；潮位、海岸形状和暴露度同样关键。',lessonEn:'Coastal risk cannot be inferred from the centre line alone; tide and exposure matter.',track:[{lat:13.5,lon:145},{lat:14.7,lon:139},{lat:16,lon:132},{lat:17.5,lon:125},{lat:19.2,lon:119},{lat:21.5,lon:113}]},
-  {id:'doksuri-2023',name:'DOKSURI',year:2023,localZh:'杜苏芮',basin:'Western North Pacific',peakWind:50,regionZh:'菲律宾北部、台湾海峡及福建',regionEn:'Northern Philippines, Taiwan Strait and Fujian',impactZh:'强降雨、沿海大风和内陆洪涝影响范围较广。',impactEn:'Heavy rain, coastal wind and inland flooding affected a broad area.',lessonZh:'登陆后风险不会立刻结束，内陆洪水可能滞后发展。',lessonEn:'Risk does not end at landfall; inland flooding can develop later.',track:[{lat:10.5,lon:136},{lat:13,lon:131},{lat:16,lon:126},{lat:19.5,lon:122.5},{lat:23,lon:119.5},{lat:25,lon:117.5}]},
-  {id:'hagibis-2019',name:'HAGIBIS',year:2019,localZh:'海贝思',basin:'Western North Pacific',peakWind:55,regionZh:'日本关东及中部地区',regionEn:'Kanto and central Japan',impactZh:'大范围暴雨与河流洪水成为主要影响。',impactEn:'Widespread heavy rain and river flooding were major impacts.',lessonZh:'强度相似不代表风险相同，降雨分布和地形会重塑影响。',lessonEn:'Similar intensity does not mean similar risk; rainfall and terrain reshape impacts.',track:[{lat:13,lon:157},{lat:17,lon:150},{lat:21,lon:143},{lat:26,lon:138},{lat:31,lon:136},{lat:36,lon:139}]},
-  {id:'haiyan-2013',name:'HAIYAN',year:2013,localZh:'海燕',basin:'Western North Pacific',peakWind:65,regionZh:'菲律宾中部',regionEn:'Central Philippines',impactZh:'极端大风和风暴潮对沿海低洼地区造成严重影响。',impactEn:'Extreme winds and storm surge severely affected low-lying coasts.',lessonZh:'风暴潮撤离必须服从当地官方命令，不能等待中心接近。',lessonEn:'Storm-surge evacuation orders should be followed before the centre approaches.',track:[{lat:7,lon:148},{lat:8,lon:140},{lat:9.5,lon:132},{lat:10.8,lon:125},{lat:12,lon:118},{lat:14,lon:110}]},
-  {id:'leki​ma-2019'.replace('​',''),name:'LEKIMA',year:2019,localZh:'利奇马',basin:'Western North Pacific',peakWind:52,regionZh:'浙江、上海及华东内陆',regionEn:'Zhejiang, Shanghai and inland eastern China',impactZh:'沿海强风、持续降雨和内陆洪涝共同造成影响。',impactEn:'Coastal wind, prolonged rain and inland flooding combined.',lessonZh:'路径附近以外地区也可能因外围雨带和地形受到严重影响。',lessonEn:'Outer rainbands and terrain can cause serious impacts away from the centre line.',track:[{lat:16,lon:134},{lat:19,lon:129},{lat:22,lon:124},{lat:25,lon:121},{lat:28,lon:120},{lat:32,lon:120}]}
-];
-
-const state = {
-  lang: localStorage.getItem('tv16-lang') || 'zh',
-  theme: localStorage.getItem('tv16-theme') || 'system',
-  view: localStorage.getItem('tv16-view') || 'public',
-  demo: localStorage.getItem('tv16-demo') === 'true',
-  basin:'global', storms:[], sources:[], selected:null, weather:null,
-  map:null, mapReady:false, projection:'mercator', styleReloading:false,
-  layers:{track:true,cone:true,wind:true,cities:true,satellite:false,radar:false,coverage:false},
-  opacity:Number(localStorage.getItem('tv16-opacity') || 62) / 100,
-  playMode:'track', playIndex:0, playProgress:0, playing:false, speed:1, raf:null, playLastTs:0, radarAccum:0,
-  userLocation:(() => { try { return JSON.parse(localStorage.getItem('tv16-location') || 'null'); } catch { return null; } })(),
-  pickLocation:false, profile:localStorage.getItem('tv16-profile') || 'commute', sheet:'collapsed',
-  visualMode: localStorage.getItem('tv16-visual-mode') || 'cinematic',
-  fxQuality: localStorage.getItem('tv16-fx-quality') || 'auto',
-  fxParticles: localStorage.getItem('tv16-fx-particles') !== 'false',
-  fxEyewall: localStorage.getItem('tv16-fx-eyewall') !== 'false',
-  fxTrail: localStorage.getItem('tv16-fx-trail') !== 'false',
-  fxFollow: localStorage.getItem('tv16-fx-follow') !== 'false',
-  fxLastFollowAt: 0, activeAnalogId:null, insightOpen:false, railCollapsed:true,
-};
-
-function tr(key) {
-  const base = UI[state.lang] || UI.en;
-  return languageStatic[state.lang]?.[key] ?? base[key] ?? UI.en[key] ?? UI.zh[key] ?? key;
+function escapeHtml(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+function fmtDate(v){if(!v)return '—';try{return new Intl.DateTimeFormat(state.lang==='zh'?'zh-CN':state.lang,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(v));}catch{return '—';}}
+function distanceKm(a,b){const p1=rad(a.lat),p2=rad(b.lat),dp=rad(b.lat-a.lat),dl=rad(b.lon-a.lon);const h=Math.sin(dp/2)**2+Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)**2;return 6371*2*Math.atan2(Math.sqrt(h),Math.sqrt(1-h));}
+function rad(v){return v*DEG;}
+function bearing(a,b){const y=Math.sin(rad(b.lon-a.lon))*Math.cos(rad(b.lat)),x=Math.cos(rad(a.lat))*Math.sin(rad(b.lat))-Math.sin(rad(a.lat))*Math.cos(rad(b.lat))*Math.cos(rad(b.lon-a.lon));return (Math.atan2(y,x)/DEG+360)%360;}
+function destination(p,bearingDeg,km){const d=km/6371,t=rad(bearingDeg),p1=rad(p.lat),l1=rad(p.lon),p2=Math.asin(Math.sin(p1)*Math.cos(d)+Math.cos(p1)*Math.sin(d)*Math.cos(t)),l2=l1+Math.atan2(Math.sin(t)*Math.sin(d)*Math.cos(p1),Math.cos(d)-Math.sin(p1)*Math.sin(p2));return {lat:p2/DEG,lon:((l2/DEG+540)%360)-180};}
+function inferBasin(s){const r=String(s?.basin||'').toLowerCase();if(/atlantic/.test(r))return'atlantic';if(/east.*pacific|central.*pacific/.test(r))return'eastern-pacific';if(/west.*pacific|northwest.*pacific|japan|philipp/.test(r))return'western-north-pacific';if(/north.*indian|bay of bengal|arabian/.test(r))return'north-indian';if(/southwest.*indian|réunion|madagascar/.test(r))return'southwest-indian';if(/austral|indonesia|timor/.test(r))return'australian';if(/south.*pacific|fiji|nadi/.test(r))return'south-pacific';const{lat=0,lon=0}=s||{};if(lat>=0&&lon>=100)return'western-north-pacific';if(lat>=0&&lon<0&&lon>-100)return'atlantic';if(lat>=0&&lon<=-100)return'eastern-pacific';if(lat>=0&&lon>=40&&lon<100)return'north-indian';if(lat<0&&lon>=20&&lon<100)return'southwest-indian';if(lat<0&&lon>=100&&lon<160)return'australian';return lat<0?'south-pacific':'global';}
+function basinLabel(id){return tr({global:'global','western-north-pacific':'westPacific',atlantic:'atlantic','eastern-pacific':'eastPacific','north-indian':'northIndian','southwest-indian':'southwestIndian',australian:'australian','south-pacific':'southPacific'}[id]||'global');}
+function authorityFor(s){return agencyDirectory[inferBasin(s)]||agencyDirectory.global;}
+function displayName(s){if(!s)return'—';const n=String(s.name||'Unnamed').replace(/台風解析・予報情報[^·|]*/g,'').trim();return state.lang==='zh'&&s.localName?`${s.localName}（${n}）`:n;}
+function intensityColor(w){w=Number(w)||0;if(w>=51)return'#8b5cf6';if(w>=42)return'#e84b5b';if(w>=33)return'#f97316';if(w>=25)return'#eab308';return'#1499bd';}
+function sortedTrack(s){return [...(s?.track||[])].filter(p=>Number.isFinite(+p.lat)&&Number.isFinite(+p.lon)).sort((a,b)=>new Date(a.time||0)-new Date(b.time||0));}
+function trackParts(s){if(!s)return{observed:[],forecast:[],trend:[],all:[]};let raw=sortedTrack(s),observed=raw.filter(p=>!p.forecast),forecast=raw.filter(p=>p.forecast);if(!observed.length&&Number.isFinite(+s.lat)&&Number.isFinite(+s.lon))observed=[{lat:+s.lat,lon:+s.lon,time:s.updatedAt||new Date().toISOString(),windMs:+s.windMs||0,pressureHpa:+s.pressureHpa||null}];let trend=[];if(!forecast.length&&observed.length){const last=observed.at(-1);let br=315,step=160;if(observed.length>=2){br=bearing(observed.at(-2),last);step=clamp(distanceKm(observed.at(-2),last),80,360);}for(let i=1;i<=5;i++){const p=destination(last,br,step*i);trend.push({...p,time:new Date(new Date(last.time||Date.now()).getTime()+i*12*3600000).toISOString(),windMs:Math.max(12,(last.windMs||s.windMs||25)-i*1.8),pressureHpa:Number.isFinite(+last.pressureHpa)?+last.pressureHpa+i*3:null,forecast:true,trend:true});}}return{observed,forecast,trend,all:[...observed,...(forecast.length?forecast:trend)]};}
+function interpolate(points,p){if(!points.length)return null;if(points.length===1)return{...points[0]};const f=clamp(p,0,1)*(points.length-1),i=Math.min(points.length-2,Math.floor(f)),q=f-i,a=points[i],b=points[i+1],lerp=(x,y)=>Number(x)+(Number(y)-Number(x))*q,ta=new Date(a.time||0).getTime(),tb=new Date(b.time||a.time||0).getTime();return{...(q<.5?a:b),lat:lerp(a.lat,b.lat),lon:lerp(a.lon,b.lon),windMs:lerp(a.windMs||0,b.windMs||a.windMs||0),pressureHpa:Number.isFinite(+a.pressureHpa)&&Number.isFinite(+b.pressureHpa)?lerp(a.pressureHpa,b.pressureHpa):(+a.pressureHpa||+b.pressureHpa||null),time:new Date(ta+(tb-ta)*q).toISOString(),forecast:Boolean(a.forecast||b.forecast),trend:Boolean(a.trend||b.trend)};}
+function currentPoint(){return interpolate(trackParts(state.selected).all,state.playProgress);}
+function observedEndProgress(){const p=trackParts(state.selected);return p.all.length>1?clamp((Math.max(1,p.observed.length)-1)/(p.all.length-1),0,1):0;}
+function effectiveStorms(){const live=state.storms.filter(s=>!s.demo),all=state.demo?[...live,...demoStorms]:live;return state.basin==='global'?all:all.filter(s=>inferBasin(s)===state.basin);}
+function baseStyle(){const dark=resolvedTheme()==='dark';return{version:8,glyphs:'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf',sources:{base:{type:'raster',tiles:[dark?'https://a.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png':'https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'],tileSize:256,attribution:'© OpenStreetMap contributors © CARTO'}},layers:[{id:'base',type:'raster',source:'base',paint:{'raster-saturation':dark?-.35:-.2,'raster-contrast':dark?.08:.03,'raster-brightness-min':dark?.08:.76,'raster-brightness-max':dark?.72:1}}]};}
+function resolvedTheme(){return state.theme==='system'?(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'):state.theme;}
+function applyTheme(reload=true){document.documentElement.dataset.theme=resolvedTheme();localStorage.setItem('tv17-theme',state.theme);if(reload&&state.map){state.map.setStyle(baseStyle());state.map.once('style.load',()=>{installLayers();updateMap();});}}
+function sourceData(id,data){const s=state.map?.getSource(id);if(s)s.setData(data);}
+function fc(features=[]){return{type:'FeatureCollection',features};}
+function line(points,props={}){return{type:'Feature',properties:props,geometry:{type:'LineString',coordinates:points.map(p=>[+p.lon,+p.lat])}};}
+function circlePolygon(center,radius,steps=80){const ring=[];for(let i=0;i<=steps;i++){const p=destination(center,i/steps*360,radius);ring.push([p.lon,p.lat]);}return{type:'Feature',properties:{},geometry:{type:'Polygon',coordinates:[ring]}};}
+function visibleTrack(){const all=trackParts(state.selected).all;if(!all.length)return[];if(all.length===1)return all;const f=clamp(state.playProgress,0,1)*(all.length-1),idx=Math.floor(f),pts=all.slice(0,idx+1),p=interpolate(all,state.playProgress);if(p)pts.push(p);return pts;}
+function addGeoSource(id){if(!state.map.getSource(id))state.map.addSource(id,{type:'geojson',data:fc()});}
+function installLayers(){if(!state.map?.isStyleLoaded())return;if(!state.map.getSource('tv-world-land'))state.map.addSource('tv-world-land',{type:'geojson',data:'./data/world-land.json'});['obs','forecast','trend','points','wind','cities','user','user-link','history','cloud','precip'].forEach(id=>addGeoSource('tv-'+id));
+ const add=l=>{if(!state.map.getLayer(l.id))state.map.addLayer(l)};
+ add({id:'tv-world-land-fill',type:'fill',source:'tv-world-land',paint:{'fill-color':resolvedTheme()==='dark'?'#17313a':'#dfeaec','fill-opacity':.72}});add({id:'tv-world-land-line',type:'line',source:'tv-world-land',paint:{'line-color':resolvedTheme()==='dark'?'#35515a':'#a9c0c6','line-width':.7,'line-opacity':.7}});
+ add({id:'tv-wind-fill',type:'fill',source:'tv-wind',paint:{'fill-color':'#f6a23c','fill-opacity':.1}});add({id:'tv-wind-line',type:'line',source:'tv-wind',paint:{'line-color':'#f39a31','line-width':1.5,'line-dasharray':[4,3]}});
+ add({id:'tv-history-line',type:'line',source:'tv-history',paint:{'line-color':'#71818a','line-width':2,'line-dasharray':[2,3]}});
+ add({id:'tv-obs-line',type:'line',source:'tv-obs',paint:{'line-color':'#0799bc','line-width':4,'line-opacity':.95}});add({id:'tv-forecast-line',type:'line',source:'tv-forecast',paint:{'line-color':'#f97316','line-width':3,'line-dasharray':[3,2]}});add({id:'tv-trend-line',type:'line',source:'tv-trend',paint:{'line-color':'#8b5cf6','line-width':3,'line-dasharray':[1,2]}});
+ add({id:'tv-points-circle',type:'circle',source:'tv-points',paint:{'circle-radius':['case',['==',['get','current'],true],8,5],'circle-color':['get','color'],'circle-stroke-color':'#fff','circle-stroke-width':2}});
+ add({id:'tv-cloud-cells',type:'circle',source:'tv-cloud',paint:{'circle-radius':['interpolate',['linear'],['zoom'],2,18,6,42],'circle-color':['interpolate',['linear'],['get','cloud'],0,'rgba(255,255,255,0)',35,'rgba(215,228,234,.25)',70,'rgba(185,203,212,.48)',100,'rgba(135,154,165,.68)'],'circle-blur':.55,'circle-opacity':.85}});
+ add({id:'tv-precip-heat',type:'heatmap',source:'tv-precip',maxzoom:9,paint:{'heatmap-weight':['interpolate',['linear'],['get','precip'],0,0,.5,.25,3,.7,10,1],'heatmap-intensity':['interpolate',['linear'],['zoom'],2,.55,7,1.5],'heatmap-radius':['interpolate',['linear'],['zoom'],2,30,7,65],'heatmap-opacity':.72,'heatmap-color':['interpolate',['linear'],['heatmap-density'],0,'rgba(0,0,0,0)',.15,'rgba(85,190,255,.25)',.35,'rgba(40,145,255,.52)',.55,'rgba(55,210,170,.62)',.75,'rgba(255,210,60,.72)',1,'rgba(235,70,80,.82)']}});
+ add({id:'tv-city-dots',type:'circle',source:'tv-cities',minzoom:2,paint:{'circle-radius':3,'circle-color':'#0a7f93','circle-stroke-color':'#fff','circle-stroke-width':1}});add({id:'tv-city-labels',type:'symbol',source:'tv-cities',minzoom:2,layout:{'text-field':['get','label'],'text-size':['interpolate',['linear'],['zoom'],2,10,5,12,8,14],'text-offset':[0,.9],'text-anchor':'top','text-allow-overlap':false},paint:{'text-color':resolvedTheme()==='dark'?'#d9eef1':'#173d48','text-halo-color':resolvedTheme()==='dark'?'#07161d':'#fff','text-halo-width':1.5}});
+ add({id:'tv-user-link-line',type:'line',source:'tv-user-link',paint:{'line-color':'#0b8ca3','line-width':2,'line-dasharray':[2,2]}});add({id:'tv-user-point',type:'circle',source:'tv-user',paint:{'circle-radius':7,'circle-color':'#fff','circle-stroke-color':'#0b8ca3','circle-stroke-width':3}});
+ state.map.on('click','tv-points-circle',e=>{const f=e.features?.[0];if(!f)return;new maplibregl.Popup({offset:12}).setLngLat(f.geometry.coordinates).setHTML(`<div style="font:13px system-ui;min-width:180px"><strong>${escapeHtml(displayName(state.selected))}</strong><br>${escapeHtml(fmtDate(f.properties.time))}<hr style="border:0;border-top:1px solid #ddd"><b>${tr('maxWind')}:</b> ${Math.round(f.properties.wind||0)} m/s<br><b>${tr('pressure')}:</b> ${f.properties.pressure?Math.round(f.properties.pressure)+' hPa':'—'}</div>`).addTo(state.map);});
+ updateMap();
 }
-function escapeHtml(value='') { return String(value).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
-function fmtDate(value, opts={}) {
-  if (!value) return '—';
-  const d = new Date(value); if (Number.isNaN(d.getTime())) return String(value);
-  return new Intl.DateTimeFormat({zh:'zh-CN',en:'en-CA',ja:'ja-JP',ko:'ko-KR',es:'es-ES',fr:'fr-FR'}[state.lang] || 'en-CA', {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',...opts}).format(d);
-}
-function distanceKm(a,b) {
-  const dLat=(b.lat-a.lat)*DEG, dLon=(b.lon-a.lon)*DEG;
-  const q=Math.sin(dLat/2)**2+Math.cos(a.lat*DEG)*Math.cos(b.lat*DEG)*Math.sin(dLon/2)**2;
-  return 6371*2*Math.atan2(Math.sqrt(q),Math.sqrt(1-q));
-}
-function bearing(a,b) {
-  const y=Math.sin((b.lon-a.lon)*DEG)*Math.cos(b.lat*DEG);
-  const x=Math.cos(a.lat*DEG)*Math.sin(b.lat*DEG)-Math.sin(a.lat*DEG)*Math.cos(b.lat*DEG)*Math.cos((b.lon-a.lon)*DEG);
-  return (Math.atan2(y,x)/DEG+360)%360;
-}
-function directionName(deg) {
-  const zh=['北','东北','东','东南','南','西南','西','西北'];
-  const en=['N','NE','E','SE','S','SW','W','NW'];
-  return (state.lang==='zh'?zh:en)[Math.round(deg/45)%8];
-}
-function destination(p, bearingDeg, km) {
-  const delta=km/6371, theta=bearingDeg*DEG, phi1=p.lat*DEG, lambda1=p.lon*DEG;
-  const phi2=Math.asin(Math.sin(phi1)*Math.cos(delta)+Math.cos(phi1)*Math.sin(delta)*Math.cos(theta));
-  const lambda2=lambda1+Math.atan2(Math.sin(theta)*Math.sin(delta)*Math.cos(phi1),Math.cos(delta)-Math.sin(phi1)*Math.sin(phi2));
-  return {lat:phi2/DEG,lon:((lambda2/DEG+540)%360)-180};
-}
-function circlePolygon(center,radiusKm,steps=72) {
-  const ring=[]; for(let i=0;i<=steps;i++) { const p=destination(center,i/steps*360,radiusKm); ring.push([p.lon,p.lat]); }
-  return {type:'Feature',properties:{},geometry:{type:'Polygon',coordinates:[ring]}};
-}
-function lineFeature(points,properties={}) { return {type:'Feature',properties,geometry:{type:'LineString',coordinates:points.map(p=>[p.lon,p.lat])}}; }
-function featureCollection(features=[]) { return {type:'FeatureCollection',features}; }
-function inferBasin(storm) {
-  const raw=String(storm?.basin||'').toLowerCase();
-  if (/atlantic/.test(raw)) return 'atlantic';
-  if (/east.*pacific|central.*pacific|epac|cpac/.test(raw)) return 'eastern-pacific';
-  if (/west.*pacific|northwest.*pacific|japan|philipp/.test(raw)) return 'western-north-pacific';
-  if (/north.*indian|bay of bengal|arabian/.test(raw)) return 'north-indian';
-  if (/southwest.*indian|réunion|madagascar/.test(raw)) return 'southwest-indian';
-  if (/austral|indonesia|timor/.test(raw)) return 'australian';
-  if (/south.*pacific|fiji|nadi/.test(raw)) return 'south-pacific';
-  const {lat=0,lon=0}=storm||{};
-  if(lat>=0 && lon>=100 && lon<=180) return 'western-north-pacific';
-  if(lat>=0 && lon<0 && lon>-100) return 'atlantic';
-  if(lat>=0 && lon<=-100) return 'eastern-pacific';
-  if(lat>=0 && lon>=40 && lon<100) return 'north-indian';
-  if(lat<0 && lon>=20 && lon<100) return 'southwest-indian';
-  if(lat<0 && lon>=100 && lon<160) return 'australian';
-  if(lat<0) return 'south-pacific';
-  return 'global';
-}
-function authorityFor(storm) { return agencyDirectory[inferBasin(storm)] || agencyDirectory.global; }
-function basinLabel(id) { return tr({global:'global','western-north-pacific':'westPacific',atlantic:'atlantic','eastern-pacific':'eastPacific','north-indian':'northIndian','southwest-indian':'southwestIndian',australian:'australia','south-pacific':'southPacific'}[id]||'global'); }
-function displayName(storm) {
-  if (!storm) return '—';
-  const name=String(storm.name||'Unnamed').replace(/台風解析・予報情報[^·|]*/g,'').trim();
-  if(state.lang==='zh' && storm.localName && /[\u4e00-\u9fff]/.test(storm.localName)) return `${storm.localName}（${name}）`;
-  return name;
-}
-function intensityColor(wind) {
-  const n=Number(wind)||0;
-  if(n<17) return '#3b82f6'; if(n<25) return '#eab308'; if(n<33) return '#f97316'; if(n<42) return '#ef4444'; if(n<51) return '#ec4899'; return '#8b5cf6';
-}
-function sortedTrack(storm) { return [...(storm?.track||[])].filter(p=>Number.isFinite(+p.lat)&&Number.isFinite(+p.lon)).sort((a,b)=>new Date(a.time||0)-new Date(b.time||0)); }
-function trackParts(storm) {
-  if(!storm) return {observed:[],forecast:[],trend:[],all:[]};
-  const raw=sortedTrack(storm);
-  let observed=raw.filter(p=>!p.forecast);
-  const forecast=raw.filter(p=>p.forecast);
-  if(!observed.length && Number.isFinite(+storm.lat) && Number.isFinite(+storm.lon)) {
-    observed=[{lat:+storm.lat,lon:+storm.lon,time:storm.updatedAt||new Date().toISOString(),windMs:+storm.windMs||0,pressureHpa:+storm.pressureHpa||null,forecast:false,source:storm.source||'current'}];
-  }
-  let trend=[];
-  if(!forecast.length && observed.length) {
-    const last=observed.at(-1);
-    let br=315,step=170;
-    if(observed.length>=2){const prev=observed.at(-2);br=bearing(prev,last);step=clamp(distanceKm(prev,last),80,420);} 
-    else if(Number.isFinite(+storm.movementBearing)) br=+storm.movementBearing;
-    trend=[];
-    for(let i=1;i<=5;i++){
-      const p=destination(last,br,step*i);
-      trend.push({...p,time:new Date(new Date(last.time||Date.now()).getTime()+i*12*3600_000).toISOString(),windMs:Math.max(12,(last.windMs||storm.windMs||25)-i*1.8),pressureHpa:Number.isFinite(+last.pressureHpa)?+last.pressureHpa+i*3:null,forecast:true,trend:true,source:'trend-reference'});
-    }
-  }
-  return {observed,forecast,trend,all:[...observed,...(forecast.length?forecast:trend)]};
-}
-function interpolateTrackPoint(points,progress){
-  if(!points?.length)return null;if(points.length===1)return {...points[0]};
-  const value=clamp(progress,0,1)*(points.length-1),i=Math.min(points.length-2,Math.floor(value)),t=value-i,a=points[i],b=points[i+1];
-  const lerp=(x,y)=>Number(x)+(Number(y)-Number(x))*t;
-  const ta=new Date(a.time||0).getTime(),tb=new Date(b.time||a.time||0).getTime();
-  return {...(t<.5?a:b),lat:lerp(a.lat,b.lat),lon:lerp(a.lon,b.lon),windMs:Number.isFinite(+a.windMs)&&Number.isFinite(+b.windMs)?lerp(a.windMs,b.windMs):(+a.windMs||+b.windMs||0),pressureHpa:Number.isFinite(+a.pressureHpa)&&Number.isFinite(+b.pressureHpa)?lerp(a.pressureHpa,b.pressureHpa):(+a.pressureHpa||+b.pressureHpa||null),time:Number.isFinite(ta)&&Number.isFinite(tb)?new Date(ta+(tb-ta)*t).toISOString():(a.time||b.time),forecast:Boolean(a.forecast||b.forecast),trend:Boolean(a.trend||b.trend)};
-}
-function progressForObservedEnd(storm){const p=trackParts(storm);return p.all.length>1?clamp((Math.max(1,p.observed.length)-1)/(p.all.length-1),0,1):0;}
-
-function corridorPolygon(points) {
-  if(points.length<2) return null;
-  const left=[],right=[];
-  points.forEach((p,i)=>{ const prev=points[Math.max(0,i-1)],next=points[Math.min(points.length-1,i+1)],br=bearing(prev,next),radius=70+i*65; left.push(destination(p,br-90,radius)); right.push(destination(p,br+90,radius)); });
-  const ring=[...left.map(p=>[p.lon,p.lat]),...right.reverse().map(p=>[p.lon,p.lat]),[left[0].lon,left[0].lat]];
-  return {type:'Feature',properties:{estimated:true},geometry:{type:'Polygon',coordinates:[ring]}};
-}
-function riskLevel(distance) { return distance<250?'high':distance<550?'medium':'low'; }
-function nearestToTrack(location,points) {
-  let best=null; points.forEach((p,index)=>{ const d=distanceKm(location,p); if(!best||d<best.distance) best={point:p,index,distance:d}; }); return best;
-}
-function effectiveStorms() {
-  const live=state.storms.filter(s=>!s.demo);
-  const all=state.demo?[...live,...demoStorms]:live;
-  return state.basin==='global'?all:all.filter(s=>inferBasin(s)===state.basin);
-}
-
-let toastTimer;
-function toast(message) { const el=$('#toast'); el.textContent=message; el.classList.add('is-visible'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('is-visible'),2200); }
-function applyI18n() {
-  document.documentElement.lang={zh:'zh-CN',en:'en',ja:'ja',ko:'ko',es:'es',fr:'fr'}[state.lang]||'en';
-  $$('[data-i18n]').forEach(el=>{ const text=tr(el.dataset.i18n); if(text) el.textContent=text; });
-  $('#languageLabel').textContent=languageNames[state.lang]||'English'; renderAll();applyNeutralGeographyLabels();
-}
-function resolvedTheme() { return state.theme==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):state.theme; }
-function baseMapStyle() {
-  const dark=resolvedTheme()==='dark';
-  const tile=dark
-    ? 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}'
-    : 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
-  return {version:8,sources:{base:{type:'raster',tiles:[tile],tileSize:256,attribution:'Tiles © Esri; geographic data contributors'}},layers:[{id:'base',type:'raster',source:'base',paint:{'raster-saturation':dark?-.25:-.12,'raster-contrast':dark?.08:.02,'raster-brightness-min':dark?.08:.72,'raster-brightness-max':dark?.72:1}}]};
-}
-function applyTheme(reloadMap=true) {
-  document.documentElement.dataset.theme=resolvedTheme(); localStorage.setItem('tv16-theme',state.theme);
-  if(reloadMap&&state.map) { state.styleReloading=true; state.map.setStyle(baseMapStyle()); state.map.once('style.load',()=>{ state.styleReloading=false; installMapLayers(); ensureCycloneFX(); }); }
-}
-function setView(view) { state.view=view; localStorage.setItem('tv16-view',view); document.body.dataset.view=view; $$('[data-view-mode]').forEach(b=>b.classList.toggle('is-active',b.dataset.viewMode===view)); }
-
-function neutralAreaLabel(){return state.lang==='zh'?'台湾地区':state.lang==='ja'?'台湾地域':state.lang==='ko'?'대만 지역':state.lang==='es'?'Área de Taiwán':state.lang==='fr'?'Zone de Taïwan':'Taiwan area';}
-function applyNeutralGeographyLabels(){
-  if(!state.map?.isStyleLoaded?.())return;
-  // The base style's political labels are hidden. Typhoon Vision adds its own neutral
-  // geographic labels and affected-city labels, keeping the product focused on weather.
-  for(const layer of state.map.getStyle()?.layers||[]){
-    if(layer.type==='symbol' && !String(layer.id||'').startsWith('tv-')){
-      try{state.map.setLayoutProperty(layer.id,'visibility','none');}catch{}
-    }
-  }
-  const features=geographyLabels.map(item=>({type:'Feature',properties:{label:geographyText(item),kind:item.kind},geometry:{type:'Point',coordinates:[item.lon,item.lat]}}));
-  setSourceData('tv-neutral-labels',featureCollection(features));
-}
-
-function toggleInsight(open=!state.insightOpen){state.insightOpen=!!open;document.body.classList.toggle('insight-open',state.insightOpen);$('#insightToggleFloat')?.classList.toggle('is-active',state.insightOpen);setTimeout(()=>state.map?.resize(),260);}
-function toggleRail(collapsed=!state.railCollapsed){state.railCollapsed=!!collapsed;document.body.classList.toggle('rail-collapsed',state.railCollapsed);setTimeout(()=>state.map?.resize(),260);}
-function trackDirection(points){if(!points||points.length<2)return 0;return bearing(points[0],points.at(-1));}
-function analogScore(storm,analog){const parts=trackParts(storm),pts=parts.observed.length?parts.observed:parts.all;if(pts.length<2)return 0;const directionDiff=Math.abs(((trackDirection(pts)-trackDirection(analog.track)+540)%360)-180);let score=Math.max(0,45-directionDiff/4);const wind=Number(storm?.windMs||pts.at(-1)?.windMs||0);score+=Math.max(0,35-Math.abs(wind-analog.peakWind));if(inferBasin(storm)===inferBasin({basin:analog.basin,lat:analog.track[0].lat,lon:analog.track[0].lon}))score+=20;if(state.userLocation){const d=Math.min(...analog.track.map(p=>distanceKm(state.userLocation,p)));if(d<800)score+=15;}return clamp(Math.round(score),1,99);}
-function analogReasons(storm,analog){const pts=trackParts(storm).observed;const reasons=[];if(pts.length>1&&Math.abs(((trackDirection(pts)-trackDirection(analog.track)+540)%360)-180)<55)reasons.push(tr('similarPath'));if(Math.abs(Number(storm?.windMs||0)-analog.peakWind)<=16)reasons.push(tr('similarIntensity'));if(state.userLocation&&Math.min(...analog.track.map(p=>distanceKm(state.userLocation,p)))<800)reasons.push(tr('similarRegion'));return reasons.length?reasons:[tr('similarPath')];}
-function renderHistoricalAnalogs(){const container=$('#analogCards'),summary=$('#historySummary');if(!container||!summary)return;const storm=state.selected;if(!storm||trackParts(storm).all.length<2){summary.innerHTML='';container.innerHTML=`<div class="empty-card">${escapeHtml(tr('noAnalog'))}</div>`;return;}const ranked=historicalAnalogCatalog.map(a=>({...a,score:analogScore(storm,a)})).sort((a,b)=>b.score-a.score).slice(0,3);summary.innerHTML=`<span>↔</span><p><strong>${escapeHtml(tr('historySummaryTitle'))}</strong><small>${escapeHtml(tr('historySummaryText'))}</small></p>`;container.innerHTML=ranked.map(a=>{const reasons=analogReasons(storm,a).map(r=>`<span>${escapeHtml(r)}</span>`).join('');const region=state.lang==='zh'?a.regionZh:a.regionEn,impact=state.lang==='zh'?a.impactZh:a.impactEn,lesson=state.lang==='zh'?a.lessonZh:a.lessonEn;return `<article class="analog-card"><header><div><small>${a.year}</small><strong>${state.lang==='zh'?escapeHtml(a.localZh)+'（'+a.name+'）':a.name}</strong><span>${escapeHtml(region)}</span></div><b>${a.score}%</b></header><div class="analog-reasons">${reasons}</div><p><em>${tr('pastImpact')}</em>${escapeHtml(impact)}</p><p><em>${tr('lesson')}</em>${escapeHtml(lesson)}</p><button data-analog-id="${a.id}" class="analog-button${state.activeAnalogId===a.id?' is-active':''}">${state.activeAnalogId===a.id?tr('removeOverlay'):tr('overlayTrack')}</button></article>`;}).join('');$$('[data-analog-id]',container).forEach(btn=>btn.onclick=()=>{state.activeAnalogId=state.activeAnalogId===btn.dataset.analogId?null:btn.dataset.analogId;renderHistoricalAnalogs();updateMapData();});}
-function showWeatherStatus(title,message,stateName='loading'){const el=$('#weatherLayerStatus');if(!el)return;el.hidden=false;el.dataset.state=stateName;$('#weatherLayerTitle').textContent=title;$('#weatherLayerMessage').textContent=message;}
-function ensureCycloneFX() {
-  if (!state.map || !window.CycloneFX?.isAvailable?.()) return false;
-  window.CycloneFX.attach(state.map);
-  window.CycloneFX.setQuality(state.fxQuality);
-  window.CycloneFX.setOptions({particles:state.fxParticles,eyewall:state.fxEyewall,trail:state.fxTrail});
-  window.CycloneFX.setEnabled(state.visualMode==='cinematic');
-  syncCycloneFX(false);
-  return true;
-}
-
-
-function activePlaybackPoint() {
-  const points=trackParts(state.selected).all;
-  return interpolateTrackPoint(points,state.playProgress) || points.at(-1) || state.selected || null;
-}
-
-
-function updateCinematicHud(point, radiusKm) {
-  const s=state.selected;
-  $('#fxStormName').textContent=displayName(s);
-  $('#fxAgency').textContent=authorityFor(s).name;
-  $('#fxWind').textContent=Number.isFinite(+point?.windMs)?`${Math.round(point.windMs)} m/s`:'—';
-  $('#fxPressure').textContent=Number.isFinite(+point?.pressureHpa)?`${Math.round(point.pressureHpa)} hPa`:'—';
-  $('#fxRadius').textContent=Number.isFinite(radiusKm)?`${Math.round(radiusKm)} km`:'—';
-  $('#fxTime').textContent=point?.time?fmtDate(point.time):'—';
-}
-
-function syncCycloneFX(followCamera=true) {
-  if (!window.CycloneFX || !state.selected) return;
-  const parts=trackParts(state.selected),track=parts.all;
-  const point=activePlaybackPoint();
-  if(!point || !Number.isFinite(+point.lat) || !Number.isFinite(+point.lon)) return;
-  const radiusKm=Number(state.selected.windRadii?.radiusKm || clamp(140+(Number(point.windMs||state.selected.windMs||25))*6,180,520));
-  window.CycloneFX.setStorm({name:displayName(state.selected),lat:+point.lat,lon:+point.lon,windMs:+(point.windMs??state.selected.windMs??25),pressureHpa:+(point.pressureHpa??state.selected.pressureHpa??990),radiusKm,windRadii:state.selected.windRadii||null,time:point.time,track,observedCount:parts.observed.length,progress:state.playProgress,officialForecast:Boolean(parts.forecast.length),demo:Boolean(state.selected.demo)});
-  window.CycloneFX.setQuality(state.fxQuality);
-  window.CycloneFX.setOptions({particles:state.fxParticles,eyewall:state.fxEyewall,trail:state.fxTrail});
-  window.CycloneFX.setEnabled(state.visualMode==='cinematic');
-  updateCinematicHud(point,radiusKm);
-  if(state.fxFollow && followCamera && state.playing && state.map) {
-    const now=Date.now();if(now-state.fxLastFollowAt>900){state.fxLastFollowAt=now;state.map.easeTo({center:[+point.lon,+point.lat],duration:700,easing:t=>1-Math.pow(1-t,3)});}
-  }
-}
-
-
-function applyVisualMode(mode,animate=true) {
-  state.visualMode=mode==='cinematic'?'cinematic':'map';
-  localStorage.setItem('tv16-visual-mode',state.visualMode);
-  document.body.dataset.visual=state.visualMode;
-  $('#cyclone3dButton')?.classList.toggle('is-active',state.visualMode==='cinematic');
-  $('#flatButton')?.classList.toggle('is-active',state.visualMode==='map'&&state.projection==='mercator');
-  $('#globeButton')?.classList.toggle('is-active',state.visualMode==='map'&&state.projection==='globe');
-  $('#cinematicHud').hidden=true;
-  $('#fxLegend').hidden=false;
-  if(!state.map)return;
-  ensureCycloneFX();
-  state.projection='mercator';try{state.map.setProjection({type:'mercator'});}catch{}
-  state.map.easeTo({pitch:0,bearing:0,duration:animate?420:0});
-  window.CycloneFX?.setEnabled(state.visualMode==='cinematic');
-  syncCycloneFX(false);
-}
-
-
-window.addEventListener('cyclonefxready',()=>{if(state.mapReady)ensureCycloneFX();});
-
-function initMap() {
-  if(!window.maplibregl) { $('#map').innerHTML='<div class="map-fallback">MapLibre failed to load. Check network access to unpkg.com.</div>'; return; }
-  state.map=new maplibregl.Map({container:'map',style:baseMapStyle(),center:[130,20],zoom:2.2,attributionControl:true,maxPitch:72,canvasContextAttributes:{antialias:true}});
-  state.map.addControl(new maplibregl.NavigationControl({showCompass:true,showZoom:true}),'right');
-  state.map.on('load',()=>{ state.mapReady=true; installMapLayers(); bindMapEvents(); ensureCycloneFX(); applyVisualMode(state.visualMode,false); fitSelected(false); });
-  state.map.on('error',(event)=>{if(event?.error?.message)console.warn('Map error',event.error.message);const sourceId=event?.sourceId||event?.error?.sourceId||'';if(String(sourceId).includes('satellite')||String(sourceId).includes('radar'))showWeatherStatus(state.lang==='zh'?'天气图层暂不可用':'Weather layer unavailable',tr('weatherFailed'),'error');});
-}
-function firstSymbolLayer() { return state.map?.getStyle()?.layers?.find(l=>l.type==='symbol')?.id; }
-function ensureGeoSource(id) { if(!state.map.getSource(id)) state.map.addSource(id,{type:'geojson',data:featureCollection()}); }
-function addLayerSafe(layer,before) { if(!state.map.getLayer(layer.id)) state.map.addLayer(layer,before); }
-function installMapLayers() {
-  if(!state.map||!state.map.isStyleLoaded()) return;
-  ['tv-cone','tv-wind','tv-observed','tv-forecast','tv-trend','tv-points','tv-cities','tv-user','tv-user-link','tv-history','tv-neutral-labels'].forEach(ensureGeoSource);
-  addLayerSafe({id:'tv-cone-fill',type:'fill',source:'tv-cone',paint:{'fill-color':'#f97316','fill-opacity':0.13}},firstSymbolLayer());
-  addLayerSafe({id:'tv-cone-outline',type:'line',source:'tv-cone',paint:{'line-color':'#f97316','line-width':1.5,'line-dasharray':[3,2]}},firstSymbolLayer());
-  addLayerSafe({id:'tv-wind-fill',type:'fill',source:'tv-wind',paint:{'fill-color':'#f59e0b','fill-opacity':0.09}},firstSymbolLayer());
-  addLayerSafe({id:'tv-wind-outline',type:'line',source:'tv-wind',paint:{'line-color':'#f59e0b','line-width':1.4}},firstSymbolLayer());
-  addLayerSafe({id:'tv-observed-line',type:'line',source:'tv-observed',paint:{'line-color':'#0ea5e9','line-width':4,'line-opacity':0.95}},firstSymbolLayer());
-  addLayerSafe({id:'tv-forecast-line',type:'line',source:'tv-forecast',paint:{'line-color':'#f97316','line-width':4,'line-dasharray':[2,2]}},firstSymbolLayer());
-  addLayerSafe({id:'tv-trend-line',type:'line',source:'tv-trend',paint:{'line-color':'#8b5cf6','line-width':3.5,'line-dasharray':[1,2]}},firstSymbolLayer());
-  addLayerSafe({id:'tv-track-points',type:'circle',source:'tv-points',paint:{'circle-radius':['case',['==',['get','current'],true],9,6],'circle-color':['get','color'],'circle-stroke-color':'#fff','circle-stroke-width':2,'circle-opacity':0.98}},firstSymbolLayer());
-  addLayerSafe({id:'tv-city-circles',type:'circle',source:'tv-cities',paint:{'circle-radius':6,'circle-color':['get','color'],'circle-stroke-color':'#fff','circle-stroke-width':1.5}},firstSymbolLayer());
-  addLayerSafe({id:'tv-city-labels',type:'symbol',source:'tv-cities',layout:{'text-field':['get','label'],'text-size':12,'text-offset':[0,1.15],'text-anchor':'top','text-allow-overlap':false},paint:{'text-color':resolvedTheme()==='dark'?'#f4fbff':'#183440','text-halo-color':resolvedTheme()==='dark'?'#071720':'#fff','text-halo-width':1.5}},undefined);
-  addLayerSafe({id:'tv-history-line',type:'line',source:'tv-history',paint:{'line-color':'#64748b','line-width':3,'line-dasharray':[2,3],'line-opacity':0.78}},firstSymbolLayer());
-  addLayerSafe({id:'tv-neutral-label',type:'symbol',source:'tv-neutral-labels',layout:{'text-field':['get','label'],'text-size':['match',['get','kind'],'country',14,12],'text-allow-overlap':false},paint:{'text-color':resolvedTheme()==='dark'?'#d9edf5':'#52666e','text-halo-color':resolvedTheme()==='dark'?'#071720':'#ffffff','text-halo-width':2}},undefined);
-  addLayerSafe({id:'tv-user-link-line',type:'line',source:'tv-user-link',paint:{'line-color':'#087f98','line-width':2,'line-dasharray':[2,2]}},firstSymbolLayer());
-  addLayerSafe({id:'tv-user-point',type:'circle',source:'tv-user',paint:{'circle-radius':8,'circle-color':'#087f98','circle-stroke-color':'#fff','circle-stroke-width':3}},undefined);
-  syncRasterLayers(); updateMapData(); applyNeutralGeographyLabels(); ensureCycloneFX();
-}
-function setSourceData(id,data) { const s=state.map?.getSource(id); if(s?.setData) s.setData(data); }
-function setVisibility(layerIds,visible) { layerIds.forEach(id=>{ if(state.map?.getLayer(id)) state.map.setLayoutProperty(id,'visibility',visible?'visible':'none'); }); }
-function currentPlaybackPoints() {
-  const all=trackParts(state.selected).all;if(state.playMode==='radar'||!all.length)return all;
-  const value=clamp(state.playProgress,0,1)*(all.length-1),end=Math.floor(value),shown=all.slice(0,end+1),current=interpolateTrackPoint(all,state.playProgress);
-  if(current && value>end+.001)shown.push(current);return shown;
-}
-
-function updateMapData() {
-  if(!state.mapReady||state.styleReloading) return;
-  if(!state.selected){['tv-cone','tv-wind','tv-observed','tv-forecast','tv-trend','tv-points','tv-cities','tv-user-link','tv-history'].forEach(id=>setSourceData(id,featureCollection()));updateUserMap();window.CycloneFX?.setEnabled(false);return;}
-  const parts=trackParts(state.selected); const shown=parts.all;
-  const observed=shown.filter(p=>!p.forecast), official=shown.filter(p=>p.forecast&&!p.trend), trend=shown.filter(p=>p.trend);
-  setSourceData('tv-observed',observed.length>1?featureCollection([lineFeature(observed)]):featureCollection());
-  setSourceData('tv-forecast',official.length>0?featureCollection([lineFeature([parts.observed.at(-1),...official].filter(Boolean))]):featureCollection());
-  setSourceData('tv-trend',trend.length>0?featureCollection([lineFeature([parts.observed.at(-1),...trend].filter(Boolean))]):featureCollection());
-  const pointFeatures=shown.map((p,i)=>({type:'Feature',properties:{index:i,time:p.time||'',kind:p.trend?'trend':p.forecast?'forecast':'observed',color:intensityColor(p.windMs),wind:p.windMs??'',pressure:p.pressureHpa??'',current:i===Math.round(clamp(state.playProgress,0,1)*Math.max(0,shown.length-1)),label:fmtDate(p.time)},geometry:{type:'Point',coordinates:[p.lon,p.lat]}}));
-  setSourceData('tv-points',featureCollection(pointFeatures));
-  const prediction=parts.forecast.length?parts.forecast:parts.trend; const cone=corridorPolygon([parts.observed.at(-1),...prediction].filter(Boolean));
-  setSourceData('tv-cone',cone?featureCollection([cone]):featureCollection());
-  const current=parts.observed.at(-1)||state.selected; const windRadius=state.selected.windRadii?.radiusKm||clamp(140+(state.selected.windMs||25)*6,180,520); const wind=circlePolygon(current,windRadius);
-  wind.properties={estimated:!state.selected.windRadii,radiusKm:windRadius}; setSourceData('tv-wind',featureCollection([wind]));
-  const near=nearbyCities(state.selected); setSourceData('tv-cities',featureCollection(near.slice(0,12).map(item=>({type:'Feature',properties:{label:`${item.name} · ${Math.round(item.distance)} km`,color:item.level==='high'?'#ef4444':item.level==='medium'?'#f59e0b':'#16a36a'},geometry:{type:'Point',coordinates:[item.lon,item.lat]}}))));
-  const analog=historicalAnalogCatalog.find(a=>a.id===state.activeAnalogId);setSourceData('tv-history',analog?featureCollection([lineFeature(analog.track,{name:analog.name})]):featureCollection());
-  updateUserMap();
-  const showStaticTrack=true;setVisibility(['tv-observed-line','tv-forecast-line','tv-trend-line','tv-track-points'],state.layers.track&&showStaticTrack);
-  setVisibility(['tv-cone-fill','tv-cone-outline'],state.layers.cone);
-  setVisibility(['tv-wind-fill','tv-wind-outline'],state.layers.wind);
-  setVisibility(['tv-city-circles','tv-city-labels'],state.layers.cities);setVisibility(['tv-history-line'],Boolean(state.activeAnalogId));
-  syncCycloneFX();
-}
-function updateUserMap() {
-  const loc=state.userLocation; if(!loc){setSourceData('tv-user',featureCollection());setSourceData('tv-user-link',featureCollection());return;}
-  setSourceData('tv-user',featureCollection([{type:'Feature',properties:{},geometry:{type:'Point',coordinates:[loc.lon,loc.lat]}}]));
-  const nearest=nearestToTrack(loc,trackParts(state.selected).all); setSourceData('tv-user-link',nearest?featureCollection([lineFeature([loc,nearest.point])]):featureCollection());
-}
-function removeRaster(id) { if(state.map?.getLayer(id)) state.map.removeLayer(id); if(state.map?.getSource(id)) state.map.removeSource(id); }
-function addRaster(id,tiles,maxzoom=9,opacity=state.opacity) {
-  if(!state.mapReady||!tiles?.length) return; removeRaster(id); const before=state.map.getLayer('tv-cone-fill')?'tv-cone-fill':firstSymbolLayer();
-  state.map.addSource(id,{type:'raster',tiles,tileSize:256,minzoom:0,maxzoom,scheme:'xyz'}); state.map.addLayer({id,type:'raster',source:id,paint:{'raster-opacity':opacity,'raster-fade-duration':350,'raster-resampling':'linear','raster-saturation':id==='tv-satellite'?.12:.25,'raster-contrast':id==='tv-radar'?.18:.08}},before);
-}
-function radarTile(frame) { if(!frame)return null;return frame.tileTemplate||((state.weather?.radar?.host&&frame.path)?`${state.weather.radar.host}${frame.path}/256/{z}/{x}/{y}/6/1_1.png`:null); }
-function syncRasterLayers() {
-  if(!state.mapReady) return;
-  if(state.layers.satellite&&state.weather?.satellite){const s=state.weather.satellite;const template=s.wmsTemplate||s.tileTemplate;if(template)addRaster('tv-satellite',[template.replace('{date}',s.date||'default')],9,state.opacity);else removeRaster('tv-satellite');}else removeRaster('tv-satellite');
-  const frames=state.weather?.radar?.frames||[],frame=frames[state.playMode==='radar'?clamp(state.playIndex,0,frames.length-1):frames.length-1];
-  if(state.layers.radar&&frame){const tile=radarTile(frame);if(tile)addRaster('tv-radar',[tile],7,state.opacity);else removeRaster('tv-radar');}else removeRaster('tv-radar');
-  if(state.layers.coverage&&state.weather?.radar?.coverageTemplate)addRaster('tv-coverage',[state.weather.radar.coverageTemplate],7,.16);else removeRaster('tv-coverage');
-}
-
-function bindMapEvents() {
-  state.map.on('click','tv-track-points',e=>{const f=e.features?.[0];if(!f)return;const c=f.geometry.coordinates.slice();new maplibregl.Popup({offset:12}).setLngLat(c).setHTML(`<div class="node-popup"><header><h3>${escapeHtml(displayName(state.selected))}</h3><span class="kind">${escapeHtml(tr(f.properties.kind==='observed'?'trackKindObserved':f.properties.kind==='forecast'?'trackKindForecast':'trackKindTrend'))}</span></header><dl><div><dt>${tr('updated')}</dt><dd>${escapeHtml(fmtDate(f.properties.time))}</dd></div><div><dt>${tr('maxWind')}</dt><dd>${f.properties.wind?`${Math.round(f.properties.wind)} m/s`:'—'}</dd></div><div><dt>${tr('pressure')}</dt><dd>${f.properties.pressure?`${Math.round(f.properties.pressure)} hPa`:'—'}</dd></div><div><dt>${tr('coordinates')}</dt><dd>${c[1].toFixed(1)}°, ${c[0].toFixed(1)}°</dd></div></dl></div>`).addTo(state.map);});
-  state.map.on('mouseenter','tv-track-points',()=>state.map.getCanvas().style.cursor='pointer'); state.map.on('mouseleave','tv-track-points',()=>state.map.getCanvas().style.cursor='');
-  state.map.on('click',e=>{if(!state.pickLocation)return;state.userLocation={lat:e.lngLat.lat,lon:e.lngLat.lng};localStorage.setItem('tv16-location',JSON.stringify(state.userLocation));state.pickLocation=false;renderPersonalImpact();updateMapData();toast(tr('locationSaved'));});
-}
-function fitSelected(animate=true) {
-  if(!state.map||!state.selected)return;const pts=trackParts(state.selected).all;if(!pts.length)return;
-  const bounds=new maplibregl.LngLatBounds();pts.forEach(p=>bounds.extend([+p.lon,+p.lat]));if(state.userLocation)bounds.extend([state.userLocation.lon,state.userLocation.lat]);
-  const pad=innerWidth<=920?{top:120,bottom:170,left:40,right:40}:{top:105,bottom:120,left:90,right:90};
-  state.map.fitBounds(bounds,{padding:pad,maxZoom:5.7,duration:animate?760:0});
-  setTimeout(()=>syncCycloneFX(false),animate?780:30);
-}
-
-
-function renderBasins() {
-  const ids=['global','western-north-pacific','atlantic','eastern-pacific','north-indian','southwest-indian','australian','south-pacific'];
-  $('#basinTabs').innerHTML=ids.map(id=>`<button class="basin-tab${state.basin===id?' is-active':''}" data-basin="${id}">${escapeHtml(basinLabel(id))}</button>`).join('');
-  $$('[data-basin]').forEach(b=>b.onclick=()=>{state.basin=b.dataset.basin;const list=effectiveStorms();if(!list.some(s=>s.id===state.selected?.id))state.selected=list[0]||null;renderAll();if(state.selected)fitSelected();});
-}
-function renderStormList() {
-  const storms=effectiveStorms();$('#stormCount').textContent=storms.length;const list=$('#stormList');
-  if(!storms.length){list.innerHTML=`<div class="empty-card">${escapeHtml(tr('noStorm'))}</div>`;state.selected=null;return;}
-  if(!state.selected||!storms.some(s=>s.id===state.selected.id))state.selected=storms[0];
-  list.innerHTML=storms.map(s=>`<button class="storm-card${s.id===state.selected.id?' is-active':''}" data-storm-id="${escapeHtml(s.id)}"><i class="storm-card-dot" style="background:${intensityColor(s.windMs)}"></i><span class="storm-card-copy"><strong>${escapeHtml(displayName(s))}</strong><small>${escapeHtml(basinLabel(inferBasin(s)))} · ${escapeHtml(s.classification||'Tropical cyclone')}</small></span><span class="storm-card-value">${Number.isFinite(+s.windMs)?Math.round(s.windMs):'—'}<small>m/s</small></span></button>`).join('');
-  $$('[data-storm-id]').forEach(b=>b.onclick=()=>{state.selected=storms.find(s=>s.id===b.dataset.stormId);state.playProgress=progressForObservedEnd(state.selected);state.playIndex=Math.max(0,trackParts(state.selected).observed.length-1);renderAll();fitSelected();if(innerWidth<=920)$('#stormRail').classList.remove('is-open');});
-}
-function renderAuthority() { const a=authorityFor(state.selected);$('#agencyName').textContent=a.name;$('#agencyDescription').textContent=state.lang==='zh'?a.description:a.descriptionEn;$('#agencyLink').href=a.url; }
-function movementText(storm) { const pts=trackParts(storm).observed;if(pts.length<2)return '—';const a=pts.at(-2),b=pts.at(-1);return `${directionName(bearing(a,b))} · ${Math.round(distanceKm(a,b)/Math.max(1,(new Date(b.time)-new Date(a.time))/3600_000))} km/h`; }
-function summaryAdvice(storm) { const wind=storm?.windMs||0;return wind>=42?(state.lang==='zh'?'减少外出并核对当地警报':'Reduce travel and check local alerts'):wind>=25?(state.lang==='zh'?'关注路径与当地预警':'Monitor the track and local alerts'):(state.lang==='zh'?'保持日常关注':'Continue routine monitoring'); }
-function renderSummary() {
-  const s=state.selected;if(!s){$('#summarySource').textContent='—';$('#summaryTitle').textContent=tr('noStorm');$('#summaryText').textContent='';$('#summaryDirection').textContent='—';$('#summaryClosest').textContent='—';$('#summaryAdvice').textContent='—';return;}
-  const authority=authorityFor(s);$('#summarySource').textContent=`${s.demo?tr('demo'):tr('live')} · ${authority.name}`;$('#summaryTitle').textContent=displayName(s);$('#summaryText').textContent=s.demo?(state.lang==='zh'?'演示系统用于展示全球路径、城市、云图与雷达功能，不是官方预警。':'Demo system for global track, city, satellite and radar features; not an official warning.'):(state.lang==='zh'?'页面优先展示所属海域权威机构的数据，并用其他来源交叉核对。':'The responsible basin authority is shown first and cross-checked against supporting sources.');
-  $('#summaryDirection').textContent=movementText(s);$('#summaryClosest').textContent=state.userLocation?(personalImpact(s)?.closestText||'—'):tr('locationNotSet');$('#summaryAdvice').textContent=summaryAdvice(s);
-}
-function nearbyCities(storm) { const pts=trackParts(storm).all;if(!pts.length)return[];return cities.map(c=>{const best=nearestToTrack(c,pts);return {...c,distance:best.distance,level:riskLevel(best.distance),closest:best.point};}).filter(c=>c.distance<950).sort((a,b)=>a.distance-b.distance); }
-function renderCities() { const rows=nearbyCities(state.selected).slice(0,8);$('#cityList').innerHTML=rows.length?rows.map(c=>`<article class="city-item"><div><strong>${escapeHtml(c.name)}</strong><small>${escapeHtml(c.country==='Taiwan area'?neutralAreaLabel():c.country)} · ${escapeHtml(fmtDate(c.closest.time))}</small></div><span class="city-distance">${Math.round(c.distance)} km</span></article>`).join(''):`<div class="empty-card">${tr('noNearbyCity')}</div>`; }
-function personalImpact(storm) {
-  const loc=state.userLocation,pts=trackParts(storm).all;if(!loc||!pts.length)return null;const n=nearestToTrack(loc,pts),level=riskLevel(n.distance);const time=n.point.time?new Date(n.point.time):null;const span=level==='high'?12:level==='medium'?18:24;
-  return {nearest:n,level,closestText:time?fmtDate(time.toISOString()):'—',windowText:time?`${fmtDate(new Date(time.getTime()-span*3600_000))} – ${fmtDate(new Date(time.getTime()+span*3600_000))}`:'—',confidence:pts.filter(p=>p.forecast).length>=2?tr('high'):pts.length>=3?tr('medium'):tr('low')};
-}
-function renderPersonalImpact() {
-  const impact=personalImpact(state.selected);$('#locationStatus').textContent=state.userLocation?`${state.userLocation.lat.toFixed(2)}°, ${state.userLocation.lon.toFixed(2)}°`:tr('locationNotSet');
-  $('#nearestDistance').textContent=impact?`${Math.round(impact.nearest.distance)} km`:'—';$('#closestTime').textContent=impact?.closestText||'—';$('#impactWindow').textContent=impact?.windowText||'—';$('#confidence').textContent=impact?.confidence||'—';
-  const level=impact?.level||'low';const hazards=[['🌬️','wind',tr('wind'+level[0].toUpperCase()+level.slice(1))],['🌧️','rain',tr('rain'+level[0].toUpperCase()+level.slice(1))],['🌊','coast',tr('coast'+level[0].toUpperCase()+level.slice(1))]];
-  $('#hazardList').innerHTML=hazards.map(([icon,key,text])=>`<article class="hazard-card"><span class="hazard-icon">${icon}</span><div><strong>${tr(key)}</strong><small>${escapeHtml(text)}</small></div><span class="risk-pill risk-${level}">${tr(level)}</span></article>`).join('');
-  renderAdvice(level);
-}
-const adviceCopy={
-  commute:{zh:['查看下班时段降雨与风力，准备替代路线。','在影响窗口前调整通勤时间，优先公共交通。','避免积水下穿道、树木密集路段和临时设施。'],en:['Check wind and rain for your commute and prepare another route.','Adjust travel before the impact window; prefer resilient public transport.','Avoid flooded underpasses, tree-lined roads and temporary structures.']},
-  outdoor:{zh:['关注阵风、雷电、海浪和山地风险。','提前取消登山、水上运动和海边活动。','停止户外活动，不要前往海边观浪。'],en:['Watch gusts, lightning, waves and mountain hazards.','Cancel hiking, water sports and shoreline activity early.','Stop outdoor activity and stay away from the coast.']},
-  office:{zh:['备份文件并确认远程办公安排。','为设备充电，检查窗户与建筑通知。','远离大面积玻璃，服从物业和停工指令。'],en:['Back up files and confirm remote-work arrangements.','Charge devices and check windows and building notices.','Stay away from large glazing and follow closure instructions.']},
-  drive:{zh:['检查路线上的低洼路段、桥梁和沿海道路。','提前加油或充电，把车停在地势较高处。','不要驶入积水，不在强风中通过高架桥。'],en:['Check low roads, bridges and coastal routes.','Fuel or charge early and park on higher ground.','Never drive into floodwater or cross exposed bridges in strong wind.']},
-  family:{zh:['确认老人、儿童、宠物和常用药需求。','提前完成接送与采购，准备照明和饮水。','保持家人联系，及时执行疏散或停课要求。'],en:['Check needs for older adults, children, pets and medicine.','Finish pick-ups and shopping early; prepare lighting and water.','Keep family contact and follow evacuation or school-closure orders.']},
-  coastProfile:{zh:['确认风暴潮区、地下空间和疏散路线。','转移车辆与室外物品，停止海上活动。','远离岸线，官方要求撤离时立即行动。'],en:['Check surge zones, underground spaces and evacuation routes.','Move vehicles and outdoor items; stop marine activity.','Stay away from the shoreline and evacuate immediately when ordered.']}
-};
-function renderProfiles() { const ids=['commute','outdoor','office','drive','family','coastProfile'];$('#profileTabs').innerHTML=ids.map(id=>`<button class="profile-tab${state.profile===id?' is-active':''}" data-profile="${id}">${tr(id)}</button>`).join('');$$('[data-profile]').forEach(b=>b.onclick=()=>{state.profile=b.dataset.profile;localStorage.setItem('tv16-profile',state.profile);renderAdvice(personalImpact(state.selected)?.level||'low');renderProfiles();}); }
-function renderAdvice(level) { const lang=state.lang==='zh'?'zh':'en',copy=adviceCopy[state.profile]?.[lang]||adviceCopy.commute[lang];$('#adviceTimeline').innerHTML=[[tr('now'),copy[0]],[tr('before'),copy[1]],[tr('during'),copy[2]]].map(([label,text],i)=>`<article class="advice-step"><span>${label}</span><div><strong>${level==='high'&&i>0?(state.lang==='zh'?'优先执行':'Priority'):tr(state.profile)}</strong><p>${escapeHtml(text)}</p></div></article>`).join(''); }
-function renderPro() { const s=state.selected,a=authorityFor(s),parts=trackParts(s);$('#proStormName').textContent=displayName(s);$('#proCoordinates').textContent=s?`${(+s.lat).toFixed(1)}°N · ${(+s.lon).toFixed(1)}°E`:'—';$('#proWind').textContent=Number.isFinite(+s?.windMs)?`${Math.round(s.windMs)} m/s`:'—';$('#proPressure').textContent=Number.isFinite(+s?.pressureHpa)?`${Math.round(s.pressureHpa)} hPa`:'—';$('#proClass').textContent=s?.classification||'—';$('#proTrackCount').textContent=`${parts.observed.length} + ${parts.forecast.length||parts.trend.length}`;$('#proAgency').textContent=a.name;
-  $('#sourceList').innerHTML=state.sources.map(src=>`<article class="source-row"><div><strong>${escapeHtml(src.name)}</strong><small>${escapeHtml(src.message||src.role||'')}</small></div><span class="source-state">${escapeHtml(src.status||'—')}</span></article>`).join(''); }
-function renderAgencies() { const ids=['western-north-pacific','atlantic','eastern-pacific','north-indian','southwest-indian','australian','south-pacific'];$('#agencyGrid').innerHTML=ids.map(id=>{const a=agencyDirectory[id];return `<article class="agency-item"><strong>${escapeHtml(basinLabel(id))} · ${escapeHtml(a.name)}</strong><small>${escapeHtml(state.lang==='zh'?a.description:a.descriptionEn)}</small></article>`;}).join(''); }
-function renderSourceHealth() { const usable=state.sources.filter(s=>['online','no-data','degraded'].includes(s.status)).length;$('#sourceHealth strong').textContent=usable?tr('sourceConnected'):tr('connecting');$('#sourceUpdated').textContent=state.sources.length?`${tr('updated')} ${fmtDate(new Date().toISOString())}`:'—';$('#agreementCount').textContent=usable;$('#agreementText').textContent=tr('sourceMethod'); }
-function renderTimeline() {
-  const parts=trackParts(state.selected),frames=state.weather?.radar?.frames||[];
-  if(state.playMode==='radar'){
-    const max=Math.max(0,frames.length-1);state.playIndex=clamp(state.playIndex,0,max);$('#timelineRange').max=max;$('#timelineRange').value=state.playIndex;const frame=frames[state.playIndex];$('#playbackTime').textContent=frame?fmtDate(frame.time*1000):tr('radarEmpty');$('#playbackKind').textContent=tr('radarPlayback');
-  }else{
-    $('#timelineRange').max=1000;$('#timelineRange').value=Math.round(clamp(state.playProgress,0,1)*1000);const p=activePlaybackPoint();$('#playbackTime').textContent=p?fmtDate(p.time):'—';$('#playbackKind').textContent=p?.trend?tr('trackKindTrend'):p?.forecast?tr('trackKindForecast'):tr('trackKindObserved');state.playIndex=Math.floor(clamp(state.playProgress,0,1)*Math.max(0,parts.all.length-1));
-  }
-  $('#playButton').textContent=state.playing?'❚❚':'▶';$('#speedButton').textContent=`${state.speed}×`;syncRasterLayers();updateMapData();syncCycloneFX();
-}
-
-function renderAll() { if ($('#demoToggle')) $('#demoToggle').checked=state.demo; renderBasins();renderStormList();renderAuthority();renderSummary();renderPersonalImpact();renderProfiles();renderHistoricalAnalogs();renderPro();renderCities();renderAgencies();renderSourceHealth();renderTimeline();updateMapData(); }
-
-function setSheet(sheet) { state.sheet=sheet;$('#insightPanel').dataset.sheet=sheet; }
-function bindUI() {
-  $('#brandButton').onclick=()=>{if(innerWidth<=920)$('#stormRail').classList.add('is-open');else toggleRail(false);};$('#railClose').onclick=()=>{if(innerWidth<=920)$('#stormRail').classList.remove('is-open');else toggleRail(true);};$('#railToggleFloat').onclick=()=>{if(innerWidth<=920)$('#stormRail').classList.toggle('is-open');else toggleRail();};$('#insightToggleFloat').onclick=()=>{if(innerWidth<=920)setSheet(state.sheet==='collapsed'?'half':'collapsed');else toggleInsight();};$('#weatherLayerClose').onclick=()=>$('#weatherLayerStatus').hidden=true;$('#insightClose').onclick=()=>{if(innerWidth<=920)setSheet('collapsed');else toggleInsight(false);};
-  $$('[data-view-mode]').forEach(b=>b.onclick=()=>{setView(b.dataset.viewMode);if(innerWidth<=920)setSheet('half');});
-  $('#languageButton').onclick=e=>{e.stopPropagation();$('#languageMenu').hidden=!$('#languageMenu').hidden;$('#themeMenu').hidden=true;};
-  $('#themeButton').onclick=e=>{e.stopPropagation();$('#themeMenu').hidden=!$('#themeMenu').hidden;$('#languageMenu').hidden=true;};
-  $$('[data-language]').forEach(b=>b.onclick=()=>{state.lang=b.dataset.language;localStorage.setItem('tv16-lang',state.lang);$('#languageMenu').hidden=true;applyI18n();});
-  $$('[data-theme-choice]').forEach(b=>b.onclick=()=>{state.theme=b.dataset.themeChoice;$('#themeMenu').hidden=true;applyTheme();});
-  document.addEventListener('click',()=>{$('#languageMenu').hidden=true;$('#themeMenu').hidden=true;});
-  $('#demoToggle').checked=state.demo;$('#demoToggle').onchange=e=>{state.demo=e.target.checked;localStorage.setItem('tv16-demo',state.demo);state.selected=null;renderAll();if(state.selected)fitSelected();};
-  $('#flatButton').onclick=()=>{state.projection='mercator';applyVisualMode('map',false);state.map?.setProjection({type:'mercator'});$('#flatButton').classList.add('is-active');$('#globeButton').classList.remove('is-active');};
-  $('#globeButton').onclick=()=>{try{state.projection='globe';applyVisualMode('map',false);state.map?.setProjection({type:'globe'});$('#globeButton').classList.add('is-active');$('#flatButton').classList.remove('is-active');}catch{toast('Globe projection is not supported by this browser.');}};
-  $('#cyclone3dButton').onclick=()=>applyVisualMode(state.visualMode==='cinematic'?'map':'cinematic');
-  $('#fitStormButton').onclick=()=>fitSelected();$('#fitWorldButton').onclick=()=>state.map?.flyTo({center:[0,10],zoom:1.4,duration:700});
-  $('#layersButton').onclick=e=>{e.stopPropagation();$('#layerPanel').hidden=!$('#layerPanel').hidden;};$$('[data-close-panel]').forEach(b=>b.onclick=()=>$('#'+b.dataset.closePanel).hidden=true);
-  $$('[data-layer-toggle]').forEach(input=>{input.checked=state.layers[input.dataset.layerToggle];input.onchange=()=>{const key=input.dataset.layerToggle;state.layers[key]=input.checked;if(key==='satellite'&&input.checked){if(!(state.weather?.satellite?.tileTemplate||state.weather?.satellite?.wmsTemplate)){input.checked=false;state.layers[key]=false;showWeatherStatus(tr('satelliteLayer'),tr('weatherFailed'),'error');}else showWeatherStatus(tr('satelliteLayer'),tr('satelliteLoading'),'loading');}if(key==='radar'&&input.checked){if(!state.weather?.radar?.frames?.length){input.checked=false;state.layers[key]=false;showWeatherStatus(tr('radarLayer'),tr('radarEmpty'),'error');}else{state.playMode='radar';state.playIndex=state.weather.radar.frames.length-1;$$('[data-play-mode]').forEach(x=>x.classList.toggle('is-active',x.dataset.playMode==='radar'));showWeatherStatus(tr('radarLayer'),tr('radarNoEcho'),'ready');}}syncRasterLayers();renderTimeline();updateMapData();};});
-  $('#weatherOpacity').value=Math.round(state.opacity*100);$('#weatherOpacity').oninput=e=>{state.opacity=e.target.value/100;localStorage.setItem('tv16-opacity',e.target.value);['tv-satellite','tv-radar'].forEach(id=>{if(state.map?.getLayer(id))state.map.setPaintProperty(id,'raster-opacity',state.opacity);});};
-  $('#fxQuality').value=state.fxQuality;$('#fxQuality').onchange=e=>{state.fxQuality=e.target.value;localStorage.setItem('tv16-fx-quality',state.fxQuality);window.CycloneFX?.setQuality(state.fxQuality);syncCycloneFX(false);};
-  $('#fxParticles').checked=state.fxParticles;$('#fxParticles').onchange=e=>{state.fxParticles=e.target.checked;localStorage.setItem('tv16-fx-particles',String(state.fxParticles));syncCycloneFX(false);};
-  $('#fxEyewall').checked=state.fxEyewall;$('#fxEyewall').onchange=e=>{state.fxEyewall=e.target.checked;localStorage.setItem('tv16-fx-eyewall',String(state.fxEyewall));syncCycloneFX(false);};
-  $('#fxTrail').checked=state.fxTrail;$('#fxTrail').onchange=e=>{state.fxTrail=e.target.checked;localStorage.setItem('tv16-fx-trail',String(state.fxTrail));syncCycloneFX(false);};
-  $('#fxFollow').checked=state.fxFollow;$('#fxFollow').onchange=e=>{state.fxFollow=e.target.checked;localStorage.setItem('tv16-fx-follow',String(state.fxFollow));};
-  $$('[data-play-mode]').forEach(b=>b.onclick=()=>{state.playMode=b.dataset.playMode;state.playIndex=0;if(state.playMode==='track')state.playProgress=0;$$('[data-play-mode]').forEach(x=>x.classList.toggle('is-active',x===b));renderTimeline();});
-  $('#timelineRange').oninput=e=>{if(state.playMode==='radar')state.playIndex=Number(e.target.value);else state.playProgress=Number(e.target.value)/1000;renderTimeline();};$('#playButton').onclick=togglePlay;$('#speedButton').onclick=()=>{state.speed=state.speed===1?1.5:state.speed===1.5?2:1;renderTimeline();if(state.playing){stopPlay();startPlay();}};
-  $('#impactButton').onclick=()=>{if(innerWidth>920)toggleInsight(true);setSheet(innerWidth<=920?'full':'half');$('#impactSection').scrollIntoView({behavior:'smooth',block:'start'});};$('#sourcesButton').onclick=()=>{if(innerWidth>920)toggleInsight(true);$('#methodSection').scrollIntoView({behavior:'smooth'});setSheet(innerWidth<=920?'full':'half');};
-  $('#locateButton').onclick=()=>navigator.geolocation?.getCurrentPosition(pos=>{state.userLocation={lat:pos.coords.latitude,lon:pos.coords.longitude};localStorage.setItem('tv16-location',JSON.stringify(state.userLocation));renderPersonalImpact();updateMapData();fitSelected();toast(tr('locationSaved'));},()=>toast(tr('locationDenied')),{enableHighAccuracy:false,timeout:8000,maximumAge:600000});
-  $('#pickLocationButton').onclick=()=>{state.pickLocation=true;toast(tr('pickHint'));};$('#clearLocationButton').onclick=()=>{state.userLocation=null;localStorage.removeItem('tv16-location');renderPersonalImpact();updateMapData();};
-  const handle=$('#sheetHandle');let startY=0,startSheet='collapsed';handle.onclick=()=>setSheet(state.sheet==='collapsed'?'half':state.sheet==='half'?'full':'collapsed');handle.onpointerdown=e=>{startY=e.clientY;startSheet=state.sheet;handle.setPointerCapture(e.pointerId);};handle.onpointerup=e=>{const dy=e.clientY-startY;if(dy<-55)setSheet(startSheet==='collapsed'?'half':'full');else if(dy>55)setSheet(startSheet==='full'?'half':'collapsed');};
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(innerWidth<=920){$('#stormRail').classList.remove('is-open');setSheet('collapsed');}else{toggleRail(true);toggleInsight(false);}$('#layerPanel').hidden=true;}});matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{if(state.theme==='system')applyTheme();});
-}
-function startPlay(){
-  if(state.playing)return;state.playing=true;state.playLastTs=performance.now();state.radarAccum=0;$('#playButton').textContent='❚❚';
-  const tick=(ts)=>{
-    if(!state.playing)return;const dt=Math.min(90,ts-state.playLastTs);state.playLastTs=ts;
-    if(state.playMode==='radar'){
-      state.radarAccum+=dt;
-      if(state.radarAccum>=850/state.speed){state.radarAccum=0;const max=Math.max(0,(state.weather?.radar?.frames?.length||1)-1);state.playIndex=state.playIndex>=max?0:state.playIndex+1;renderTimeline();}
-    }else{
-      state.playProgress+=dt*(0.000035*state.speed);if(state.playProgress>1)state.playProgress=0;
-      const p=activePlaybackPoint();state.playIndex=Math.floor(state.playProgress*Math.max(0,trackParts(state.selected).all.length-1));
-      $('#timelineRange').value=Math.round(state.playProgress*1000);$('#playbackTime').textContent=p?fmtDate(p.time):'—';$('#playbackKind').textContent=p?.trend?tr('trackKindTrend'):p?.forecast?tr('trackKindForecast'):tr('trackKindObserved');syncCycloneFX();
-    }
-    state.raf=requestAnimationFrame(tick);
-  };
-  state.raf=requestAnimationFrame(tick);
-}
-
-function stopPlay(){state.playing=false;if(state.raf)cancelAnimationFrame(state.raf);state.raf=null;renderTimeline();}
-
-function togglePlay(){state.playing?stopPlay():startPlay();}
-
-
-function fallbackWeatherConfig(){
-  const date=new Date(Date.now()-48*3600_000).toISOString().slice(0,10);
-  const tileTemplate=`https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_CorrectedReflectance_TrueColor/default/${date}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg`;
-  return {generatedAt:new Date().toISOString(),satellite:{status:'online',provider:'NASA GIBS',date,tileTemplate},radar:{status:'offline',frames:[],coverageTemplate:null}};
-}
-async function fetchWeatherDirect(){
-  const fallback=fallbackWeatherConfig();
-  try{const json=await fetch('https://api.rainviewer.com/public/weather-maps.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();});const host=json.host||'https://tilecache.rainviewer.com';const frames=(json.radar?.past||[]).slice(-12).map(f=>({time:+f.time,path:f.path,tileTemplate:`${host}${f.path}/256/{z}/{x}/{y}/2/1_1.png`}));fallback.radar={status:frames.length?'online':'no-data',host,frames,generatedAt:json.generated?new Date(json.generated*1000).toISOString():null,coverageTemplate:`${host}/v2/coverage/0/256/{z}/{x}/{y}/0/0_0.png`};}catch(error){fallback.radar.message=String(error);}return fallback;
-}
-
-async function loadData() {
-  const cyclonePromise=fetch('/api/cyclones',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject(new Error(r.status)));
-  const weatherPromise=fetch('/api/weather-layers',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject(new Error(r.status))).catch(()=>fetchWeatherDirect());
-  const [cycloneResult,weatherResult]=await Promise.allSettled([cyclonePromise,weatherPromise]);
-  if(cycloneResult.status==='fulfilled'){state.storms=(cycloneResult.value.storms||[]).map(s=>({...s,basin:s.basin||inferBasin(s)}));state.sources=cycloneResult.value.sources||[];}else{state.storms=[];state.sources=[{name:'Cyclone API',status:'offline',message:String(cycloneResult.reason)}];}
-  state.weather=weatherResult.status==='fulfilled'?weatherResult.value:fallbackWeatherConfig();
-  if(!(state.weather?.radar?.frames||[]).length){const direct=await fetchWeatherDirect();if((direct.radar?.frames||[]).length)state.weather.radar=direct.radar;if(!state.weather.satellite)state.weather.satellite=direct.satellite;}
-  $('#satelliteTime').textContent=`NASA GIBS · ${state.weather.satellite?.date||'latest'}`;$('#radarTime').textContent=state.weather.radar?.generatedAt?fmtDate(state.weather.radar.generatedAt):tr('radarEmpty');
-  const liveWithTrack=state.storms.find(storm=>sortedTrack(storm).length>=2);
-  if(!liveWithTrack){state.demo=true;localStorage.setItem('tv16-demo','true');}
-  state.selected=liveWithTrack||demoStorms[0]||state.storms[0]||null;
-  state.playProgress=progressForObservedEnd(state.selected);state.playIndex=Math.max(0,trackParts(state.selected).observed.length-1);renderAll();if(state.selected)fitSelected(false);ensureCycloneFX();
-}
-
-
-function boot() {
-  setView(state.view);document.body.dataset.visual=state.visualMode;document.body.classList.add('rail-collapsed');document.body.classList.remove('insight-open');state.railCollapsed=true;state.insightOpen=false;applyTheme(false);bindUI();applyI18n();initMap();loadData();
-}
-
+function cityFeatures(){const pts=trackParts(state.selected).all;return cities.map(c=>{const d=pts.length?Math.min(...pts.map(p=>distanceKm(c,p))):99999;return{...c,d};}).filter(c=>c.d<2200).sort((a,b)=>a.d-b.d).slice(0,28).map(c=>({type:'Feature',properties:{label:state.lang==='zh'?c.zh:c.en},geometry:{type:'Point',coordinates:[c.lon,c.lat]}}));}
+function updateMap(){if(!state.mapReady||!state.selected)return;const parts=trackParts(state.selected),shown=visibleTrack(),obs=shown.filter(p=>!p.forecast),official=shown.filter(p=>p.forecast&&!p.trend),trend=shown.filter(p=>p.trend);sourceData('tv-obs',obs.length>1?fc([line(obs)]):fc());sourceData('tv-forecast',official.length?fc([line([parts.observed.at(-1),...official].filter(Boolean))]):fc());sourceData('tv-trend',trend.length?fc([line([parts.observed.at(-1),...trend].filter(Boolean))]):fc());sourceData('tv-points',fc(shown.map((p,i)=>({type:'Feature',properties:{time:p.time||'',wind:p.windMs||0,pressure:p.pressureHpa||'',color:intensityColor(p.windMs),current:i===shown.length-1},geometry:{type:'Point',coordinates:[p.lon,p.lat]}}))));const cp=currentPoint()||parts.observed.at(-1)||state.selected,rad=state.selected.windRadii?.radiusKm||clamp(150+(cp.windMs||state.selected.windMs||25)*5,190,500),poly=circlePolygon(cp,rad);poly.properties.estimated=!state.selected.windRadii;sourceData('tv-wind',fc([poly]));sourceData('tv-cities',fc(cityFeatures()));const a=analogs.find(x=>x.id===state.activeAnalog);sourceData('tv-history',a?fc([line(a.track)]):fc());updateUserMap();setLayerGroup(['tv-obs-line','tv-forecast-line','tv-trend-line','tv-points-circle'],state.layers.track);setLayerGroup(['tv-wind-fill','tv-wind-line'],state.layers.wind);setLayerGroup(['tv-city-dots','tv-city-labels'],state.layers.cities);setLayerGroup(['tv-cloud-cells'],state.layers.cloud);setLayerGroup(['tv-precip-heat'],state.layers.precip);setLayerGroup(['tv-history-line'],!!state.activeAnalog);window.CycloneViz?.setEnabled(state.layers.cyclone);window.CycloneViz?.setStorm({lat:cp.lat,lon:cp.lon,windMs:cp.windMs||state.selected.windMs,pressureHpa:cp.pressureHpa||state.selected.pressureHpa,radius34:state.selected.windRadii?.radiusKm||rad,radius50:state.selected.windRadii?.radius50,radius64:state.selected.windRadii?.radius64,officialRadii:!!state.selected.windRadii,track:parts.all,progress:state.playProgress});}
+function setLayerGroup(ids,visible){ids.forEach(id=>{if(state.map?.getLayer(id))state.map.setLayoutProperty(id,'visibility',visible?'visible':'none')});}
+function updateUserMap(){if(!state.userLocation){sourceData('tv-user',fc());sourceData('tv-user-link',fc());return;}sourceData('tv-user',fc([{type:'Feature',properties:{},geometry:{type:'Point',coordinates:[state.userLocation.lon,state.userLocation.lat]}}]));const pts=trackParts(state.selected).all;if(!pts.length)return;let nearest=pts[0],d=Infinity;pts.forEach(p=>{const x=distanceKm(state.userLocation,p);if(x<d){d=x;nearest=p}});sourceData('tv-user-link',fc([line([state.userLocation,nearest])]));}
+function initMap(){if(!window.maplibregl){$('#map').innerHTML='<div class="map-fallback">MapLibre failed to load.</div>';return;}state.map=new maplibregl.Map({container:'map',style:baseStyle(),center:[125,20],zoom:3.4,attributionControl:true,maxPitch:0});state.map.addControl(new maplibregl.NavigationControl({showCompass:false}),'bottom-right');state.map.on('load',()=>{state.mapReady=true;installLayers();window.CycloneViz?.attach(state.map,$('#cycloneCanvas'));fitSelected(false)});state.map.on('click',e=>{if(!state.pickLocation)return;state.userLocation={lat:e.lngLat.lat,lon:e.lngLat.lng};localStorage.setItem('tv17-location',JSON.stringify(state.userLocation));state.pickLocation=false;renderDetails();updateMap();toast(tr('locationSaved'));});}
+function fitSelected(animate=true){if(!state.map||!state.selected)return;const pts=trackParts(state.selected).all;if(!pts.length)return;const b=new maplibregl.LngLatBounds();pts.forEach(p=>b.extend([p.lon,p.lat]));if(state.userLocation)b.extend([state.userLocation.lon,state.userLocation.lat]);state.map.fitBounds(b,{padding:{top:110,bottom:120,left:90,right:90},maxZoom:5.6,duration:animate?700:0});}
+function togglePanel(id){if(state.openPanel===id){closePanels();return;}closePanels();state.openPanel=id;const el=$('#'+id);if(id==='layerPanel')el.hidden=false;else{el.classList.add('is-open');el.setAttribute('aria-hidden','false');}}
+function closePanels(){['systemsDrawer','detailsDrawer'].forEach(id=>{const el=$('#'+id);el.classList.remove('is-open');el.setAttribute('aria-hidden','true')});$('#layerPanel').hidden=true;state.openPanel=null;}
+function applyI18n(){$$('[data-i18n]').forEach(el=>{el.textContent=tr(el.dataset.i18n)});document.documentElement.lang={zh:'zh-CN',en:'en',ja:'ja',ko:'ko',es:'es',fr:'fr'}[state.lang];$('#languageLabel').textContent=LANG_NAMES[state.lang];renderAll();}
+function renderBasins(){const ids=['global','western-north-pacific','atlantic','eastern-pacific','north-indian','southwest-indian','australian','south-pacific'];$('#basinTabs').innerHTML=ids.map(id=>`<button class="basin-tab${state.basin===id?' is-active':''}" data-basin="${id}">${escapeHtml(basinLabel(id))}</button>`).join('');$$('[data-basin]').forEach(b=>b.onclick=()=>{state.basin=b.dataset.basin;const list=effectiveStorms();if(!list.some(s=>s.id===state.selected?.id))state.selected=list[0]||null;state.playProgress=observedEndProgress();renderAll();fitSelected();loadWeatherGrid();});}
+function renderStormList(){const list=effectiveStorms();$('#stormCount').textContent=list.length;if(!list.length){$('#stormList').innerHTML=`<div class="empty-card">${tr('noStorm')}</div>`;state.selected=null;return;}if(!state.selected||!list.some(s=>s.id===state.selected.id))state.selected=list[0];$('#stormList').innerHTML=list.map(s=>`<button class="storm-card${s.id===state.selected.id?' is-active':''}" data-id="${escapeHtml(s.id)}"><i class="storm-card-dot" style="background:${intensityColor(s.windMs)}"></i><span class="storm-card-copy"><strong>${escapeHtml(displayName(s))}</strong><small>${escapeHtml(basinLabel(inferBasin(s)))} · ${escapeHtml(s.classification||'Tropical Cyclone')}</small></span><span class="storm-card-value">${Number.isFinite(+s.windMs)?Math.round(s.windMs):'—'}<small>m/s</small></span></button>`).join('');$$('[data-id]',$('#stormList')).forEach(b=>b.onclick=()=>{state.selected=list.find(s=>s.id===b.dataset.id);state.playProgress=observedEndProgress();renderAll();fitSelected();loadWeatherGrid();if(innerWidth<900)closePanels();});}
+function movementText(s){const o=trackParts(s).observed;if(o.length<2)return'—';const a=o.at(-2),b=o.at(-1),hours=Math.max(1,(new Date(b.time)-new Date(a.time))/3600000),deg=bearing(a,b),names=state.lang==='zh'?['北','东北','东','东南','南','西南','西','西北']:['N','NE','E','SE','S','SW','W','NW'];return`${names[Math.round(deg/45)%8]} · ${Math.round(distanceKm(a,b)/hours)} km/h`;}
+function renderChip(){const s=state.selected;$('#chipName').textContent=displayName(s);$('#chipMeta').textContent=s?`${basinLabel(inferBasin(s))} · ${Math.round(s.windMs||0)} m/s`:'—';$('#stormChip>i').style.background=intensityColor(s?.windMs);}
+function renderAuthority(){const a=authorityFor(state.selected);$('#agencyName').textContent=a.name;$('#agencyDescription').textContent=state.lang==='zh'?a.zh:a.en;$('#agencyLink').href=a.url;}
+function nearestImpact(){if(!state.userLocation||!state.selected)return null;const pts=trackParts(state.selected).all;if(!pts.length)return null;let best={d:Infinity,p:null};pts.forEach(p=>{const d=distanceKm(state.userLocation,p);if(d<best.d)best={d,p}});const level=best.d<250?'high':best.d<550?'medium':'low',t=new Date(best.p.time||Date.now()),span=level==='high'?12:level==='medium'?18:24;return{...best,level,window:`${fmtDate(new Date(t-span*3600000))} – ${fmtDate(new Date(t.getTime()+span*3600000))}`,confidence:pts.filter(x=>x.forecast&&!x.trend).length>=2?'high':pts.length>=3?'medium':'low'};}
+function renderDetails(){const s=state.selected;if(!s)return;const p=trackParts(s),impact=nearestImpact();$('#detailsTitle').textContent=displayName(s);$('#briefText').textContent=s.demo?(state.lang==='zh'?'这是用于展示全球气旋路径、结构和影响分析的演示系统，不是官方预警。':'This demo system illustrates track, structure and impact analysis; it is not an official warning.'):(state.lang==='zh'?'页面优先使用所属海域权威机构资料，并保留来源差异。':'The responsible basin authority is prioritised while source differences remain visible.');$('#briefDirection').textContent=movementText(s);$('#briefWind').textContent=Number.isFinite(+s.windMs)?`${Math.round(s.windMs)} m/s`:'—';$('#briefPressure').textContent=Number.isFinite(+s.pressureHpa)?`${Math.round(s.pressureHpa)} hPa`:'—';$('#briefUpdated').textContent=fmtDate(s.updatedAt||p.observed.at(-1)?.time);$('#locationStatus').textContent=state.userLocation?`${state.userLocation.lat.toFixed(2)}°, ${state.userLocation.lon.toFixed(2)}°`:tr('locationNotSet');$('#nearestDistance').textContent=impact?`${Math.round(impact.d)} km`:'—';$('#closestTime').textContent=impact?fmtDate(impact.p.time):'—';$('#impactWindow').textContent=impact?.window||'—';$('#confidence').textContent=impact?tr(impact.confidence):'—';const level=impact?.level||'low',cap=x=>x[0].toUpperCase()+x.slice(1),haz=[['🌬️','wind',tr('wind'+cap(level))],['🌧️','rain',tr('rain'+cap(level))],['🌊','coast',tr('coast'+cap(level))]];$('#hazardList').innerHTML=haz.map(([i,k,txt])=>`<article class="hazard-card"><span>${i}</span><div><strong>${tr(k)}</strong><small>${escapeHtml(txt)}</small></div><span class="risk-pill risk-${level}">${tr(level)}</span></article>`).join('');$('#proCoordinates').textContent=`${(+s.lat).toFixed(1)}°, ${(+s.lon).toFixed(1)}°`;$('#proClass').textContent=s.classification||'—';$('#proTrackPoints').textContent=String(p.all.length);$('#proAgency').textContent=authorityFor(s).name;$('#sourceList').innerHTML=(state.sources.length?state.sources:[{name:authorityFor(s).name,status:s.demo?'demo':'online'}]).map(x=>`<div class="source-row"><strong>${escapeHtml(x.name||x.id||'Source')}</strong><small>${escapeHtml(x.status||'online')}</small></div>`).join('');renderAnalogs();renderRegionalTools();}
+function analogScore(s,a){const pts=trackParts(s).observed;if(pts.length<2)return inferBasin(s)===inferBasin({basin:a.basin,lat:a.track[0].lat,lon:a.track[0].lon})?45:15;const d=Math.abs(((bearing(pts[0],pts.at(-1))-bearing(a.track[0],a.track.at(-1))+540)%360)-180);let score=Math.max(0,50-d/3)+Math.max(0,30-Math.abs((s.windMs||0)-a.peak));if(inferBasin(s)===inferBasin({basin:a.basin,lat:a.track[0].lat,lon:a.track[0].lon}))score+=20;return clamp(Math.round(score),1,99);}
+function renderAnalogs(){const s=state.selected,rank=analogs.map(a=>({...a,score:analogScore(s,a)})).sort((a,b)=>b.score-a.score).slice(0,3);$('#analogCards').innerHTML=rank.map(a=>`<article class="analog-card"><header><div><small>${a.year}</small><strong>${state.lang==='zh'?escapeHtml(a.zh)+'（'+a.name+'）':a.name}</strong></div><b>${a.score}%</b></header><p><b>${tr('pastImpact')}：</b>${escapeHtml(state.lang==='zh'?a.impact:a.impact)}</p><p><b>${tr('lesson')}：</b>${escapeHtml(state.lang==='zh'?a.lesson:a.lesson)}</p><button data-analog="${a.id}">${state.activeAnalog===a.id?tr('removeOverlay'):tr('overlayTrack')}</button></article>`).join('');$$('[data-analog]',$('#analogCards')).forEach(b=>b.onclick=()=>{state.activeAnalog=state.activeAnalog===b.dataset.analog?null:b.dataset.analog;renderAnalogs();updateMap();});}
+function renderRegionalTools(){const basin=inferBasin(state.selected),links={
+'western-north-pacific':[['JMA Typhoon','https://www.jma.go.jp/bosai/map.html#contents=typhoon'],['JMA Satellite / Radar','https://www.jma.go.jp/bosai/map.html#contents=himawari']],atlantic:[['NHC','https://www.nhc.noaa.gov/'],['NOAA Radar','https://radar.weather.gov/']], 'eastern-pacific':[['NHC / CPHC','https://www.nhc.noaa.gov/'],['NOAA Radar','https://radar.weather.gov/']], 'north-indian':[['IMD Cyclone','https://rsmcnewdelhi.imd.gov.in/']], 'southwest-indian':[['Météo-France Cyclone','https://meteofrance.re/fr/cyclone']],australian:[['Australian BoM','https://www.bom.gov.au/cyclone/']], 'south-pacific':[['Fiji Met','https://www.met.gov.fj/']]}[basin]||[];$('#regionalTools').innerHTML=`<strong style="width:100%;font-size:12px;color:var(--muted)">${tr('regionalRadar')}</strong>`+links.map(([n,u])=>`<a href="${u}" target="_blank" rel="noreferrer">${escapeHtml(n)} ↗</a>`).join('');}
+function renderTimeline(){const p=currentPoint();$('#timelineRange').value=Math.round(state.playProgress*1000);$('#timelineTime').textContent=p?.time?fmtDate(p.time):'—';$('#timelineKind').textContent=p?(p.trend?tr('trend'):p.forecast?tr('forecast'):tr('observed')):'—';$('#playButton').textContent=state.playing?'Ⅱ':'▶';$('#speedButton').textContent=state.speed+'×';updateMap();}
+function renderAll(){renderBasins();renderStormList();renderAuthority();renderChip();renderDetails();renderTimeline();}
+let toastTimer;function toast(msg){const e=$('#toast');e.textContent=msg;e.classList.add('is-visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove('is-visible'),2200);}
+async function loadWeatherGrid(force=false){if(!state.selected)return;const key=`${state.selected.lat.toFixed?.(1)||state.selected.lat},${state.selected.lon.toFixed?.(1)||state.selected.lon}`;if(!force&&state.weatherKey===key&&state.weather)return;$('#weatherStatus').hidden=false;$('#weatherStatusTitle').textContent=tr('weatherLoading');$('#weatherStatusText').textContent='Open-Meteo';try{const r=await fetch(`/api/weather-grid?lat=${encodeURIComponent(state.selected.lat)}&lon=${encodeURIComponent(state.selected.lon)}&span=12`,{cache:'no-store'});if(!r.ok)throw new Error(r.status);state.weather=await r.json();state.weatherKey=key;sourceData('tv-cloud',fc((state.weather.cells||[]).map(c=>({type:'Feature',properties:{cloud:c.cloudCover||0},geometry:{type:'Point',coordinates:[c.lon,c.lat]}}))));sourceData('tv-precip',fc((state.weather.cells||[]).map(c=>({type:'Feature',properties:{precip:c.precipitation||0},geometry:{type:'Point',coordinates:[c.lon,c.lat]}}))));$('#weatherStatusTitle').textContent=tr('weatherReady');$('#weatherStatusText').textContent=fmtDate(state.weather.generatedAt);}catch(e){$('#weatherStatusTitle').textContent=tr('weatherFailed');$('#weatherStatusText').textContent=String(e.message||e);state.layers.cloud=false;state.layers.precip=false;$$('[data-layer="cloud"],[data-layer="precip"]').forEach(x=>x.checked=false);}updateMap();}
+function startPlay(){if(state.playing)return;state.playing=true;state.lastTs=performance.now();const tick=ts=>{if(!state.playing)return;const dt=Math.min(80,ts-state.lastTs);state.lastTs=ts;state.playProgress+=dt*.000045*state.speed;if(state.playProgress>1)state.playProgress=0;renderTimeline();state.raf=requestAnimationFrame(tick)};state.raf=requestAnimationFrame(tick);renderTimeline();}
+function stopPlay(){state.playing=false;if(state.raf)cancelAnimationFrame(state.raf);state.raf=0;renderTimeline();}
+function bindUI(){$('#systemsButton').onclick=()=>togglePanel('systemsDrawer');$('#stormChip').onclick=()=>togglePanel('systemsDrawer');$('#detailsButton').onclick=()=>togglePanel('detailsDrawer');$('#layersButton').onclick=()=>togglePanel('layerPanel');$('#focusButton').onclick=()=>fitSelected();$$('[data-close]').forEach(b=>b.onclick=closePanels);$('#demoToggle').checked=state.demo;$('#demoToggle').onchange=e=>{state.demo=e.target.checked;localStorage.setItem('tv17-demo',state.demo);renderAll();fitSelected();};$('#playButton').onclick=()=>state.playing?stopPlay():startPlay();$('#speedButton').onclick=()=>{state.speed=state.speed===1?1.5:state.speed===1.5?2:1;renderTimeline();};$('#timelineRange').oninput=e=>{state.playProgress=Number(e.target.value)/1000;renderTimeline();};$('#languageButton').onclick=()=>{$('#themeMenu').hidden=true;$('#languageMenu').hidden=!$('#languageMenu').hidden};$('#themeButton').onclick=()=>{$('#languageMenu').hidden=true;$('#themeMenu').hidden=!$('#themeMenu').hidden};$$('[data-language]').forEach(b=>b.onclick=()=>{state.lang=b.dataset.language;localStorage.setItem('tv17-lang',state.lang);$('#languageMenu').hidden=true;applyI18n();});$$('[data-theme-choice]').forEach(b=>b.onclick=()=>{state.theme=b.dataset.themeChoice;$('#themeMenu').hidden=true;applyTheme();});$$('[data-layer]').forEach(x=>x.onchange=async e=>{state.layers[e.target.dataset.layer]=e.target.checked;if(['cloud','precip'].includes(e.target.dataset.layer)&&e.target.checked)await loadWeatherGrid();updateMap();});$('#locateButton').onclick=()=>navigator.geolocation?.getCurrentPosition(p=>{state.userLocation={lat:p.coords.latitude,lon:p.coords.longitude};localStorage.setItem('tv17-location',JSON.stringify(state.userLocation));renderDetails();updateMap();toast(tr('locationSaved'));},()=>toast(tr('locationDenied')),{timeout:8000,maximumAge:600000});$('#pickLocationButton').onclick=()=>{state.pickLocation=true;closePanels();toast(tr('pickHint'));};$('#clearLocationButton').onclick=()=>{state.userLocation=null;localStorage.removeItem('tv17-location');renderDetails();updateMap();};$('#weatherStatusClose').onclick=()=>$('#weatherStatus').hidden=true;document.addEventListener('keydown',e=>{if(e.key==='Escape')closePanels()});document.addEventListener('click',e=>{if(!e.target.closest('.menu-popover,.header-button')){$('#languageMenu').hidden=true;$('#themeMenu').hidden=true}});matchMedia('(prefers-color-scheme:dark)').addEventListener?.('change',()=>{if(state.theme==='system')applyTheme()});}
+async function loadData(){let data=null;try{const r=await fetch('/api/cyclones',{cache:'no-store'});if(!r.ok)throw new Error(r.status);data=await r.json();state.storms=(data.storms||[]).map(s=>({...s,basin:s.basin||inferBasin(s)}));state.sources=data.sources||[];}catch(e){state.storms=[];state.sources=[{name:'Cyclone API',status:'offline'}];}const live=state.storms.find(s=>trackParts(s).all.length>=2);if(!live)state.demo=true;state.selected=live||demoStorms[0]||state.storms[0]||null;state.playProgress=observedEndProgress();$('#sourceHealth strong').textContent=tr('connected');$('#sourceUpdated').textContent=fmtDate(data?.generatedAt||new Date());renderAll();if(state.mapReady)fitSelected(false);}
+function boot(){applyTheme(false);bindUI();applyI18n();initMap();loadData();}
 document.addEventListener('DOMContentLoaded',boot);
