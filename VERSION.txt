@@ -1,2 +1,2 @@
-Typhoon Vision Public v4
-Full world map, public/pro views, light/dark/system themes, zh/en/ja/ko/es/fr.
+Typhoon Vision Public v7
+Historical analog context, public decision timeline, personal impact mode, professional tools, multilingual UI.

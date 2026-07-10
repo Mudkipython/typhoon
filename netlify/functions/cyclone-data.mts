@@ -25,6 +25,9 @@ type Storm = {
   id: string;
   name: string;
   localName?: string;
+  japaneseName?: string;
+  number?: string;
+  productTitle?: string;
   basin?: string;
   classification?: string;
   alertLevel?: string;
@@ -106,6 +109,37 @@ function xmlEntries(feed: string) {
   });
 }
 
+function normalizeJmaIdentity(xml: string, entryTitle: string, fallbackIndex: number) {
+  const rawName = [
+    textOf(xml, "jmx_eb:TyphoonNamePart"), textOf(xml, "TyphoonNamePart"),
+    textOf(xml, "jmx_eb:TyphoonName"), textOf(xml, "TyphoonName"), entryTitle
+  ].filter(Boolean).join(" · ");
+  const exclusions = new Set(["TYPHOON", "TROPICAL", "CYCLONE", "FORECAST", "ANALYSIS", "INFORMATION", "JMA", "RSMC", "TOKYO", "UTC", "WMO"]);
+  const latin = (rawName.match(/\b[A-Z][A-Z-]{2,}\b/g) || []).find((item) => !exclusions.has(item)) || "";
+  const japaneseName = rawName.match(/[ァ-ヶー]{3,}/)?.[0] || "";
+  const taggedNumber = textOf(xml, "jmx_eb:TyphoonNumber") || textOf(xml, "TyphoonNumber");
+  const number = taggedNumber || entryTitle.match(/(?:^|\D)(\d{4})(?:\D|$)/)?.[1] || `jma-${fallbackIndex}`;
+  return {
+    name: latin || `JMA-${String(number).replace(/\D/g, "") || fallbackIndex + 1}`,
+    japaneseName: japaneseName || undefined,
+    number: String(number),
+    productTitle: entryTitle
+  };
+}
+function pointTime(point: TrackPoint) {
+  const time = point.time ? new Date(point.time).getTime() : Number.NaN;
+  return Number.isFinite(time) ? time : 0;
+}
+function sortAndDedupeTrack(points: TrackPoint[]) {
+  const sorted = [...points].sort((a, b) => pointTime(a) - pointTime(b));
+  const output: TrackPoint[] = [];
+  for (const point of sorted) {
+    const duplicate = output.find((item) => Math.abs(item.lat - point.lat) < 0.015 && Math.abs(item.lon - point.lon) < 0.015 && (item.time || "") === (point.time || ""));
+    if (!duplicate) output.push(point);
+  }
+  return output;
+}
+
 async function readNHC(): Promise<{ source: SourceStatus; storms: Storm[] }> {
   const url = "https://www.nhc.noaa.gov/CurrentStorms.json";
   try {
@@ -171,22 +205,25 @@ async function readJMA(): Promise<{ source: SourceStatus; storms: Storm[] }> {
           points.push({ ...coordinate, time, windMs: wind, pressureHpa: pressure, forecast: /予報|forecast/i.test(block), source: "jma" });
         }
         const fallbackCoordinate = parseJmaCoordinate(textOf(xml, "jmx_eb:Coordinate") || textOf(xml, "Coordinate"));
-        const first = points[0] ?? (fallbackCoordinate ? { ...fallbackCoordinate, source: "jma", forecast: false } as TrackPoint : null);
-        if (!first) continue;
-        const name = textOf(xml, "jmx_eb:TyphoonNamePart") || textOf(xml, "TyphoonNamePart") || entry.title.replace(/^.*?第?\s*/, "").slice(0, 40) || `JMA-${index + 1}`;
-        const number = textOf(xml, "jmx_eb:TyphoonNumber") || textOf(xml, "TyphoonNumber") || `jma-${index}`;
+        const track = sortAndDedupeTrack(points.length ? points : (fallbackCoordinate ? [{ ...fallbackCoordinate, source: "jma", forecast: false } as TrackPoint] : []));
+        const current = [...track].filter((point) => !point.forecast).sort((a, b) => pointTime(b) - pointTime(a))[0] || track[0];
+        if (!current) continue;
+        const identity = normalizeJmaIdentity(xml, entry.title, index);
         storms.push({
-          id: `jma-${number}`,
-          name,
-          localName: entry.title,
+          id: `jma-${identity.number}`,
+          name: identity.name,
+          localName: identity.japaneseName,
+          japaneseName: identity.japaneseName,
+          number: identity.number,
+          productTitle: identity.productTitle,
           basin: "Western North Pacific",
           classification: textOf(xml, "jmx_eb:ClassPart") || textOf(xml, "ClassPart") || "Tropical cyclone",
-          lat: first.lat,
-          lon: first.lon,
+          lat: current.lat,
+          lon: current.lon,
           updatedAt: textOf(xml, "ReportDateTime") || entry.updated || null,
-          windMs: first.windMs ?? null,
-          pressureHpa: first.pressureHpa ?? null,
-          track: points.length ? points : [first],
+          windMs: current.windMs ?? null,
+          pressureHpa: current.pressureHpa ?? null,
+          track,
           sources: ["jma"]
         });
       } catch {
@@ -292,11 +329,14 @@ function mergeStorms(groups: Storm[][]) {
     }
     match.sources = [...new Set([...match.sources, ...storm.sources])];
     match.track.push(...storm.track.filter((point) => !match.track.some((existing) => distanceKm(existing, point) < 8 && existing.time === point.time)));
+    match.track = sortAndDedupeTrack(match.track);
     if (match.sources[0] !== "jma" && storm.sources.includes("jma")) {
       match.lat = storm.lat; match.lon = storm.lon; match.windMs = storm.windMs; match.pressureHpa = storm.pressureHpa; match.updatedAt = storm.updatedAt;
+      match.name = storm.name; match.localName = storm.localName; match.japaneseName = storm.japaneseName; match.number = storm.number;
     }
     if (!match.alertLevel && storm.alertLevel) match.alertLevel = storm.alertLevel;
   }
+  for (const storm of merged) storm.track = sortAndDedupeTrack(storm.track);
   return merged;
 }
 

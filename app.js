@@ -10,7 +10,7 @@ const i18n = {
   zh: {
     skip:'跳到地图', chooseLanguage:'选择语言', appearance:'外观', tagline:'全球台风简报', connecting:'正在连接权威来源', connected:'权威来源已连接', partial:'部分来源暂不可用', simpleView:'公众视图', proView:'专业视图',
     region:'关注区域', global:'全球', globalOverview:'全球概览', allBasins:'所有海域', westPacific:'西北太平洋', atlantic:'大西洋', systems:'当前系统', demoScenario:'显示演示情景', demoExplain:'无活跃台风时用于体验界面', sourceHealth:'数据来源', details:'详情', sourceNote:'主预报以所属海域的官方气象机构为准，其他来源只作交叉验证。',
-    worldMap:'世界地图', globe3d:'3D 地球', fitWorld:'查看全球', focusStorm:'聚焦台风', demoLabel:'演示情景 · 非官方预警', demoTitle:'台风“曙光”正在向西北移动', demoSummary:'未来两天可能靠近台湾北部与东海沿岸。路径仍会变化，应关注当地气象部门后续更新。', headingTo:'往哪里走', northwest:'西北方向', closestTime:'何时最接近', within48:'约 24–48 小时', whatToDo:'现在怎么做', followLocal:'留意当地预警', understandImpact:'看懂可能影响',
+    worldMap:'世界地图', globe3d:'3D 地球', fitWorld:'查看全球', focusStorm:'聚焦台风', demoLabel:'演示情景 · 非官方预警', demoTitle:'台风“曙光”正在向西北移动', demoSummary:'未来两天可能靠近台湾北部与东海沿岸。路径仍会变化，应关注当地气象部门后续更新。', headingTo:'往哪里走', northwest:'西北方向', closestTime:'何时最接近', within48:'约 24–48 小时', whatToDo:'现在怎么做', followLocal:'留意当地预警', understandImpact:'看懂可能影响', trackUnavailable:'当前官方数据只提供中心位置，完整路径暂不可用',
     currentFix:'当前定位', coordinates:'坐标', maxWind:'最大风速', pressure:'中心气压', movement:'移动', agencySpread:'机构定位差异', spreadExplain:'差异越小，路径判断越一致', sourcesAgree:'3 个来源结论接近', agreementExplain:'位置与移动方向大致一致', howVerified:'如何交叉验证', observed:'已观测路径', forecast:'预测路径', uncertainty:'可能范围', mapTip:'拖动地图 · 滚轮或双指缩放 · 点击路径节点',
     plainLanguage:'用一句话说明', shouldWorry:'现在需要担心吗？', stayAware:'保持关注', publicLead:'目前更需要关注路径变化，而不是立刻恐慌。预测范围内的沿海地区应检查当地气象部门通知。', windImpact:'大风', windImpactText:'沿海与高处可能先感到风力增强', rainImpact:'强降雨', rainImpactText:'实际雨量取决于台风大小与地形', coastalImpact:'沿海风险', coastalImpactText:'风暴潮风险不能只看中心路径',
     nextSteps:'建议动作', threeThings:'普通人先做这三件事', actionOne:'确认所在地官方预警', actionOneText:'不同城市的风险和信号并不相同', actionTwo:'不要把圆锥当成影响边界', actionTwoText:'大风和暴雨可能出现在预测范围之外', actionThree:'记住下一次更新时间', actionThreeText:'路径可能随新观测明显调整',
@@ -24,7 +24,7 @@ const i18n = {
   en: {
     skip:'Skip to map', chooseLanguage:'Choose language', appearance:'Appearance', tagline:'Global Cyclone Brief', connecting:'Connecting official sources', connected:'Official sources connected', partial:'Some sources are unavailable', simpleView:'Public view', proView:'Professional view',
     region:'Watch region', global:'Global', globalOverview:'Global overview', allBasins:'All basins', westPacific:'Western Pacific', atlantic:'Atlantic', systems:'Current systems', demoScenario:'Show demo scenario', demoExplain:'Explore the interface when no storm is active', sourceHealth:'Data sources', details:'Details', sourceNote:'The responsible meteorological agency remains authoritative; other sources are used only for cross-checking.',
-    worldMap:'World map', globe3d:'3D globe', fitWorld:'View world', focusStorm:'Focus storm', demoLabel:'Demo scenario · Not an official warning', demoTitle:'Typhoon Aurora is moving northwest', demoSummary:'It may approach northern Taiwan and the East China Sea coast within two days. The track can still change; follow local meteorological updates.', headingTo:'Where it is going', northwest:'Northwest', closestTime:'Closest approach', within48:'About 24–48 hours', whatToDo:'What to do now', followLocal:'Follow local alerts', understandImpact:'Understand impacts',
+    worldMap:'World map', globe3d:'3D globe', fitWorld:'View world', focusStorm:'Focus storm', demoLabel:'Demo scenario · Not an official warning', demoTitle:'Typhoon Aurora is moving northwest', demoSummary:'It may approach northern Taiwan and the East China Sea coast within two days. The track can still change; follow local meteorological updates.', headingTo:'Where it is going', northwest:'Northwest', closestTime:'Closest approach', within48:'About 24–48 hours', whatToDo:'What to do now', followLocal:'Follow local alerts', understandImpact:'Understand impacts', trackUnavailable:'The official feed currently provides only the storm centre; a full track is not available.',
     currentFix:'Current fix', coordinates:'Coordinates', maxWind:'Maximum wind', pressure:'Central pressure', movement:'Movement', agencySpread:'Agency position spread', spreadExplain:'A smaller spread means stronger track agreement', sourcesAgree:'3 sources broadly agree', agreementExplain:'Position and direction are similar', howVerified:'How this is checked', observed:'Observed track', forecast:'Forecast track', uncertainty:'Possible range', mapTip:'Drag · Wheel or pinch to zoom · Select a track point',
     plainLanguage:'In plain language', shouldWorry:'Should I be worried now?', stayAware:'Stay aware', publicLead:'Track changes matter more than panic right now. Coastal communities inside and near the forecast area should check local official notices.', windImpact:'Strong wind', windImpactText:'Coasts and exposed high ground may feel stronger wind first', rainImpact:'Heavy rain', rainImpactText:'Actual rainfall depends on storm size and terrain', coastalImpact:'Coastal risk', coastalImpactText:'Storm-surge risk extends beyond the centre line',
     nextSteps:'Next steps', threeThings:'Three useful things to do', actionOne:'Check your local official warning', actionOneText:'Risk and warning signals vary by city and region', actionTwo:'Do not treat the cone as an impact boundary', actionTwoText:'Wind and rain may occur well outside the cone', actionThree:'Note the next update time', actionThreeText:'The track may shift as new observations arrive',
@@ -62,15 +62,46 @@ const languageOverrides = {
   fr: {
     appearance:'Apparence', chooseLanguage:'Choisir la langue', tagline:'Bulletin mondial des cyclones', connecting:'Connexion aux sources officielles', connected:'Sources officielles connectées', partial:'Certaines sources sont indisponibles', simpleView:'Vue grand public', proView:'Vue professionnelle',
     region:'Région suivie', global:'Monde', globalOverview:'Vue mondiale', allBasins:'Tous les bassins', westPacific:'Pacifique nord-ouest', atlantic:'Atlantique', systems:'Systèmes actuels', demoScenario:'Afficher le scénario de démonstration', demoExplain:'Explorer l’interface lorsqu’aucun cyclone n’est actif', sourceHealth:'Sources de données', details:'Détails', sourceNote:'L’agence météorologique responsable fait autorité; les autres sources servent uniquement à la vérification croisée.',
-    worldMap:'Carte du monde', globe3d:'Globe 3D', fitWorld:'Voir le monde', focusStorm:'Centrer le cyclone', demoLabel:'Démonstration · Pas une alerte officielle', demoTitle:'Le typhon Aurora se déplace vers le nord-ouest', demoSummary:'Il pourrait s’approcher du nord de Taïwan et de la côte de la mer de Chine orientale sous deux jours. La trajectoire peut changer; consultez les alertes locales.', headingTo:'Direction', northwest:'Nord-ouest', closestTime:'Passage au plus près', within48:'Environ 24–48 h', whatToDo:'Que faire maintenant', followLocal:'Suivre les alertes locales', understandImpact:'Comprendre les impacts possibles',
+    worldMap:'Carte du monde', globe3d:'Globe 3D', fitWorld:'Voir le monde', focusStorm:'Centrer le cyclone', demoLabel:'Démonstration · Pas une alerte officielle', demoTitle:'Le typhon Aurora se déplace vers le nord-ouest', demoSummary:'Il pourrait s’approcher du nord de Taïwan et de la côte de la mer de Chine orientale sous deux jours. La trajectoire peut changer; consultez les alertes locales.', headingTo:'Direction', northwest:'Nord-ouest', closestTime:'Passage au plus près', within48:'Environ 24–48 h', whatToDo:'Que faire maintenant', followLocal:'Suivre les alertes locales', understandImpact:'Comprendre les impacts possibles', trackUnavailable:'La source officielle ne fournit actuellement que la position du centre.',
     plainLanguage:'En termes simples', shouldWorry:'Faut-il s’inquiéter maintenant ?', stayAware:'Restez attentif', publicLead:'Il est plus utile de suivre l’évolution de la trajectoire que de paniquer. Les zones côtières proches de la zone prévue doivent consulter les avis officiels.', windImpact:'Vents forts', rainImpact:'Fortes pluies', coastalImpact:'Risque côtier', nextSteps:'Prochaines étapes', threeThings:'Trois actions utiles',
     map:'Carte', brief:'Résumé', sources:'Sources', more:'Plus', verification:'Vérification croisée', whatSourcesSay:'Ce que disent les sources', disclaimerTitle:'Important', disclaimerText:'Ce site agrège et visualise des informations; il ne remplace pas les alertes officielles ni les consignes d’urgence.', themeSystem:'Système', themeLight:'Clair', themeDark:'Sombre', themeChanged:'Apparence modifiée', languageChanged:'Langue modifiée', mapTip:'Glisser · Molette ou pincement pour zoomer · Sélectionner un point'
   }
 };
 for (const [lang, overrides] of Object.entries(languageOverrides)) i18n[lang] = {...i18n.en, ...overrides};
 
+
+Object.assign(i18n.zh, {
+  yourLocationImpact:'与你的位置', locationPromptShort:'定位后查看何时可能受影响', locationPrivacyShort:'位置只保存在这台设备上', useMyLocation:'使用我的位置',
+  personalMode:'个人影响模式', whenAffectMe:'什么时候可能波及我？', locationNeeded:'需要定位', personalIntro:'授权浏览器定位，或直接在地图上点选位置。系统会计算与预测路径的最近距离和可能影响时间窗。',
+  browserLocation:'由浏览器请求定位权限', pickOnMap:'在地图上点选', pickOnMapHint:'适合拒绝定位或查看其他地点', clearLocation:'清除位置', clearLocationHint:'删除本机保存的位置', locationPrivacy:'位置仅在你的浏览器中计算和保存，不会上传到本站服务器。',
+  distanceToTrack:'距预测路径最近', closestApproach:'预计最接近', possibleWindow:'可能影响时段', estimateConfidence:'估算可信度', chooseProfile:'选择你的活动画像', profileAdviceTitle:'建议会随场景变化', profileHint:'可随时切换',
+  profileCommute:'通勤上班', profileOutdoor:'户外运动', profileOffice:'室内办公', profileDriving:'驾车出行', profileFamily:'老人儿童照护', profileCoastal:'沿海居住',
+  estimateOnly:'这是路径距离估算，不是到达时间预报', estimateNote:'影响范围取决于台风大小、地形、降雨和当地预警。任何疏散、停课、停工或交通决定都以当地政府和气象部门为准。',
+  locationDenied:'无法读取位置，请允许定位或改用地图点选', locating:'正在获取位置…', locationReady:'位置已设置', pickLocationNow:'请在世界地图上点击要评估的位置', locationCleared:'位置已清除',
+  riskLow:'影响可能性较低', riskWatch:'保持关注', riskMedium:'可能受到外围影响', riskHigh:'可能明显受影响', riskSevere:'可能接近核心影响区',
+  confidenceHigh:'较高', confidenceMedium:'中等', confidenceLow:'有限', noForecastTime:'暂无可靠时间', noImpactWindow:'暂未进入估算影响范围', fromTo:'{start} 至 {end}', closestAt:'{time}，约 {distance} km',
+  personalNoStorm:'当前没有可计算的台风路径。保留位置后，出现活跃系统时会自动更新。', personalNoLocation:'设置位置后，可查看最近距离、可能影响时段和针对不同活动的建议。',
+  adviceNow:'现在', adviceBefore:'可能受影响前', adviceDuring:'影响期间', selectedPlace:'已选位置', mapPickHint:'点击地图设置要评估的位置', locationAccuracy:'定位精度约 {accuracy} 米',
+  actionLow:'保持日常关注即可', actionWatch:'留意路径和当地预警', actionMedium:'提前调整非必要安排', actionHigh:'准备减少外出并遵从官方措施', actionSevere:'优先执行当地疏散和停工停课指令'
+});
+Object.assign(i18n.en, {
+  yourLocationImpact:'Your location', locationPromptShort:'Use location to estimate possible impact', locationPrivacyShort:'Location stays on this device', useMyLocation:'Use my location',
+  personalMode:'Personal impact mode', whenAffectMe:'When could it affect me?', locationNeeded:'Location needed', personalIntro:'Allow browser location or select a point on the map. The site estimates the closest track distance and a possible impact window.',
+  browserLocation:'Browser permission is required', pickOnMap:'Choose on map', pickOnMapHint:'Useful for another place or denied GPS', clearLocation:'Clear location', clearLocationHint:'Delete the locally saved position', locationPrivacy:'Your position is calculated and stored only in this browser and is not uploaded to the site server.',
+  distanceToTrack:'Nearest forecast-track distance', closestApproach:'Estimated closest approach', possibleWindow:'Possible impact window', estimateConfidence:'Estimate confidence', chooseProfile:'Choose your activity profile', profileAdviceTitle:'Advice changes with your situation', profileHint:'Switch at any time',
+  profileCommute:'Commuting', profileOutdoor:'Outdoor exercise', profileOffice:'Indoor office', profileDriving:'Driving', profileFamily:'Family care', profileCoastal:'Coastal resident',
+  estimateOnly:'This is a track-distance estimate, not an arrival forecast', estimateNote:'Impacts depend on storm size, terrain, rainfall and local warnings. Evacuation, closures and travel decisions must follow local authorities.',
+  locationDenied:'Location unavailable. Allow permission or choose a point on the map.', locating:'Finding your location…', locationReady:'Location set', pickLocationNow:'Click the world map to choose a place to assess', locationCleared:'Location cleared',
+  riskLow:'Low likelihood of impact', riskWatch:'Stay aware', riskMedium:'Peripheral impacts possible', riskHigh:'Meaningful impacts possible', riskSevere:'Possible core-impact zone',
+  confidenceHigh:'Higher', confidenceMedium:'Moderate', confidenceLow:'Limited', noForecastTime:'No reliable time yet', noImpactWindow:'Not currently inside the estimated influence range', fromTo:'{start} to {end}', closestAt:'{time}, about {distance} km',
+  personalNoStorm:'There is no usable cyclone track right now. Keep the location saved and the estimate will update when a system appears.', personalNoLocation:'Set a location to see distance, possible timing and advice for different activities.',
+  adviceNow:'Now', adviceBefore:'Before possible impacts', adviceDuring:'During impacts', selectedPlace:'Selected place', mapPickHint:'Click the map to set the place you want to assess', locationAccuracy:'Location accuracy about {accuracy} m',
+  historyReference:'Historical reference', similarStorms:'Which past storms were similar?', referenceOnly:'Context only', historyLead:'Cases are matched by track direction, intensity and possible impact area to explain risk types—not to predict that history will repeat.', historyNotForecast:'Similarity does not mean the same outcome', historyCaveat:'Storm size, speed, tide, terrain and preparedness can produce very different impacts. Current official forecasts and local alerts always take priority.', historySummaryTitle:'Why these cases are shown', historySummaryText:'These cases illustrate possible wind, rain, surge and inland-flood risks. Similarity reflects only selected track and intensity characteristics.', similarPath:'Similar track direction', similarIntensity:'Similar intensity range', similarRegion:'Similar impact region', pastImpact:'Main historical impact', lesson:'Useful lesson', overlayTrack:'Overlay track', removeOverlay:'Remove overlay', noAnalog:'There is not enough track information to recommend historical cases.',
+  actionLow:'Continue normal monitoring', actionWatch:'Watch the track and local alerts', actionMedium:'Adjust non-essential plans early', actionHigh:'Prepare to reduce travel and follow official measures', actionSevere:'Prioritize evacuation and closure instructions from local authorities'
+});
+
 const demoStorm = {
-  id: 'demo-aurora', name: 'AURORA', localName: '曙光', basin: 'Western North Pacific', classification: 'Strong typhoon', alertLevel: 'orange', lat: 25.2, lon: 124.8, windMs: 58, pressureHpa: 960, updatedAt: '2026-07-10T12:00:00Z', demo: true,
+  id: 'demo-aurora', name: 'AURORA', localName: '曙光', number: '2600', basin: 'Western North Pacific', classification: 'Strong typhoon', alertLevel: 'orange', lat: 25.2, lon: 124.8, windMs: 58, pressureHpa: 960, updatedAt: '2026-07-10T12:00:00Z', demo: true,
   track: [
     {lat:14.6,lon:142.1,time:'2026-07-08T02:00:00Z',windMs:24,pressureHpa:1002,forecast:false,source:'demo'},
     {lat:16.1,lon:139.4,time:'2026-07-08T14:00:00Z',windMs:30,pressureHpa:996,forecast:false,source:'demo'},
@@ -94,6 +125,15 @@ const demoSources = [
   {id:'cwa',name:'Taiwan CWA',role:'optional',status:'not-configured',message:'Connector reserved for API-key access',url:'https://opendata.cwa.gov.tw/'}
 ];
 
+const historicalAnalogCatalog = [
+  {id:'morakot-2009',name:'MORAKOT',year:2009,localZh:'莫拉克',basin:'Western North Pacific',peakWind:40,region:'台湾及华南沿海',regionEn:'Taiwan and the South China coast',impactZh:'移动较慢并带来长时间强降雨，山区洪水和滑坡风险突出。',impactEn:'Slow movement contributed to prolonged heavy rain, with severe flood and landslide risk in mountainous terrain.',lessonZh:'不要只看中心风力；移动速度、地形和持续降雨可能成为更主要的危险。',lessonEn:'Do not focus only on centre wind: forward speed, terrain and prolonged rainfall can dominate impacts.',track:[{lat:17.5,lon:139},{lat:19.2,lon:133},{lat:21.2,lon:128},{lat:22.8,lon:124.5},{lat:23.5,lon:121},{lat:24,lon:118}]},
+  {id:'mangkhut-2018',name:'MANGKHUT',year:2018,localZh:'山竹',basin:'Western North Pacific',peakWind:55,region:'菲律宾北部、香港及广东',regionEn:'Northern Philippines, Hong Kong and Guangdong',impactZh:'强风、巨浪和风暴潮对沿海及高层建筑环境造成显著影响。',impactEn:'Strong wind, waves and storm surge caused major coastal and high-rise urban impacts.',lessonZh:'沿海风险不能只用中心路径判断；潮位、海岸形状和建筑暴露度同样关键。',lessonEn:'Coastal risk cannot be inferred from the centre line alone; tide, coastline shape and exposure matter.',track:[{lat:13.5,lon:145},{lat:14.7,lon:139},{lat:16,lon:132},{lat:17.5,lon:125},{lat:19.2,lon:119},{lat:21.5,lon:113}]},
+  {id:'doksuri-2023',name:'DOKSURI',year:2023,localZh:'杜苏芮',basin:'Western North Pacific',peakWind:50,region:'菲律宾、台湾附近、福建及华北',regionEn:'Philippines, near Taiwan, Fujian and northern China',impactZh:'登陆区承受强风暴雨，残余水汽随后在远离中心的内陆地区触发严重降雨。',impactEn:'Landfall areas saw wind and rain, while remnant moisture later contributed to severe rainfall far inland.',lessonZh:'台风减弱或登陆后风险并不会立刻结束，内陆暴雨可能延后出现。',lessonEn:'Risk does not end at landfall or weakening; inland rainfall can peak later and far from the centre.',track:[{lat:12.5,lon:132},{lat:14.5,lon:127},{lat:17,lon:123},{lat:20,lon:120.5},{lat:23.5,lon:118.5},{lat:26,lon:116}]},
+  {id:'hagibis-2019',name:'HAGIBIS',year:2019,localZh:'海贝思',basin:'Western North Pacific',peakWind:55,region:'日本',regionEn:'Japan',impactZh:'大范围持续降雨导致河流洪水和城市内涝，交通网络受到广泛影响。',impactEn:'Widespread prolonged rainfall produced river flooding, urban inundation and major transport disruption.',lessonZh:'即使中心未直接经过所在地，也要重视流域上游降雨和公共交通停运。',lessonEn:'Even without a direct centre passage, upstream rainfall and transport shutdowns can drive local risk.',track:[{lat:14,lon:158},{lat:17,lon:151},{lat:21,lon:143},{lat:26,lon:137},{lat:32,lon:138},{lat:36,lon:140}]},
+  {id:'haiyan-2013',name:'HAIYAN',year:2013,localZh:'海燕',basin:'Western North Pacific',peakWind:70,region:'菲律宾中部',regionEn:'Central Philippines',impactZh:'极强风和风暴潮对低洼沿海社区造成灾难性影响。',impactEn:'Extreme wind and storm surge caused catastrophic impacts in low-lying coastal communities.',lessonZh:'低洼沿海居民应提前了解疏散区，高强度风暴来临前的行动时间非常关键。',lessonEn:'Low-lying coastal residents need early evacuation-zone awareness; lead time is critical in intense storms.',track:[{lat:7,lon:150},{lat:8.5,lon:143},{lat:10,lon:136},{lat:11,lon:129},{lat:11.5,lon:123},{lat:12,lon:117}]},
+  {id:'lekima-2019',name:'LEKIMA',year:2019,localZh:'利奇马',basin:'Western North Pacific',peakWind:52,region:'台湾以东、浙江及华东',regionEn:'East of Taiwan, Zhejiang and eastern China',impactZh:'沿海强风暴雨叠加山区地形，造成洪水、滑坡和长时间交通影响。',impactEn:'Coastal wind and rain interacting with terrain led to flooding, landslides and prolonged transport impacts.',lessonZh:'登陆后的减弱过程仍可能伴随持续降雨，山区和河谷需更早采取行动。',lessonEn:'Weakening after landfall can still bring prolonged rain; mountain and river-valley communities need earlier action.',track:[{lat:17,lon:132},{lat:20,lon:128},{lat:23,lon:125},{lat:26,lon:122},{lat:29,lon:120.5},{lat:33,lon:119}]}
+];
+
 const state = {
   lang: localStorage.getItem('tv-lang') || 'zh',
   theme: localStorage.getItem('tv-theme') || 'light',
@@ -110,6 +150,11 @@ const state = {
   width: 1, height: 1, dpr: 1,
   hoverIndex: -1,
   playing: false,
+  userLocation: (() => { try { const value=JSON.parse(localStorage.getItem('tv-user-location')||'null'); return value&&Number.isFinite(value.lat)&&Number.isFinite(value.lon)?value:null; } catch { return null; } })(),
+  profile: localStorage.getItem('tv-profile') || 'commute',
+  locationPickMode: false,
+  personalImpact: null,
+  activeAnalogId: null,
   lastFrame: 0,
   needsRender: true
 };
@@ -172,12 +217,12 @@ function selectStorm(storm, focus = false) {
   state.selectedStorm = storm || null;
   state.activeTrackIndex = storm?.track?.findLastIndex?.(p => !p.forecast) ?? Math.max(0,(storm?.track?.length || 1)-1);
   if (state.activeTrackIndex < 0) state.activeTrackIndex = 0;
-  if (focus && storm) focusStorm(false);
+  if (focus && storm) fitStormTrack(storm,false);
   renderAll(); state.needsRender = true;
 }
 
 function renderAll() {
-  renderStormList(); renderSources(); renderBrief(); renderPro(); renderTimeline();
+  renderStormList(); renderSources(); renderPersonalImpact(); renderHistoricalAnalogs(); renderBrief(); renderPro(); renderTimeline();
 }
 function renderStormList() {
   const storms = availableStorms(); state.storms = storms;
@@ -196,10 +241,30 @@ function renderStormList() {
     button.addEventListener('click', () => selectStorm(storm,true)); list.append(button);
   });
 }
+const stormNameZh = {BAVI:'巴威',DANAS:'丹娜丝',WIPHA:'韦帕',FRANCISCO:'范斯高','CO-MAY':'竹节草',KROSA:'罗莎',PODUL:'杨柳',KAJIKI:'剑鱼',NONGFA:'农法',PEIPAH:'琵琶',TAPAH:'塔巴',MITAG:'米娜',RAGASA:'桦加沙',NEOGURI:'浣熊',BUALOI:'夏浪',MATMO:'麦德姆',HALONG:'夏浪'};
+const stormNameJa = {BAVI:'バービー'};
+function cleanStormName(value='') {
+  const text=String(value).replace(/台風解析・予報情報[^·|]*/g,'').replace(/[（(][^）)]*[）)]/g,' ').replace(/\s+/g,' ').trim();
+  const latin=text.match(/[A-Za-z][A-Za-z-]{2,}/)?.[0];
+  return (latin || text || '').toUpperCase();
+}
+function stormSequence(storm) {
+  const raw=String(storm?.number || storm?.internationalNumber || storm?.id || '');
+  const match=raw.match(/(\d{2})$/);
+  if(!match) return null;
+  const n=Number(match[1]); return Number.isFinite(n)&&n>0?n:null;
+}
 function displayStormName(storm) {
   if (!storm) return '';
-  if (state.lang === 'zh' && storm.localName) return `${storm.localName} · ${storm.name}`;
-  return storm.name || storm.localName || storm.id;
+  const name=cleanStormName(storm.name || storm.id) || 'UNNAMED';
+  const seq=stormSequence(storm);
+  const zh=stormNameZh[name] || (storm.localName && /[\u4e00-\u9fff]/.test(storm.localName) && !/台風解析|予報情報/.test(storm.localName) ? storm.localName : null);
+  if(state.lang==='zh') return `${seq?`第${seq}号台风 `:'台风 '}${zh?`${zh}（${name}）`:name}`;
+  if(state.lang==='ja') return `${seq?`台風${seq}号 `:'台風 '}${name}${storm.japaneseName||stormNameJa[name]?`（${storm.japaneseName||stormNameJa[name]}）`:''}`;
+  if(state.lang==='ko') return `${seq?`제${seq}호 태풍 `:'태풍 '}${name}`;
+  if(state.lang==='es') return `${seq?`Tifón n.º ${seq} `:'Tifón '}${name}`;
+  if(state.lang==='fr') return `${seq?`Typhon n° ${seq} `:'Typhon '}${name}`;
+  return `${seq?`Typhoon ${name} (No. ${seq})`:`Typhoon ${name}`}`;
 }
 function renderSources() {
   const sources = currentSources();
@@ -223,6 +288,193 @@ function sourceCardHtml(source) {
 }
 function shortSourceName(name) { return name.replace(' / RSMC Tokyo','').replace(' / EU JRC & UN',''); }
 
+
+function haversineKm(a,b){
+  const dLat=rad(b.lat-a.lat),dLon=rad(normalizeLon(b.lon-a.lon));
+  const q=Math.sin(dLat/2)**2+Math.cos(rad(a.lat))*Math.cos(rad(b.lat))*Math.sin(dLon/2)**2;
+  return 6371*2*Math.atan2(Math.sqrt(q),Math.sqrt(Math.max(0,1-q)));
+}
+function impactRadiusKm(point,storm){
+  const wind=Number(point?.windMs ?? storm?.windMs);
+  return clamp(250+(Number.isFinite(wind)?wind*4.6:90),260,560);
+}
+function calculatePersonalImpact(storm,location){
+  if(!storm||!location)return null;
+  const points=(storm.track||[]).filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lon));
+  if(!points.length&&Number.isFinite(storm.lat)&&Number.isFinite(storm.lon))points.push(storm);
+  if(!points.length)return null;
+  const rows=points.map((point,index)=>({point,index,distance:haversineKm(location,point),radius:impactRadiusKm(point,storm)})).sort((a,b)=>a.index-b.index);
+  const closest=rows.reduce((best,row)=>row.distance<best.distance?row:best,rows[0]);
+  const affected=rows.filter(row=>row.distance<=row.radius&&row.point.time);
+  const minDistance=closest.distance;
+  let level='low';
+  if(minDistance<=110)level='severe'; else if(minDistance<=260)level='high'; else if(minDistance<=520)level='medium'; else if(minDistance<=950)level='watch';
+  const timed=rows.filter(row=>row.point.time&&!Number.isNaN(new Date(row.point.time).getTime()));
+  const future=timed.filter(row=>new Date(row.point.time).getTime()>=Date.now()-3*3600e3);
+  const closestTimed=(future.length?future:timed).reduce((best,row)=>!best||row.distance<best.distance?row:best,null);
+  const start=affected[0]?.point.time||null,end=affected.at(-1)?.point.time||null;
+  const forecastCount=points.filter(p=>p.forecast&&p.time).length;
+  const confidence=forecastCount>=4?'high':forecastCount>=2||points.length>=4?'medium':'low';
+  return {rows,closest,closestTimed,minDistance,level,start,end,confidence,radius:closest.radius};
+}
+function riskText(level){return t({low:'riskLow',watch:'riskWatch',medium:'riskMedium',high:'riskHigh',severe:'riskSevere'}[level]||'riskWatch');}
+function riskAction(level){return t({low:'actionLow',watch:'actionWatch',medium:'actionMedium',high:'actionHigh',severe:'actionSevere'}[level]||'actionWatch');}
+function localizedAdvice(){
+  const zh=state.lang==='zh';
+  return zh?{
+    commute:[
+      ['🧭','现在','查看所在地气象预警、公交和地铁官方账号；保存一条避开河边、低洼路段和地下通道的备用路线，并给手机与充电宝充满电。'],
+      ['🕒','可能受影响前','如果当地发布停工停课、强风或暴雨警报，优先远程办公、错峰或提前返程；不要等到交通全面停运才离开。'],
+      ['🏠','影响期间','非必要不通勤。已经在外时进入坚固室内场所，远离玻璃幕墙、广告牌、树木和积水路段，持续查看官方交通恢复通知。']
+    ],
+    outdoor:[
+      ['📅','现在','把跑步、骑行、球类等活动准备一个室内替代方案；户外赛事或团体活动应明确取消条件和联系人。'],
+      ['⛰️','可能受影响前','强风、雷雨或暴雨预警生效前就停止登山、露营、海边、水上运动和高空项目；不要只根据台风中心是否经过判断安全。'],
+      ['🚫','影响期间','不要外出追风、观浪或拍摄。远离海堤、河道、树木、电线杆、脚手架和临时建筑，待当地部门明确解除风险后再恢复活动。']
+    ],
+    office:[
+      ['💻','现在','确认单位远程办公、考勤和紧急联系规则；备份重要文件，给电脑、手机和移动电源充电。'],
+      ['🪟','可能受影响前','收好窗边和阳台物品，检查门窗渗水风险；如通勤路径可能积水，尽早与主管确认远程或提前离岗安排。'],
+      ['🏢','影响期间','留在建筑内部并远离窗户。若地下层出现进水风险，按物业指引转移到更高楼层；停电时不要擅自使用受损电气设备。']
+    ],
+    driving:[
+      ['⛽','现在','提前加油或充电，保存离线地图；将车辆停在较高、排水良好且远离树木、广告牌和地下车库低点的位置。'],
+      ['🛣️','可能受影响前','推迟非必要长途出行，避开沿海公路、桥梁、山路、隧道和易涝下穿道；出发前检查道路封闭和轮渡停航信息。'],
+      ['🛑','影响期间','绝不要驶入看不清深度的积水。遇强风或能见度骤降时，在安全地点停车，远离树木和电线，并等待官方道路恢复信息。']
+    ],
+    family:[
+      ['💊','现在','准备常用药、饮水、易保存食物、手电和充电设备；写下紧急联系人，并考虑婴幼儿、老人、残障人士和宠物的特殊需求。'],
+      ['👨‍👩‍👧','可能受影响前','向家人用平静、具体的方式说明安排；确认接送、照护、备用电源和撤离去向，不要把行动拖到最后一刻。'],
+      ['📻','影响期间','让家人待在远离窗户的安全区域，使用官方广播或手机警报获取信息；若收到疏散指令，应按指定路线尽快行动。']
+    ],
+    coastal:[
+      ['🗺️','现在','查看当地风暴潮、海浪和疏散分区，确认最近的高地或避难点；固定户外物品，并安排船只和车辆转移。'],
+      ['⬆️','可能受影响前','在道路拥堵、潮位上升或桥梁关闭前提前离开低洼沿海区域；重要证件和药物放入防水袋随身携带。'],
+      ['🌊','影响期间','远离海滩、码头、海堤、河口和观浪点。即使风暂时减弱，也不要擅自返回，等待当地政府解除疏散或危险通知。']
+    ]
+  }:{
+    commute:[['🧭','Now','Check local alerts and official transit channels. Save a route that avoids low areas, riverfronts and underpasses, and fully charge your phone.'],['🕒','Before possible impacts','Use remote work, leave early or shift travel when local wind, rain or closure alerts are issued. Do not wait for the network to shut down.'],['🏠','During impacts','Avoid non-essential commuting. If already outside, enter a sturdy building and stay away from glass, signs, trees and floodwater.']],
+    outdoor:[['📅','Now','Prepare an indoor alternative and set clear cancellation rules for group activities.'],['⛰️','Before possible impacts','Stop hiking, camping, coastal, water and high-exposure activities before strong-wind or heavy-rain warnings begin.'],['🚫','During impacts','Do not go out to watch waves or record the storm. Stay away from seawalls, rivers, trees, power lines and temporary structures.']],
+    office:[['💻','Now','Confirm remote-work and emergency-contact procedures. Back up files and charge devices.'],['🪟','Before possible impacts','Secure items near windows and confirm an early-departure or remote option if the commute may flood.'],['🏢','During impacts','Stay inside and away from windows. Follow building management instructions, especially if basements or power systems are affected.']],
+    driving:[['⛽','Now','Fuel or charge early, save offline maps and park on higher ground away from trees and low underground areas.'],['🛣️','Before possible impacts','Postpone non-essential trips and avoid coastal roads, bridges, mountain routes, tunnels and flood-prone underpasses.'],['🛑','During impacts','Never drive into water of unknown depth. Stop in a safe place if wind or visibility becomes dangerous.']],
+    family:[['💊','Now','Prepare medication, water, food, lights and charging. Include the needs of children, older adults, disabled people and pets.'],['👨‍👩‍👧','Before possible impacts','Explain the plan calmly and confirm pickup, care, backup power and evacuation arrangements.'],['📻','During impacts','Keep everyone in an interior safe area and follow official alerts. Leave promptly if authorities order evacuation.']],
+    coastal:[['🗺️','Now','Check local storm-surge and evacuation zones, identify higher ground and secure outdoor items, boats and vehicles.'],['⬆️','Before possible impacts','Leave low coastal areas before roads congest, tides rise or bridges close. Keep documents and medication waterproof.'],['🌊','During impacts','Stay away from beaches, ports, seawalls and estuaries. Do not return until local authorities lift restrictions.']]
+  };
+}
+function renderProfileAdvice(level='watch'){
+  const catalog=localizedAdvice(),items=catalog[state.profile]||catalog.commute;
+  const riskBanner=state.lang==='zh'
+    ? {low:'目前无需立即改变日常安排，但建议保留提醒。',watch:'先准备替代方案，关注下一次官方更新。',medium:'非必要活动应准备调整，避免把决定拖到警报生效后。',high:'建议显著减少外出，并提前落实工作、交通或照护安排。',severe:'请把当地疏散、停工停课和应急指令置于所有个人计划之上。'}[level]
+    : {low:'No immediate schedule change is suggested, but keep alerts enabled.',watch:'Prepare alternatives and check the next official update.',medium:'Be ready to change non-essential plans before alerts intensify.',high:'Reduce travel and put work, transport and care arrangements in place early.',severe:'Local evacuation and closure instructions take priority over all personal plans.'}[level];
+  $('#profileAdvice').innerHTML=`<article class="advice-card"><span>⚑</span><p><strong>${escapeHtml(riskText(level))}</strong><small>${escapeHtml(riskBanner)}</small></p></article>`+items.map(([icon,title,text])=>`<article class="advice-card"><span>${icon}</span><p><strong>${escapeHtml(title)}</strong><small>${escapeHtml(text)}</small></p></article>`).join('');
+}
+function renderPersonalImpact(){
+  const loc=state.userLocation,storm=state.selectedStorm,preview=$('#personalImpactPreview');
+  $('#clearLocationButton').hidden=!loc;
+  if(!loc){
+    state.personalImpact=null;preview?.classList.remove('has-location');
+    $('#personalImpactHeadline').textContent=t('locationPromptShort');$('#personalImpactDetail').textContent=t('locationPrivacyShort');$('#quickLocateButton').hidden=false;
+    $('#personalRiskBadge').className='level-badge neutral';$('#personalRiskBadge').textContent=t('locationNeeded');$('#personalSummary').textContent=t('personalNoLocation');$('#personalMetrics').hidden=true;
+    renderProfileAdvice('watch');return;
+  }
+  preview?.classList.add('has-location');$('#quickLocateButton').hidden=true;
+  if(!storm){
+    state.personalImpact=null;$('#personalImpactHeadline').textContent=t('selectedPlace');$('#personalImpactDetail').textContent=formatCoord(loc.lat,loc.lon);
+    $('#personalRiskBadge').className='level-badge low';$('#personalRiskBadge').textContent=t('riskLow');$('#personalSummary').textContent=t('personalNoStorm');$('#personalMetrics').hidden=true;renderProfileAdvice('low');return;
+  }
+  const impact=calculatePersonalImpact(storm,loc);state.personalImpact=impact;
+  if(!impact){$('#personalSummary').textContent=t('personalNoStorm');$('#personalMetrics').hidden=true;renderProfileAdvice('watch');return;}
+  const nearest=Math.round(impact.minDistance);
+  const closestTime=impact.closestTimed?.point?.time?formatDate(impact.closestTimed.point.time,true):t('noForecastTime');
+  const windowText=impact.start?(impact.end&&impact.end!==impact.start?t('fromTo').replace('{start}',formatDate(impact.start,true)).replace('{end}',formatDate(impact.end,true)):formatDate(impact.start,true)):t('noImpactWindow');
+  const confidence=t({high:'confidenceHigh',medium:'confidenceMedium',low:'confidenceLow'}[impact.confidence]);
+  $('#personalImpactHeadline').textContent=riskText(impact.level);$('#personalImpactDetail').textContent=t('closestAt').replace('{time}',closestTime).replace('{distance}',String(nearest));
+  $('#personalRiskBadge').className=`level-badge ${impact.level}`;$('#personalRiskBadge').textContent=riskText(impact.level);
+  $('#personalSummary').textContent=`${formatCoord(loc.lat,loc.lon)} · ${riskAction(impact.level)}。${t('closestAt').replace('{time}',closestTime).replace('{distance}',String(nearest))}`;
+  $('#personalMetrics').hidden=false;$('#nearestDistance').textContent=`${nearest} km`;$('#closestApproach').textContent=closestTime;$('#impactWindow').textContent=windowText;$('#impactConfidence').textContent=confidence;
+  renderProfileAdvice(impact.level);
+}
+function setUserLocation(lat,lon,meta={}){
+  if(!Number.isFinite(lat)||!Number.isFinite(lon))return;
+  state.userLocation={lat:clamp(lat,-90,90),lon:normalizeLon(lon),accuracy:Number(meta.accuracy)||null,source:meta.source||'manual',savedAt:new Date().toISOString()};
+  localStorage.setItem('tv-user-location',JSON.stringify(state.userLocation));state.locationPickMode=false;$('#mainMap').classList.remove('location-pick-mode');
+  renderPersonalImpact();state.needsRender=true;showToast(t('locationReady'));
+}
+function clearUserLocation(){state.userLocation=null;state.personalImpact=null;localStorage.removeItem('tv-user-location');renderPersonalImpact();state.needsRender=true;showToast(t('locationCleared'));}
+function requestUserLocation(){
+  if(!navigator.geolocation){showToast(t('locationDenied'));return;}
+  showToast(t('locating'));
+  navigator.geolocation.getCurrentPosition(pos=>setUserLocation(pos.coords.latitude,pos.coords.longitude,{accuracy:pos.coords.accuracy,source:'gps'}),()=>showToast(t('locationDenied')),{enableHighAccuracy:false,timeout:10000,maximumAge:10*60*1000});
+}
+function beginMapLocationPick(){
+  state.locationPickMode=true;if(state.mapMode!=='world')setMapMode('world');$('#mainMap').classList.add('location-pick-mode');$('#mainMap').dataset.pickHint=t('mapPickHint');showToast(t('pickLocationNow'));
+}
+function worldPointFromClient(clientX,clientY){
+  const rect=canvas.getBoundingClientRect(),x=clientX-rect.left,y=clientY-rect.top,scale=worldScale();
+  return {lon:normalizeLon(state.centerLon+(x-state.width/2)/scale),lat:clamp(state.centerLat-(y-state.height/2)/scale,-85,85)};
+}
+function drawUserLocation(colors){
+  const loc=state.userLocation;if(!loc)return;const p=project(loc.lat,loc.lon);if(!p.visible)return;
+  const impact=state.personalImpact,closest=impact?.closest?.point,cp=closest?project(closest.lat,closest.lon):null;
+  ctx.save();
+  if(cp?.visible){ctx.strokeStyle=colorAlpha(colors.brand,.48);ctx.lineWidth=1.2;ctx.setLineDash([4,5]);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(cp.x,cp.y);ctx.stroke();ctx.setLineDash([]);}
+  ctx.fillStyle=colors.surface;ctx.strokeStyle=colors.brand;ctx.lineWidth=3;ctx.beginPath();ctx.arc(p.x,p.y,7,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.fillStyle=colors.brand;ctx.beginPath();ctx.arc(p.x,p.y,2.4,0,Math.PI*2);ctx.fill();
+  ctx.font='700 9px system-ui';ctx.textAlign='center';ctx.fillStyle=colors.text2;ctx.fillText(state.lang==='zh'?'你的位置':'Your location',p.x,p.y-12);ctx.restore();
+}
+
+function analogScore(storm, analog) {
+  if(!storm) return 0;
+  const points=(storm.track||[]).filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lon));
+  const first=points[0]||storm,last=points.at(-1)||storm;
+  const currentDir=inferDirection(points);
+  const analogDir=inferDirection(analog.track);
+  let score=25;
+  if((storm.basin||'').toLowerCase().includes('pacific')) score+=18;
+  if(currentDir===analogDir) score+=24; else if(currentDir?.[0]===analogDir?.[0]||currentDir?.at(-1)===analogDir?.at(-1)) score+=10;
+  const wind=Number(storm.windMs ?? last.windMs);
+  if(Number.isFinite(wind)) score+=Math.max(0,22-Math.abs(wind-analog.peakWind)*.7);
+  const endpointDistance=haversineKm({lat:last.lat,lon:last.lon},{lat:analog.track.at(-1).lat,lon:analog.track.at(-1).lon});
+  score+=Math.max(0,18-endpointDistance/180);
+  if(state.userLocation){
+    const userDist=Math.min(...analog.track.map(p=>haversineKm(state.userLocation,p)));
+    score+=Math.max(0,15-userDist/120);
+  }
+  return clamp(Math.round(score),20,96);
+}
+function analogReasons(storm, analog) {
+  const reasons=[];
+  const points=storm?.track||[];
+  if(points.length>1&&inferDirection(points)===inferDirection(analog.track)) reasons.push(t('similarPath'));
+  const wind=Number(storm?.windMs ?? points.at(-1)?.windMs);
+  if(Number.isFinite(wind)&&Math.abs(wind-analog.peakWind)<=15) reasons.push(t('similarIntensity'));
+  if(state.userLocation&&Math.min(...analog.track.map(p=>haversineKm(state.userLocation,p)))<800) reasons.push(t('similarRegion'));
+  if(!reasons.length) reasons.push(t('similarPath'));
+  return reasons.slice(0,3);
+}
+function renderHistoricalAnalogs(){
+  const container=$('#analogCards'),summary=$('#historySummary');if(!container||!summary)return;
+  const storm=state.selectedStorm;
+  if(!storm){container.innerHTML=`<div class="empty-storms">${escapeHtml(t('noAnalog'))}</div>`;summary.innerHTML='';return;}
+  const ranked=historicalAnalogCatalog.map(a=>({...a,score:analogScore(storm,a)})).sort((a,b)=>b.score-a.score).slice(0,3);
+  summary.innerHTML=`<span>↔</span><p><strong>${escapeHtml(t('historySummaryTitle'))}</strong><small>${escapeHtml(t('historySummaryText'))}</small></p>`;
+  container.innerHTML=ranked.map(a=>{
+    const local=state.lang==='zh'?a.localZh:a.name;
+    const region=state.lang==='zh'?a.region:a.regionEn;
+    const impact=state.lang==='zh'?a.impactZh:a.impactEn;
+    const lesson=state.lang==='zh'?a.lessonZh:a.lessonEn;
+    const active=state.activeAnalogId===a.id;
+    return `<article class="analog-card"><div class="analog-head"><p><strong>${escapeHtml(`${a.year} ${local} (${a.name})`)}</strong><small>${escapeHtml(region)}</small></p><span class="analog-score">${a.score}% ${state.lang==='zh'?'相似':'match'}</span></div><div class="analog-reasons">${analogReasons(storm,a).map(r=>`<span>${escapeHtml(r)}</span>`).join('')}</div><p class="analog-impact"><b>${escapeHtml(t('pastImpact'))}：</b>${escapeHtml(impact)}</p><p class="analog-lesson"><b>${escapeHtml(t('lesson'))}：</b>${escapeHtml(lesson)}</p><div class="analog-actions"><button class="${active?'active':''}" data-analog-id="${a.id}">${escapeHtml(active?t('removeOverlay'):t('overlayTrack'))}</button></div></article>`;
+  }).join('');
+  $$('[data-analog-id]',container).forEach(btn=>btn.addEventListener('click',()=>{state.activeAnalogId=state.activeAnalogId===btn.dataset.analogId?null:btn.dataset.analogId;renderHistoricalAnalogs();state.needsRender=true;}));
+}
+function drawHistoricalAnalog(colors){
+  if(!state.activeAnalogId)return;const analog=historicalAnalogCatalog.find(a=>a.id===state.activeAnalogId);if(!analog)return;
+  ctx.save();ctx.strokeStyle=colorAlpha(colors.text2,.58);ctx.lineWidth=1.6;ctx.setLineDash([3,5]);ctx.beginPath();let started=false;
+  for(const p of analog.track){const q=project(p.lat,p.lon);if(!q.visible){started=false;continue;}if(!started){ctx.moveTo(q.x,q.y);started=true;}else ctx.lineTo(q.x,q.y);}ctx.stroke();ctx.setLineDash([]);
+  analog.track.forEach(p=>{const q=project(p.lat,p.lon);if(!q.visible)return;ctx.fillStyle=colorAlpha(colors.text2,.68);ctx.beginPath();ctx.arc(q.x,q.y,2.2,0,Math.PI*2);ctx.fill();});ctx.restore();
+}
+
 function renderBrief() {
   const storm = state.selectedStorm;
   const noLive = !(state.livePayload?.storms?.length);
@@ -243,6 +495,17 @@ function renderBrief() {
     $('#plainTiming').textContent = storm.track?.some(p=>p.forecast) ? t('within48') : t('unknown'); $('#plainAction').textContent = t('followLocal');
   }
   $('#publicLead').textContent = t('publicLead');
+  if(state.userLocation){
+    const personal=calculatePersonalImpact(storm,state.userLocation);
+    if(personal){
+      const nearest=Math.round(personal.minDistance);
+      const when=personal.closestTimed?.point?.time?formatDate(personal.closestTimed.point.time,true):t('noForecastTime');
+      $('#plainTiming').textContent=personal.closestTimed?.point?.time?when:t('noForecastTime');
+      $('#plainAction').textContent=riskAction(personal.level);
+      $('#publicLead').textContent=`${riskText(personal.level)}。${t('closestAt').replace('{time}',when).replace('{distance}',String(nearest))}`;
+    }
+  }
+  $('#mapTip').textContent = storm.track?.length>1 ? t('mapTip') : t('trackUnavailable');
 }
 function renderPro() {
   const storm = state.selectedStorm;
@@ -250,7 +513,7 @@ function renderPro() {
     $('#proName').textContent = t('noSystems'); $('#metricCoord').textContent = '—'; $('#metricWind').innerHTML = '—'; $('#metricPressure').innerHTML = '—'; return;
   }
   const point = storm.track?.[state.activeTrackIndex] || storm;
-  $('#proName').textContent = `${storm.name || storm.id}${storm.localName ? ` · ${storm.localName}` : ''}`;
+  $('#proName').textContent = displayStormName(storm);
   $('#proStatus').textContent = storm.demo ? 'DEMO' : 'LIVE';
   $('#metricCoord').textContent = formatCoord(point.lat,point.lon);
   $('#metricWind').innerHTML = Number.isFinite(point.windMs ?? storm.windMs) ? `${Math.round(point.windMs ?? storm.windMs)} <em>m/s</em>` : '—';
@@ -282,7 +545,7 @@ async function loadData() {
   } catch (error) {
     console.warn('Live data unavailable:',error); state.livePayload = {generatedAt:new Date().toISOString(),storms:[],sources:demoSources.map(s=>({...s,status:s.id==='jma'?'degraded':s.status,message:s.id==='jma'?t('sourceUnavailable'):s.message}))}; state.sources = state.livePayload.sources;
   } finally {
-    clearTimeout(timer); const storms=availableStorms(); selectStorm(storms[0]||null,false); renderAll();
+    clearTimeout(timer); const storms=availableStorms(); selectStorm(storms[0]||null,true); renderAll();
   }
 }
 async function loadLand() {
@@ -320,7 +583,7 @@ function drawBackground(colors) {
     ctx.save();ctx.beginPath();ctx.arc(c.x,c.y,r,0,Math.PI*2);ctx.clip();ctx.fillStyle=colors.ocean;ctx.fillRect(c.x-r,c.y-r,r*2,r*2);drawMapLayers(colors);ctx.restore();ctx.strokeStyle=colors.landStroke;ctx.lineWidth=1;ctx.beginPath();ctx.arc(c.x,c.y,r,0,Math.PI*2);ctx.stroke();
   } else drawMapLayers(colors);
 }
-function drawMapLayers(colors){ drawGrid(colors); drawLand(colors); drawCone(colors); drawTrack(colors); drawStormPulse(colors); }
+function drawMapLayers(colors){ drawGrid(colors); drawLand(colors); drawHistoricalAnalog(colors); drawCone(colors); drawTrack(colors); drawUserLocation(colors); drawStormPulse(colors); }
 function drawGrid(colors) {
   ctx.strokeStyle=colors.grid;ctx.lineWidth=.7;
   for(let lat=-60;lat<=60;lat+=30){traceGeoLine(Array.from({length:121},(_,i)=>[lat,-180+i*3]),false);}
@@ -357,11 +620,25 @@ function hitTrack(clientX,clientY){const storm=state.selectedStorm;if(!storm?.tr
 function showTooltip(index,x,y){const storm=state.selectedStorm;if(index<0||!storm?.track?.[index]){tooltip.classList.remove('visible');return;}const p=storm.track[index];tooltip.innerHTML=`<strong>${p.forecast?t('forecastWord'):t('observedWord')}</strong><span>${formatDate(p.time,true)}<br>${formatCoord(p.lat,p.lon)}<br>${Number.isFinite(p.windMs)?`${Math.round(p.windMs)} m/s`:'—'} · ${Number.isFinite(p.pressureHpa)?`${Math.round(p.pressureHpa)} hPa`:'—'}</span>`;tooltip.style.left=`${x}px`;tooltip.style.top=`${y}px`;tooltip.classList.add('visible');}
 
 function fitWorld(announce=true){state.targetLon=0;state.targetLat=4;state.targetZoom=state.mapMode==='world'?.92:.92;if(announce)showToast(t('globalReset'));}
-function focusStorm(announce=true){const storm=state.selectedStorm;if(!storm)return;const p=storm.track?.[state.activeTrackIndex]||storm;state.targetLon=p.lon;state.targetLat=p.lat;state.targetZoom=state.mapMode==='world'?(isMobile()?2.2:2.6):(isMobile()?1.08:1.15);if(announce)showToast(t('focused'));}
+function fitStormTrack(storm=state.selectedStorm,announce=false){
+  if(!storm)return;
+  const points=(storm.track||[]).filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lon));
+  if(points.length<2){const p=points[0]||storm;state.targetLon=p.lon;state.targetLat=p.lat;state.targetZoom=state.mapMode==='world'?(isMobile()?2.4:2.9):(isMobile()?1.08:1.16);if(announce)showToast(t('focused'));return;}
+  const lats=points.map(p=>p.lat), baseLon=points[0].lon, unwrapped=points.map(p=>baseLon+normalizeLon(p.lon-baseLon));
+  const minLat=Math.min(...lats),maxLat=Math.max(...lats),minLon=Math.min(...unwrapped),maxLon=Math.max(...unwrapped);
+  state.targetLat=clamp((minLat+maxLat)/2,-65,65);state.targetLon=normalizeLon((minLon+maxLon)/2);
+  if(state.mapMode==='world'){
+    const spanLon=Math.max(8,maxLon-minLon),spanLat=Math.max(6,maxLat-minLat);
+    const usableW=Math.max(280,state.width*(isMobile()?.86:.66)),usableH=Math.max(220,state.height*(isMobile()?.62:.74));
+    state.targetZoom=clamp(Math.min(usableW/(spanLon*(state.width/360)),usableH/(spanLat*(state.height/180)))*.72,1.25,4.8);
+  } else state.targetZoom=isMobile()?1.06:1.14;
+  if(announce)showToast(t('focused'));
+}
+function focusStorm(announce=true){fitStormTrack(state.selectedStorm,announce);}
 
-canvas.addEventListener('pointerdown',e=>{state.dragging=true;state.moved=false;state.lastX=e.clientX;state.lastY=e.clientY;canvas.setPointerCapture(e.pointerId);canvas.classList.add('dragging');tooltip.classList.remove('visible');});
-canvas.addEventListener('pointermove',e=>{if(state.dragging){const dx=e.clientX-state.lastX,dy=e.clientY-state.lastY;if(Math.abs(dx)+Math.abs(dy)>2)state.moved=true;if(state.mapMode==='world'){const scale=worldScale();state.centerLon=normalizeLon(state.centerLon-dx/scale);state.centerLat=clamp(state.centerLat+dy/scale,-70,70);}else{state.centerLon=normalizeLon(state.centerLon-dx*.22/state.zoom);state.centerLat=clamp(state.centerLat+dy*.16/state.zoom,-70,70);}state.targetLon=state.centerLon;state.targetLat=state.centerLat;state.lastX=e.clientX;state.lastY=e.clientY;}else{const hit=hitTrack(e.clientX,e.clientY);showTooltip(hit,e.clientX,e.clientY);}});
-canvas.addEventListener('pointerup',e=>{if(!state.moved){const hit=hitTrack(e.clientX,e.clientY);if(hit>=0){state.activeTrackIndex=hit;renderPro();renderTimeline();}}state.dragging=false;canvas.classList.remove('dragging');});
+canvas.addEventListener('pointerdown',e=>{if(state.locationPickMode){state.moved=false;return;}state.dragging=true;state.moved=false;state.lastX=e.clientX;state.lastY=e.clientY;canvas.setPointerCapture(e.pointerId);canvas.classList.add('dragging');tooltip.classList.remove('visible');});
+canvas.addEventListener('pointermove',e=>{if(state.locationPickMode)return;if(state.dragging){const dx=e.clientX-state.lastX,dy=e.clientY-state.lastY;if(Math.abs(dx)+Math.abs(dy)>2)state.moved=true;if(state.mapMode==='world'){const scale=worldScale();state.centerLon=normalizeLon(state.centerLon-dx/scale);state.centerLat=clamp(state.centerLat+dy/scale,-70,70);}else{state.centerLon=normalizeLon(state.centerLon-dx*.22/state.zoom);state.centerLat=clamp(state.centerLat+dy*.16/state.zoom,-70,70);}state.targetLon=state.centerLon;state.targetLat=state.centerLat;state.lastX=e.clientX;state.lastY=e.clientY;}else{const hit=hitTrack(e.clientX,e.clientY);showTooltip(hit,e.clientX,e.clientY);}});
+canvas.addEventListener('pointerup',e=>{if(state.locationPickMode){const point=worldPointFromClient(e.clientX,e.clientY);setUserLocation(point.lat,point.lon,{source:'map'});return;}if(!state.moved){const hit=hitTrack(e.clientX,e.clientY);if(hit>=0){state.activeTrackIndex=hit;renderPro();renderTimeline();}}state.dragging=false;canvas.classList.remove('dragging');});
 canvas.addEventListener('pointercancel',()=>{state.dragging=false;canvas.classList.remove('dragging');});canvas.addEventListener('pointerleave',()=>{if(!state.dragging)tooltip.classList.remove('visible');});
 canvas.addEventListener('wheel',e=>{e.preventDefault();const delta=e.deltaY<0?1.12:.89;state.targetZoom=clamp(state.targetZoom*delta,state.mapMode==='world'?.7:.7,state.mapMode==='world'?6:1.6);},{passive:false});
 
@@ -369,6 +646,12 @@ $$('[data-view-mode]').forEach(btn=>btn.addEventListener('click',()=>setView(btn
 $$('[data-map-mode]').forEach(btn=>btn.addEventListener('click',()=>setMapMode(btn.dataset.mapMode)));
 $('#globalViewButton').addEventListener('click',()=>fitWorld());$('#focusButton').addEventListener('click',()=>focusStorm());
 $('#zoomIn').addEventListener('click',()=>state.targetZoom=clamp(state.targetZoom*1.18,.7,state.mapMode==='world'?6:1.6));$('#zoomOut').addEventListener('click',()=>state.targetZoom=clamp(state.targetZoom/1.18,.7,state.mapMode==='world'?6:1.6));
+$('#quickLocateButton').addEventListener('click',requestUserLocation);
+$('#useLocationButton').addEventListener('click',requestUserLocation);
+$('#pickLocationButton').addEventListener('click',beginMapLocationPick);
+$('#clearLocationButton').addEventListener('click',clearUserLocation);
+$$('[data-profile]').forEach(btn=>btn.addEventListener('click',()=>{state.profile=btn.dataset.profile;localStorage.setItem('tv-profile',state.profile);$$('[data-profile]').forEach(b=>b.classList.toggle('active',b.dataset.profile===state.profile));renderPersonalImpact();}));
+$$('[data-profile]').forEach(b=>b.classList.toggle('active',b.dataset.profile===state.profile));
 $('#demoToggle').addEventListener('click',()=>{state.demoEnabled=!state.demoEnabled;localStorage.setItem('tv-demo',String(state.demoEnabled));$('#demoToggle').setAttribute('aria-pressed',String(state.demoEnabled));const storms=availableStorms();selectStorm(storms[0]||null,false);fitWorld(false);});
 $('#languageToggle').addEventListener('click',e=>{e.stopPropagation();const menu=$('#languageMenu');menu.classList.toggle('open');$('#themeMenu').classList.remove('open');$('#languageToggle').setAttribute('aria-expanded',String(menu.classList.contains('open')));});
 $$('[data-lang-value]').forEach(btn=>btn.addEventListener('click',()=>{state.lang=btn.dataset.langValue;localStorage.setItem('tv-lang',state.lang);applyTranslations();$('#languageMenu').classList.remove('open');$('#languageToggle').setAttribute('aria-expanded','false');showToast(t('languageChanged'));}));
@@ -378,7 +661,14 @@ document.addEventListener('click',e=>{if(!e.target.closest('#themeMenu')&&!e.tar
 
 const sourceDialog=$('#sourceDialog');function openSourceDialog(){renderSources();sourceDialog.showModal();}
 $('#openSources').addEventListener('click',openSourceDialog);$('#verificationButton').addEventListener('click',openSourceDialog);$('.dialog-close').addEventListener('click',()=>sourceDialog.close());sourceDialog.addEventListener('click',e=>{if(e.target===sourceDialog)sourceDialog.close();});
-$('#readMoreButton').addEventListener('click',()=>{if(isMobile()){$('#insightPanel').classList.add('open');$$('[data-mobile-tab]').forEach(b=>b.classList.toggle('active',b.dataset.mobileTab==='brief'));}else $('#insightPanel').scrollTo({top:0,behavior:reduceMotion?'auto':'smooth'});});
+function scrollInsightTo(target){
+  const panel=$('#insightPanel'),scroller=$('.insight-scroll');if(isMobile())panel.classList.add('open');
+  requestAnimationFrame(()=>{if(!target||!scroller)return;const top=Math.max(0,target.offsetTop-8);scroller.scrollTo({top,behavior:reduceMotion?'auto':'smooth'});target.focus?.({preventScroll:true});});
+}
+$('#readMoreButton').addEventListener('click',()=>{
+  const target=$('#impactSection');$$('[data-mobile-tab]').forEach(b=>b.classList.toggle('active',b.dataset.mobileTab==='brief'));scrollInsightTo(target);target.classList.remove('attention');void target.offsetWidth;target.classList.add('attention');setTimeout(()=>target.classList.remove('attention'),1100);
+});
+$('#personalImpactPreview').addEventListener('click',e=>{if(e.target.closest('button'))return;scrollInsightTo($('#personalSection'));});
 $('#mobileMenuButton').addEventListener('click',()=>$('#sidebar').classList.toggle('open'));$('#sheetHandle').addEventListener('click',()=>$('#insightPanel').classList.toggle('open'));
 $$('[data-mobile-tab]').forEach(btn=>btn.addEventListener('click',()=>{$$('[data-mobile-tab]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const tab=btn.dataset.mobileTab;if(tab==='map'){$('#insightPanel').classList.remove('open');$('#sidebar').classList.remove('open');}else if(tab==='brief'){$('#insightPanel').classList.add('open');$('.insight-scroll').scrollTo({top:0,behavior:'smooth'});}else if(tab==='sources'){$('#insightPanel').classList.add('open');$('.sources-section').scrollIntoView({behavior:'smooth'});}else $('#sidebar').classList.toggle('open');}));
 $$('[data-region]').forEach(btn=>btn.addEventListener('click',()=>{$$('[data-region]').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');const r=btn.dataset.region;if(r==='global')fitWorld();else if(r==='wpac'){state.targetLon=135;state.targetLat=20;state.targetZoom=state.mapMode==='world'?1.8:1;}else{state.targetLon=-55;state.targetLat=20;state.targetZoom=state.mapMode==='world'?1.7:1;}state.needsRender=true;}));

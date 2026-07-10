@@ -1,121 +1,74 @@
-# Typhoon Vision
+# Typhoon Vision Public v7
 
-A public-friendly, multilingual typhoon track and warning visualization prototype built for Netlify.
+面向普通用户与专业用户的全球台风路径、个人影响估算和多来源交叉验证网站。
 
-面向普通用户的多语言台风路径与预警可视化原型，可部署在 Netlify。
+## v7 主要改进
 
-## Live Site / 在线网站
+- 恢复并强化台风已观测路径、预测路径和预测范围显示
+- 自动聚焦完整路径，不再默认缩在全球地图中的一小点
+- 修复“看懂可能影响”按钮：手机端打开详情抽屉，电脑端滚动并高亮影响说明
+- 清洗 JMA 产品标题，避免把“台風解析・予報情報”误当台风名称
+- 正确显示示例：`第9号台风 巴威（BAVI）`；日语界面可显示 `バービー`
+- 新增用户定位：浏览器定位或在地图上点选
+- 显示距预测路径最近距离、预计最接近时间、可能影响时间窗和可信度
+- 新增活动画像建议：通勤、户外运动、室内办公、驾车、老人儿童照护、沿海居住
+- 保留公众视图与专业视图切换
+- 保留浅色、深色、系统主题及六语言界面
 
-https://typhoon-vision.netlify.app
+## 隐私
 
-## Features / 主要功能
+用户位置只保存在浏览器的 `localStorage` 中，并在前端本地计算，不会发送到 Netlify Function 或第三方气象 API。
 
-- Full world map with an optional 3D globe
-- Public view for non-specialist users
-- Professional meteorological view
-- Light, dark, and system themes
-- Multilingual interface
-- Typhoon track, forecast cone, timeline, and risk summary
-- Netlify Functions for aggregating public meteorological data
-- Responsive layout for desktop and mobile
-
-中文功能概览：
-
-- 完整世界地图与可选 3D 地球
-- 面向普通用户的公众视图
-- 可切换的专业气象视图
-- 浅色、深色和跟随系统主题
-- 多语言界面
-- 台风路径、预测范围、时间轴与风险摘要
-- 使用 Netlify Functions 聚合公开气象数据
-- 同时适配电脑与手机
-
-## Project Structure / 项目结构
-
-The deployable project directory should contain these files directly:
+## 目录结构
 
 ```text
 index.html
+app.js
+styles.css
 netlify.toml
-assets/
+VERSION.txt
+README.md
 data/
+  world-land.json
 netlify/
-└── functions/
-    └── cyclone-data.mts
+  functions/
+    cyclone-data.mts
 ```
 
-需要部署的项目目录根部应直接包含 `index.html` 和 `netlify.toml`，不要在外面再多套一层文件夹。
+## 推荐部署方式：GitHub → Netlify
 
-## Netlify Configuration / Netlify 配置
+1. 解压 ZIP。
+2. 将上面这些文件和文件夹直接上传到 GitHub 仓库根目录，不能再套一层 `typhoon-vision-public-v7/`。
+3. Netlify 的 Base directory 留空。
+4. Build command 留空。
+5. Publish directory 使用 `.`。
+6. Functions directory 使用 `netlify/functions`。
+7. 提交后 Netlify 会自动重新部署。
 
-```toml
-[build]
-  publish = "."
-  functions = "netlify/functions"
-
-[functions]
-  node_bundler = "esbuild"
-```
-
-If the project files are stored inside a subfolder such as `typhoon-vision-public-v4/`, either move all project files to the repository root or set that subfolder as Netlify's Base directory.
-
-如果项目文件位于 `typhoon-vision-public-v4/` 子目录中，需要执行以下二选一操作：
-
-1. 将子目录中的全部文件移动到 GitHub 仓库根目录；或
-2. 在 Netlify 中把 Base directory 设置为 `typhoon-vision-public-v4`。
-
-## Function Endpoint / Function 地址
-
-When deployed correctly:
+成功的 Deploy 摘要应显示至少一个 Function 已部署，并且以下地址返回 JSON：
 
 ```text
 https://typhoon-vision.netlify.app/api/cyclones
 ```
 
-The latest Netlify deploy summary should show a deployed function instead of:
+## 直接拖 ZIP 到 Netlify
 
-```text
-No functions deployed
-```
+页面和演示数据可以显示，但 Netlify 不会通过普通 Drop 部署 `netlify/functions`。要使用实时 API 聚合，仍建议通过 GitHub 自动部署或 Netlify CLI。
 
-## Data Sources / 数据来源
+## 个人影响估算说明
 
-The project is designed to compare public information from organizations such as:
+网站根据用户位置与台风路径点之间的球面距离，结合一个随强度变化的粗略影响半径，估算：
 
-- JMA / RSMC Tokyo
-- NOAA / National Hurricane Center
-- GDACS
-- Hong Kong Observatory
-- Taiwan Central Weather Administration, when an API key is configured
+- 最近路径距离
+- 预计最接近时刻
+- 可能进入外围影响范围的时间窗
+- 估算可信度
 
-Different agencies may use different wind averaging periods, classification systems, and update schedules. The application should show these differences rather than averaging them blindly.
+这不是官方到达时间、登陆预报或疏散判断。台风大小、地形、风暴潮、降雨和局地天气可能使实际影响与中心路径明显不同。所有疏散、停工、停课和交通决定应以当地政府及气象部门为准。
 
-不同机构可能采用不同的风速平均时段、强度分级和更新时间，因此系统应透明展示差异，而不是直接计算简单平均值。
 
-## Important Notice / 重要说明
+## Historical analogs / 历史相似台风
 
-This project is an information visualization prototype. It must not be treated as an official emergency warning service. Always follow alerts and evacuation instructions issued by the relevant local authorities.
+Public v7 adds a historical-reference section. Similarity is based on selected track direction, intensity range, endpoint region and optionally the user's locally stored position. It is an explanatory aid only and must not be interpreted as a forecast of damage or landfall.
 
-本项目是气象信息可视化原型，不能替代官方灾害预警。请始终以所在地气象主管机构和应急管理部门发布的信息为准。
-
-## Deployment Checks / 部署检查
-
-A successful Netlify deployment should show:
-
-- The production deploy state is `ready`
-- The homepage is generated as `/index.html`
-- At least one Netlify Function is deployed
-- `/api/cyclones` returns JSON
-- The site header shows the expected release version
-
-If the log ends with:
-
-```text
-Site is live ✨
-```
-
-the deployment has completed. If the Netlify dashboard still says “In progress,” refresh the Deploy page.
-
-## License
-
-For educational and demonstration use. Add a formal open-source license before accepting external contributions.
+Public v7 新增历史相似台风参考。系统仅依据部分路径方向、强度、影响区域及用户本地位置进行解释性匹配，不能据此推断本次台风一定产生相同影响。

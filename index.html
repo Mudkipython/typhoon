@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#edf4f8" />
   <meta name="color-scheme" content="light dark" />
   <meta name="description" content="Typhoon Vision — 面向公众与专业用户的全球热带气旋轨迹、风险与多来源交叉验证界面。" />
-  <title>Typhoon Vision · Public v4</title>
+  <title>Typhoon Vision · Public v7</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230f6b83'/%3E%3Cpath d='M13 33c8-18 29-19 38-5-9-4-17-2-20 5-3 7 2 13 11 14-17 6-33-2-29-14Z' fill='%23fff'/%3E%3Ccircle cx='34' cy='33' r='4' fill='%230f6b83'/%3E%3C/svg%3E" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
@@ -16,7 +16,7 @@
     <header class="topbar">
       <a class="brand" href="#" aria-label="Typhoon Vision">
         <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M6 21C10 9 27 7 34 17c-7-3-13 0-14 6-1 5 3 9 9 9C19 37 5 31 6 21Z"/><circle cx="21" cy="21" r="2.7"/></svg></span>
-        <span class="brand-copy"><strong>Typhoon Vision <em class="version-badge">Public v4</em></strong><small data-i18n="tagline">全球台风简报</small></span>
+        <span class="brand-copy"><strong>Typhoon Vision <em class="version-badge">Public v7</em></strong><small data-i18n="tagline">全球台风简报</small></span>
       </a>
 
       <div class="freshness-pill" id="freshnessPill" aria-live="polite">
@@ -103,6 +103,11 @@
             <div><span class="fact-icon timing">◷</span><p><small data-i18n="closestTime">何时最接近</small><strong id="plainTiming" data-i18n="within48">约 24–48 小时</strong></p></div>
             <div><span class="fact-icon action">✓</span><p><small data-i18n="whatToDo">现在怎么做</small><strong id="plainAction" data-i18n="followLocal">留意当地预警</strong></p></div>
           </div>
+          <div class="personal-impact-preview" id="personalImpactPreview">
+            <span class="personal-pin" aria-hidden="true">⌖</span>
+            <p><small data-i18n="yourLocationImpact">与你的位置</small><strong id="personalImpactHeadline" data-i18n="locationPromptShort">定位后查看何时可能受影响</strong><span id="personalImpactDetail" data-i18n="locationPrivacyShort">位置只保存在这台设备上</span></p>
+            <button class="small-primary" id="quickLocateButton" data-i18n="useMyLocation">使用我的位置</button>
+          </div>
           <button class="primary-button" id="readMoreButton"><span data-i18n="understandImpact">看懂可能影响</span><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg></button>
         </article>
 
@@ -134,7 +139,7 @@
       <aside class="insight-panel" id="insightPanel">
         <button class="sheet-handle" id="sheetHandle" aria-label="展开详情"><i></i></button>
         <div class="insight-scroll">
-          <section class="insight-section simple-only">
+          <section class="insight-section simple-only" id="impactSection" tabindex="-1">
             <div class="section-title"><div><small data-i18n="plainLanguage">用一句话说明</small><h2 data-i18n="shouldWorry">现在需要担心吗？</h2></div><span class="level-badge moderate" id="publicRiskBadge" data-i18n="stayAware">保持关注</span></div>
             <p class="lead" id="publicLead" data-i18n="publicLead">目前更需要关注路径变化，而不是立刻恐慌。预测范围内的沿海地区应检查当地气象部门通知。</p>
             <div class="impact-list">
@@ -142,6 +147,45 @@
               <div><span>🌧️</span><p><strong data-i18n="rainImpact">强降雨</strong><small id="rainImpactText" data-i18n="rainImpactText">实际雨量取决于台风大小与地形</small></p></div>
               <div><span>🌊</span><p><strong data-i18n="coastalImpact">沿海风险</strong><small id="coastalImpactText" data-i18n="coastalImpactText">风暴潮风险不能只看中心路径</small></p></div>
             </div>
+          </section>
+
+          <section class="insight-section personal-section" id="personalSection" tabindex="-1">
+            <div class="section-title personal-title"><div><small data-i18n="personalMode">个人影响模式</small><h2 data-i18n="whenAffectMe">什么时候可能波及我？</h2></div><span class="level-badge neutral" id="personalRiskBadge" data-i18n="locationNeeded">需要定位</span></div>
+            <p class="lead" id="personalSummary" data-i18n="personalIntro">授权浏览器定位，或直接在地图上点选位置。系统会计算与预测路径的最近距离和可能影响时间窗。</p>
+            <div class="location-actions">
+              <button class="location-button primary" id="useLocationButton"><span>⌖</span><p><strong data-i18n="useMyLocation">使用我的位置</strong><small data-i18n="browserLocation">由浏览器请求定位权限</small></p></button>
+              <button class="location-button" id="pickLocationButton"><span>＋</span><p><strong data-i18n="pickOnMap">在地图上点选</strong><small data-i18n="pickOnMapHint">适合拒绝定位或查看其他地点</small></p></button>
+              <button class="location-button danger subtle" id="clearLocationButton" hidden><span>×</span><p><strong data-i18n="clearLocation">清除位置</strong><small data-i18n="clearLocationHint">删除本机保存的位置</small></p></button>
+            </div>
+            <p class="privacy-note"><span>🔒</span><span data-i18n="locationPrivacy">位置仅在你的浏览器中计算和保存，不会上传到本站服务器。</span></p>
+            <div class="personal-metrics" id="personalMetrics" hidden>
+              <div><small data-i18n="distanceToTrack">距预测路径最近</small><strong id="nearestDistance">—</strong></div>
+              <div><small data-i18n="closestApproach">预计最接近</small><strong id="closestApproach">—</strong></div>
+              <div><small data-i18n="possibleWindow">可能影响时段</small><strong id="impactWindow">—</strong></div>
+              <div><small data-i18n="estimateConfidence">估算可信度</small><strong id="impactConfidence">—</strong></div>
+            </div>
+            <div class="profile-picker">
+              <div class="profile-heading"><p><small data-i18n="chooseProfile">选择你的活动画像</small><strong data-i18n="profileAdviceTitle">建议会随场景变化</strong></p><span id="profileHint" data-i18n="profileHint">可随时切换</span></div>
+              <div class="profile-chips" role="group" aria-label="活动画像">
+                <button class="active" data-profile="commute"><span>🚇</span><b data-i18n="profileCommute">通勤上班</b></button>
+                <button data-profile="outdoor"><span>🏃</span><b data-i18n="profileOutdoor">户外运动</b></button>
+                <button data-profile="office"><span>💻</span><b data-i18n="profileOffice">室内办公</b></button>
+                <button data-profile="driving"><span>🚗</span><b data-i18n="profileDriving">驾车出行</b></button>
+                <button data-profile="family"><span>👨‍👩‍👧</span><b data-i18n="profileFamily">老人儿童照护</b></button>
+                <button data-profile="coastal"><span>🌊</span><b data-i18n="profileCoastal">沿海居住</b></button>
+              </div>
+            </div>
+            <div class="profile-advice" id="profileAdvice"></div>
+            <div class="estimate-note"><span>i</span><p><strong data-i18n="estimateOnly">这是路径距离估算，不是到达时间预报</strong><small data-i18n="estimateNote">影响范围取决于台风大小、地形、降雨和当地预警。任何疏散、停课、停工或交通决定都以当地政府和气象部门为准。</small></p></div>
+          </section>
+
+
+          <section class="insight-section simple-only history-section" id="historySection" tabindex="-1">
+            <div class="section-title history-title"><div><small data-i18n="historyReference">历史参考</small><h2 data-i18n="similarStorms">过去有哪些相似台风？</h2></div><span class="level-badge neutral" data-i18n="referenceOnly">仅供理解</span></div>
+            <p class="lead" data-i18n="historyLead">系统会按路径走向、强度和可能影响区域寻找相近案例，帮助理解可能出现的风险类型，而不是预测本次一定重演。</p>
+            <div class="history-summary" id="historySummary"></div>
+            <div class="analog-cards" id="analogCards"></div>
+            <div class="history-caveat"><span>≠</span><p><strong data-i18n="historyNotForecast">历史相似不等于结果相同</strong><small data-i18n="historyCaveat">台风大小、速度、潮位、地形和防灾能力都会改变实际影响。请始终优先参考当前官方预报和所在地预警。</small></p></div>
           </section>
 
           <section class="insight-section simple-only">
