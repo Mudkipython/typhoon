@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#edf4f8" />
   <meta name="color-scheme" content="light dark" />
   <meta name="description" content="Typhoon Vision — 面向公众与专业用户的全球热带气旋轨迹、风险与多来源交叉验证界面。" />
-  <title>Typhoon Vision · Public v9</title>
+  <title>Typhoon Vision · Public v11</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230f6b83'/%3E%3Cpath d='M13 33c8-18 29-19 38-5-9-4-17-2-20 5-3 7 2 13 11 14-17 6-33-2-29-14Z' fill='%23fff'/%3E%3Ccircle cx='34' cy='33' r='4' fill='%230f6b83'/%3E%3C/svg%3E" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
@@ -16,7 +16,7 @@
     <header class="topbar">
       <a class="brand" href="#" aria-label="Typhoon Vision">
         <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M6 21C10 9 27 7 34 17c-7-3-13 0-14 6-1 5 3 9 9 9C19 37 5 31 6 21Z"/><circle cx="21" cy="21" r="2.7"/></svg></span>
-        <span class="brand-copy"><strong>Typhoon Vision <em class="version-badge">Public v9</em></strong><small data-i18n="tagline">全球台风简报</small></span>
+        <span class="brand-copy"><strong>Typhoon Vision <em class="version-badge">Public v11</em></strong><small data-i18n="tagline">全球台风简报</small></span>
       </a>
 
       <div class="freshness-pill" id="freshnessPill" aria-live="polite">
@@ -25,6 +25,7 @@
       </div>
 
       <div class="topbar-actions">
+        <button class="control-button insight-toggle desktop-only" id="insightToggle" aria-controls="insightPanel" aria-expanded="false"><span>☰</span><strong data-i18n="riskBrief">风险简报</strong></button>
         <div class="segmented compact" role="group" aria-label="视图模式">
           <button class="active" data-view-mode="simple" aria-pressed="true" data-i18n="simpleView">公众视图</button>
           <button data-view-mode="pro" aria-pressed="false" data-i18n="proView">专业视图</button>
@@ -85,6 +86,15 @@
           <button class="map-action layer-button" id="layerButton" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="m12 3 8 4-8 4-8-4 8-4Z"/><path d="m4 12 8 4 8-4M4 17l8 4 8-4"/></svg><span data-i18n="layers">图层</span></button>
         </div>
 
+        <div class="hazard-dock" id="hazardDock" aria-label="专业气象图层快捷入口">
+          <button class="active" data-hazard="track"><span>🌀</span><b data-i18n="hazardTrack">路径</b></button>
+          <button data-hazard="wind"><span>🌬️</span><b data-i18n="hazardWind">风圈</b></button>
+          <button data-hazard="rain"><span>🌧️</span><b data-i18n="hazardRain">降雨</b></button>
+          <button data-hazard="coast"><span>🌊</span><b data-i18n="hazardCoast">沿海</b></button>
+          <button data-hazard="satellite"><span>🛰️</span><b data-i18n="hazardSatellite">云图</b></button>
+          <button data-hazard="radar"><span>📡</span><b data-i18n="hazardRadar">雷达</b></button>
+        </div>
+
         <div class="layer-panel" id="layerPanel" role="dialog" aria-label="地图图层">
           <div class="layer-panel-head"><strong data-i18n="stormLayers">台风图层</strong><small data-i18n="layerHint">选择地图上要显示的信息</small></div>
           <label><input type="checkbox" data-layer-toggle="track" checked><span><b data-i18n="trackLayer">实况与预报路径</b><small data-i18n="trackLayerHint">中心位置、路径节点与时间</small></span></label>
@@ -137,19 +147,49 @@
           <button id="verificationButton"><span data-i18n="howVerified">如何交叉验证</span><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg></button>
         </div>
 
+        <div class="track-player" id="trackPlayer" aria-label="台风路径播放控制">
+          <button class="player-play" id="mapPlayButton" aria-label="播放路径"><span id="mapPlayIcon">▶</span></button>
+          <div class="player-main">
+            <div class="player-head"><strong id="playerTime">—</strong><span id="playerPhase">实况</span><div class="forecast-horizon" role="group" aria-label="预报时效"><button class="active" data-horizon="72">72h</button><button data-horizon="120">120h</button></div></div>
+            <input id="trackRange" type="range" min="0" max="0" value="0" step="1" aria-label="路径时间进度" />
+            <div class="player-scale"><span id="playerStart">—</span><span id="playerSourceLabel">官方数据</span><span id="playerEnd">—</span></div>
+          </div>
+          <button class="player-speed" id="playerSpeed" aria-label="播放速度">1×</button>
+        </div>
+
         <div class="track-status" id="trackStatus" aria-live="polite"></div>
         <div class="map-legend">
-          <span><i class="observed"></i><b data-i18n="observed">已观测路径</b></span>
-          <span><i class="forecast"></i><b data-i18n="forecast">预测路径</b></span>
-          <span><i class="uncertainty"></i><b data-i18n="uncertainty">可能范围</b></span>
-          <span><i class="wind-range"></i><b data-i18n="windRange">风圈/波及范围</b></span>
+          <span><i class="observed"></i><b data-i18n="observed">实况（蓝色实线）</b></span>
+          <span id="forecastLegend"><i class="forecast"></i><b data-i18n="forecast">官方预报（橙色虚线）</b></span>
+          <span><i class="uncertainty"></i><b data-i18n="uncertainty">预报范围</b></span>
+          <span><i class="wind-range"></i><b data-i18n="windRange">风圈/可能波及范围</b></span>
+          <span class="intensity-key"><em class="td"></em><em class="ts"></em><em class="sts"></em><em class="ty"></em><em class="sty"></em><b data-i18n="intensityLegend">节点颜色＝强度</b></span>
         </div>
         <div class="map-tip" id="mapTip" data-i18n="mapTip">拖动地图 · 滚轮或双指缩放 · 点击路径节点</div>
         <div class="point-tooltip" id="pointTooltip"></div>
+        <article class="node-card" id="nodeCard" hidden>
+          <button id="nodeCardClose" aria-label="关闭">×</button>
+          <small id="nodeCardType">实况位置</small>
+          <h3 id="nodeCardTitle">—</h3>
+          <div class="node-card-grid"><p><span data-i18n="coordinates">坐标</span><strong id="nodeCardCoord">—</strong></p><p><span data-i18n="maxWind">最大风速</span><strong id="nodeCardWind">—</strong></p><p><span data-i18n="pressure">中心气压</span><strong id="nodeCardPressure">—</strong></p><p><span data-i18n="intensity">强度</span><strong id="nodeCardIntensity">—</strong></p></div>
+          <p class="node-card-note" id="nodeCardNote"></p>
+        </article>
       </section>
 
-      <aside class="insight-panel" id="insightPanel">
-        <button class="sheet-handle" id="sheetHandle" aria-label="展开详情"><i></i></button>
+      <aside class="insight-panel" id="insightPanel" data-open="false">
+        <div class="desktop-drawer-head">
+          <div><small data-i18n="decisionCentre">决策中心</small><strong data-i18n="riskAndAdvice">风险、时间与行动建议</strong></div>
+          <button id="insightClose" aria-label="关闭">×</button>
+        </div>
+        <nav class="drawer-tabs" aria-label="详情分类">
+          <button class="active" data-drawer-target="impactSection" data-i18n="brief">简报</button>
+          <button data-drawer-target="personalSection" data-i18n="personalMode">个人影响</button>
+          <button data-drawer-target="timelineSection" data-i18n="proView">专业视图</button>
+          <button data-drawer-target="sourcesSection" data-i18n="sources">来源</button>
+        </nav>
+        <button class="sheet-handle" id="sheetHandle" aria-label="上滑展开详情" aria-expanded="false">
+          <i></i><span id="sheetHandleLabel">上滑查看影响、时间与建议</span><b id="sheetHandleState">收起</b>
+        </button>
         <div class="insight-scroll">
           <section class="insight-section simple-only" id="impactSection" tabindex="-1">
             <div class="section-title"><div><small data-i18n="plainLanguage">用一句话说明</small><h2 data-i18n="shouldWorry">现在需要担心吗？</h2></div><span class="level-badge moderate" id="publicRiskBadge" data-i18n="stayAware">保持关注</span></div>
@@ -209,15 +249,26 @@
             </ol>
           </section>
 
-          <section class="insight-section pro-only">
+          <section class="insight-section pro-only" id="timelineSection">
             <div class="section-title"><div><small data-i18n="trackTimeline">路径时间轴</small><h2 data-i18n="historyForecast">实况与预测</h2></div><button class="text-button" id="playTrack" data-i18n="play">播放</button></div>
             <div class="timeline" id="timeline"></div>
           </section>
 
-          <section class="insight-section sources-section">
+          <section class="insight-section sources-section" id="sourcesSection">
             <div class="section-title"><div><small data-i18n="verification">交叉验证</small><h2 data-i18n="whatSourcesSay">各来源怎么说</h2></div><span class="updated-label" id="sourceUpdate">—</span></div>
             <div class="source-cards" id="sourceCards"></div>
             <div class="method-note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 10v6m0-9h.01"/></svg><p><strong data-i18n="notAverage">不会把不同机构预警简单平均</strong><small data-i18n="methodExplain">所属海域的官方机构作为主来源；其余来源用于检查位置、更新时间和影响评估是否一致。</small></p></div>
+          </section>
+
+          <section class="insight-section professional-links">
+            <div class="section-title"><div><small data-i18n="officialTools">官方工具</small><h2 data-i18n="openProfessionalMaps">打开专业气象图层</h2></div></div>
+            <div class="official-link-grid">
+              <a href="https://www.jma.go.jp/bosai/map.html#contents=typhoon" target="_blank" rel="noreferrer"><b>JMA</b><span data-i18n="officialTrackMap">官方路径图</span></a>
+              <a href="https://www.hko.gov.hk/en/wxinfo/currwx/tc_gis.htm" target="_blank" rel="noreferrer"><b>HKO</b><span data-i18n="satRadarTrack">路径·卫星·雷达</span></a>
+              <a href="https://www.cwa.gov.tw/V8/E/P/Typhoon/TY_WARN.html" target="_blank" rel="noreferrer"><b>CWA</b><span data-i18n="rainWindWarning">降雨·风力·警报</span></a>
+              <a href="https://www.nhc.noaa.gov/gis/" target="_blank" rel="noreferrer"><b>NHC</b><span data-i18n="gisProducts">GIS 与概率产品</span></a>
+              <a href="https://www.pagasa.dost.gov.ph/tropical-cyclone/severe-weather-bulletin" target="_blank" rel="noreferrer"><b>PAGASA</b><span data-i18n="impactProducts">风雨·风暴潮·影响预报</span></a>
+            </div>
           </section>
 
           <footer class="disclaimer">

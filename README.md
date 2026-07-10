@@ -1,176 +1,215 @@
 # Typhoon Vision
 
-Typhoon Vision 是一个面向普通公众、同时保留专业气象信息入口的全球热带气旋可视化网站。项目将台风路径、预测范围、风圈、用户位置、多机构数据源和防灾建议整合在同一个响应式界面中，可直接部署到 Netlify。
+Typhoon Vision is a responsive tropical-cyclone information and decision-support interface designed for both the public and advanced weather users. It combines an interactive track map, official-source cross-checking, personal location impact estimates, scenario-specific preparedness advice, and optional professional detail.
 
-> 本项目是信息整合与可视化工具，不是官方预警系统。任何疏散、停课、停工、交通管制或海上作业决定，都必须以所在地政府和气象主管机构发布的信息为准。
+> **Safety notice:** Typhoon Vision is an information-visualization project. It does not replace warnings, evacuation orders, transport notices, or emergency instructions issued by national and local authorities.
 
-## 在线演示
+## Product goals
 
-- Website: https://typhoon-vision.netlify.app
-- API endpoint: `https://typhoon-vision.netlify.app/api/cyclones`
+Most cyclone websites are either highly technical or visually attractive but weak at explaining what a storm may mean for an individual. Typhoon Vision aims to connect both layers:
 
-## 产品目标
+1. **Map first:** show where the storm has been, where the responsible agency forecasts it may go, how intensity changes, and what wind or uncertainty areas mean.
+2. **Decision first:** explain when a selected location may be affected, what hazards matter, and what actions are appropriate for different daily-life scenarios.
+3. **Source transparency:** identify the responsible meteorological authority, compare additional sources without averaging incompatible classifications, and expose update times and limitations.
+4. **Progressive disclosure:** keep the public view readable while preserving professional data, timelines, source records, and official external tools.
 
-台风网站通常面临两类用户需求：
+## Professional products studied
 
-1. **普通用户**想快速知道台风会不会影响自己、什么时候风险最高、应该采取什么行动。
-2. **专业或进阶用户**希望查看经纬度、风速、气压、路径节点、预测锥、数据更新时间和来源差异。
+The v11 information architecture and map controls were reviewed against several professional and public-facing cyclone products. These references are used for interaction and communication patterns only; Typhoon Vision does not copy their branding or claim equivalence with an operational forecast centre.
 
-Typhoon Vision 通过“公众视图 / 专业视图”切换，将两类信息放在同一套界面中，而不是把复杂参数默认堆给所有用户。
+| Reference | Product patterns adopted |
+|---|---|
+| [NOAA National Hurricane Center GIS](https://www.nhc.noaa.gov/gis/) | Separate observed/forecast tracks, uncertainty cone, watches and warnings, wind fields/radii, wind-speed probability, and tropical-storm-force wind arrival-time products. |
+| [Hong Kong Observatory tropical-cyclone services](https://www.hko.gov.hk/en/informtc/tcMain.htm) | Clear separation between public bulletins, track positions, probability forecasts, GIS maps, recent tracks, warnings, and preparedness material. |
+| [PAGASA tropical-cyclone bulletin](https://www.pagasa.dost.gov.ph/tropical-cyclone/severe-weather-bulletin) | Hazard-first communication: severe wind, rainfall, coastal waters, storm surge, shipping and agriculture products; explicit reminders that damaging weather may occur outside the centre track or confidence cone. |
+| [Windy hurricane tracker](https://www.windy.com/hurricanes) | Compact layer-first map navigation and smooth time-based weather exploration. |
+| [天气网台风路径](https://tf.tianqi.com/) | Intensity-coloured path nodes, clickable point details, quick access to current/history views, satellite imagery and radar. |
 
-## 核心功能
+These comparisons led to five v11 decisions:
 
-### 台风地图
+1. keep the map as the primary workspace rather than permanently shrinking it with multiple text columns;
+2. distinguish observed track, official forecast, uncertainty, wind/impact areas and non-official trend references by both colour and line style;
+3. expose time playback and 72-hour/120-hour horizons directly on the map;
+4. move detailed impacts, personal advice, sources and professional data into an optional decision drawer;
+5. link to official satellite, radar, rainfall, warning and GIS products instead of pretending that unavailable layers are already integrated.
 
-- 完整世界地图与可切换的 3D 地球
-- 已观测路径、官方预测路径和路径节点
-- 预测可能范围（仅在来源提供足够预测点时显示）
-- 大风、强风和台风核心范围
-- 当前中心位置、风速、气压和更新时间
-- 历史相似台风路径叠加
-- 图层开关，可分别隐藏路径、预测范围、风圈和标注
+## Core interface
 
-当数据源未提供官方风圈半径时，界面会显示带有“估算”标记的范围，只用于帮助用户理解尺度，不能视为官方警戒线。
+### Interactive cyclone map
 
-### 公众视图
+The map supports:
 
-公众视图使用更直观的语言回答：
+- observed track shown as a solid line;
+- official forecast shown as a dashed line when official forecast points are available;
+- a clearly marked non-official trend reference only when an official forecast cannot be parsed;
+- track nodes coloured by intensity;
+- clickable node cards with time, coordinates, wind, pressure, intensity, and data type;
+- forecast probability area when sufficient official points exist;
+- wind/possible-impact rings with explicit estimated labels when official quadrant radii are unavailable;
+- 72-hour and 120-hour forecast-horizon selection;
+- playback, pause, scrubber, and playback speed controls;
+- world map and optional 3D globe views;
+- user-location and historical-analogue overlays.
 
-- 台风正在往哪里移动
-- 什么时候可能最接近用户所在地
-- 风、雨、沿海风险中哪一项更值得关注
-- 当前最重要的准备动作
-- 数据源之间是否大致一致
+### Public view
 
-### 个人影响模式
+The default view avoids unexplained meteorological jargon. It prioritizes:
 
-用户可以授权浏览器定位，也可以直接在地图上选择任意位置。计算全部在浏览器本地完成，包括：
+- where the cyclone is moving;
+- when it may be closest to the user;
+- approximate nearest-track distance;
+- likely wind, rainfall, and coastal concerns;
+- immediate actions;
+- source agreement and uncertainty.
 
-- 用户位置到路径的最近距离
-- 预计最接近时间
-- 可能进入外围影响范围的时间窗
-- 估算可信度
-- 用户位置与路径之间的地图连线
+### Professional view
 
-位置只保存在当前设备的 `localStorage` 中，不会发送到 Netlify Function 或第三方气象 API。
+The optional professional view exposes:
 
-### 场景化防灾建议
+- latitude and longitude;
+- maximum sustained wind;
+- central pressure;
+- movement direction;
+- observed/forecast timeline;
+- source position spread;
+- official versus synthetic points;
+- source status and update times;
+- direct links to JMA, HKO, CWA, and NHC professional products.
 
-用户可以选择不同活动画像：
+## Personal impact mode
 
-- 通勤上班
-- 户外运动
-- 室内办公
-- 驾车出行
-- 老人和儿童照护
-- 沿海居住
+Users may either grant browser geolocation or select a point manually on the map. Location processing remains in the browser and is stored only on that device.
 
-每种画像分别提供“现在”“影响前”“影响期间”的行动建议，并明确要求优先服从所在地官方预警。
+The interface estimates:
 
-### 历史相似台风
+- nearest distance to the available track;
+- estimated closest-approach time;
+- possible impact window;
+- confidence based on track completeness and whether synthetic trend points are involved.
 
-历史案例用于帮助用户理解可能出现的风险类型，例如持续降雨、风暴潮、内陆洪水或交通中断。相似度只参考部分路径方向、强度区间、影响区域和用户位置。
+These are decision-support estimates, not official arrival forecasts.
 
-历史相似案例**不是损失预测**。台风大小、移动速度、潮位、地形、城市基础设施和防灾能力都可能造成完全不同的结果。
+### Activity profiles
 
-### 多来源交叉验证
+Preparedness advice changes according to the selected profile:
 
-Netlify Function 聚合或预留以下来源：
+- commuting;
+- outdoor exercise;
+- office work;
+- driving;
+- caring for children or older adults;
+- living in a coastal area.
 
-- JMA / RSMC Tokyo：西北太平洋主要热带气旋信息
-- NOAA / NHC：大西洋、东北太平洋和中太平洋系统
-- GDACS：全球灾害影响信息
-- Hong Kong Observatory：香港本地热带气旋信号
-- Taiwan CWA：预留需要授权或 API Key 的连接位
+Advice is separated into actions to take now, before likely impacts, and during impacts.
 
-系统不会将不同机构的预警等级或风速直接取平均，因为各机构可能使用不同的风速平均时段、分类体系和更新时间。
+## Historical analogues
 
-## 多语言与主题
+Selected historical storms are used to explain hazard patterns such as prolonged rainfall, coastal surge, or inland flooding. They are ranked using selected track, intensity, regional, and user-location characteristics.
 
-界面支持：
+Historical similarity is not a forecast. Storm size, forward speed, tide, terrain, exposure, and preparedness can produce very different outcomes.
 
-- 简体中文
-- English
-- 日本語
-- 한국어
-- Español
-- Français
+## Data-source architecture
 
-同时支持浅色、深色和跟随系统主题。语言、主题、视图模式、地图模式和图层选择都会保存在浏览器本地。
+The Netlify Function at `/api/cyclones` aggregates publicly available information from multiple organizations.
 
-## 响应式设计
+### JMA / RSMC Tokyo
 
-### 桌面端
+Primary operational source for the western North Pacific. The parser reads the JMA XML feed, normalizes cyclone identity, extracts centre positions, attempts to distinguish analysis and forecast points, and merges successive bulletins.
 
-- 左侧：海域筛选、当前系统和数据源状态
-- 中间：台风地图和关键图层
-- 右侧：公众解释、个人影响、历史案例、时间轴和来源详情
-- 增大正文与控件字号，限制地图宽度，避免地图占据全部屏幕
+### NOAA / National Hurricane Center
 
-### 手机端
+Official source for Atlantic, eastern North Pacific, and central North Pacific systems. The project currently reads the active-storm feed and is structured for future integration of NHC GIS track, cone, wind-radii, arrival-time, and probability products.
 
-- 地图优先显示
-- 首屏只保留精简台风摘要，不用大段文字遮挡地图
-- 详细内容放入可上拉的底部抽屉
-- 专业参数在用户主动切换专业视图后显示
-- 图层菜单适配单手触控
+### PAGASA
 
-## 技术架构
+Provides an additional western North Pacific/local Philippine cross-check. The function reads the active bulletin page for current centre position, motion, intensity, and hazard flags when available.
 
-项目采用零框架、低依赖架构：
+### Hong Kong Observatory
+
+Provides Hong Kong tropical-cyclone warning-signal status and links to the HKO track, satellite, and radar products.
+
+### GDACS
+
+Adds global disaster-impact context. GDACS is treated as an impact source, not as the primary forecast authority.
+
+### Taiwan Central Weather Administration
+
+The interface links to CWA typhoon warning, rainfall, satellite, radar, and wind products. An authenticated open-data connector can be added through Netlify environment variables when a specific dataset is selected.
+
+## Cross-validation principles
+
+Typhoon Vision does not silently average agency values.
+
+- The responsible RSMC or national meteorological service remains authoritative for its basin or jurisdiction.
+- Other sources are used to compare centre position, motion, freshness, classification, and reported impacts.
+- Different wind averaging periods and classification systems are retained rather than converted into false agreement.
+- Source errors, unavailable feeds, missing forecast points, and synthetic trend references are visible in the interface.
+
+## Forecast cone and impact areas
+
+A forecast cone or potential-track area represents uncertainty in the future location of the cyclone centre. It is not the boundary of damaging wind, rainfall, flooding, waves, or storm surge. Those hazards may extend well outside the centre-track probability area.
+
+Typhoon Vision visually separates:
+
+- centre-track probability/uncertainty area;
+- official or estimated wind radii;
+- user-location distance;
+- non-official trend reference.
+
+## Responsive design
+
+### Desktop
+
+- persistent storm/region rail;
+- large map-first workspace;
+- optional risk inspector that overlays the map rather than permanently shrinking it;
+- larger typography for storm cards, map controls, source records, and advice;
+- compact node detail card and professional-layer shortcuts.
+
+### Mobile
+
+- map occupies most of the initial screen;
+- horizontally scrollable hazard shortcuts;
+- compact storm summary;
+- weather-style playback control;
+- three-position bottom sheet: collapsed, half, and full;
+- large touch targets and reduced map-label density.
+
+## Languages and themes
+
+The interface currently supports:
+
+- Simplified Chinese;
+- English;
+- Japanese;
+- Korean;
+- Spanish;
+- French.
+
+Users can select light, dark, or system appearance. Language, theme, view mode, layers, forecast horizon, profile, and location preference are stored locally.
+
+## Project structure
 
 ```text
-Browser
-  ├─ index.html
-  ├─ styles.css
-  ├─ app.js
-  └─ data/world-land.json
-          │
-          ▼
-Netlify CDN
-          │
-          ▼
-Netlify Function: /api/cyclones
-  ├─ JMA XML feed
-  ├─ NOAA/NHC JSON
-  ├─ GDACS API
-  └─ HKO Open Data API
+.
+├── index.html
+├── app.js
+├── styles.css
+├── README.md
+├── VERSION.txt
+├── netlify.toml
+├── data/
+│   └── world-land.json
+└── netlify/
+    └── functions/
+        └── cyclone-data.mts
 ```
 
-前端使用原生 HTML、CSS、JavaScript 和 Canvas 绘图，不需要 React、Vite 或大型地图 SDK。这样可以缩短首次部署时间并降低移动端负担。
+## Netlify deployment
 
-## 项目结构
+Connect the GitHub repository to the existing Netlify project. The repository root must directly contain `index.html`, `netlify.toml`, and the `netlify/` directory.
 
-```text
-index.html                    页面结构
-styles.css                   视觉系统与响应式布局
-app.js                       地图、交互、国际化与个人影响计算
-VERSION.txt                  当前版本标识
-README.md                    项目说明
-data/
-  world-land.json            内置世界陆地几何
-netlify/
-  functions/
-    cyclone-data.mts         气象数据聚合 Function
-netlify.toml                 Netlify 发布、Function 与响应头配置
-```
-
-## 部署到 Netlify
-
-### 推荐：GitHub 自动部署
-
-将解压后的文件直接放在 GitHub 仓库根目录。根目录必须直接看到 `index.html`，不要再套一层版本文件夹。
-
-Netlify 设置：
-
-```text
-Base directory: 留空
-Build command: 留空
-Publish directory: .
-Functions directory: netlify/functions
-```
-
-`netlify.toml` 已包含：
+`netlify.toml` configures:
 
 ```toml
 [build]
@@ -181,75 +220,65 @@ Functions directory: netlify/functions
   node_bundler = "esbuild"
 ```
 
-提交到生产分支后，Netlify 会自动发布静态页面并打包 Function。
+After deployment, verify:
 
-### 验证部署
+1. the deploy state is `ready`;
+2. the generated page is `/index.html`, not a nested folder path;
+3. the deploy summary reports a function;
+4. `https://<site>.netlify.app/api/cyclones` returns JSON;
+5. the page displays `Public v11`.
 
-1. Deploy 状态应为 `ready`。
-2. 部署摘要应显示至少一个 Function。
-3. 打开 `/api/cyclones` 应返回 JSON。
-4. 页面左上角应显示当前 Public 版本。
-5. 地图聚焦台风后，应能看到路径节点；数据充分时还会显示预测锥。
+## Local development
 
-### 直接拖放 ZIP 的限制
-
-Netlify Drop 适合纯静态页面，但通常不会部署 `netlify/functions`。要使用实时数据聚合，请使用 GitHub 自动部署或 Netlify CLI。
-
-## 本地运行
-
-安装 Node.js 18.14 或更高版本后：
+With Netlify CLI installed:
 
 ```bash
-npx netlify-cli dev
+netlify dev
 ```
 
-然后访问：
+Then open:
 
 ```text
 http://localhost:8888
 http://localhost:8888/api/cyclones
 ```
 
-## 数据处理原则
+The static interface can also be previewed with any local HTTP server, but the API function requires Netlify Dev or a published deploy.
 
-- 每个海域优先使用负责该海域的官方机构。
-- 其他来源只用于检查位置、更新时间和影响信息是否一致。
-- 不对不同机构预警等级做简单平均。
-- 当路径数据不足时，界面明确提示，不将推测伪装成官方预报。
-- 估算风圈、个人影响时间窗和历史相似度都必须显示限制说明。
+## Environment variables
 
-## 可访问性与隐私
+Secrets and API keys must never be embedded in `app.js` or `index.html`. Store them as Netlify environment variables and read them inside Functions with `Netlify.env.get()`.
 
-- 键盘焦点样式和跳转到地图链接
-- 足够大的触控区域
-- 支持 `prefers-reduced-motion`
-- 支持系统深浅色
-- 浏览器定位仅在获得用户授权后调用
-- 用户位置不会发送至服务器
-- 麦克风和摄像头被 Netlify 响应头禁用
+## Accessibility and privacy
 
-## 已知限制
+- keyboard-visible focus states;
+- reduced-motion support;
+- semantic controls and labels;
+- minimum touch-target sizing on mobile;
+- geolocation requested only after user action;
+- user location retained locally and removable at any time;
+- no location is sent to the cyclone aggregation Function.
 
-- 免费公开 API 的字段、稳定性和更新频率不同。
-- 某些来源只提供当前中心位置，不提供完整预测轨迹。
-- Canvas 地图不是专业 GIS，不能替代官方业务系统。
-- 估算风圈没有考虑四象限不对称结构。
-- 个人影响计算未直接建模地形、河网、潮位和城市排水能力。
-- 历史案例当前为精选示例，尚未接入完整 IBTrACS 检索流程。
+## Current limitations
 
-## 后续方向
+- data formats vary across meteorological agencies and can change without notice;
+- JMA XML forecast-point parsing remains defensive and may occasionally fall back to a labelled trend reference;
+- official asymmetric wind-radius quadrants are not yet available for every basin;
+- satellite, radar, rainfall, and surge products currently open the relevant official service instead of being composited into the canvas;
+- personal impact calculations do not model terrain, drainage, building vulnerability, surge hydrodynamics, or numerical rainfall fields;
+- historical analogues are curated examples rather than a full IBTrACS similarity engine.
 
-- 接入官方四象限风圈和预报圆数据
-- 将历史案例替换为 IBTrACS 动态相似轨迹检索
-- 增加雷达降雨、海浪和风暴潮图层
-- 增加城市级官方预警订阅
-- 增加可访问的文本版地图摘要
-- 建立自动化数据质量监控与来源健康检查
+## Planned work
 
-## 免责声明
+- direct ingestion of NHC GIS track, cone, wind-radii, probability, and arrival-time products;
+- official quadrant wind-radius support;
+- basin-specific forecast-error cones;
+- CWA authenticated dataset integration;
+- official rainfall, radar, satellite, wave, and surge overlays;
+- full IBTrACS analogue search;
+- local-government warning polygons and evacuation-zone links;
+- automated parser health tests and source-change alerts.
 
-Typhoon Vision 仅用于教育、研究和信息可视化。它不承担官方预警、紧急通信或灾害响应职能。请始终查看所在地气象主管机构、应急管理部门和交通运营机构发布的最新信息。
+## Disclaimer
 
-## License
-
-在公开接受贡献或商业使用前，请为项目选择并添加正式开源许可证。
+Typhoon Vision is an educational and experimental information interface. Forecasts and warnings can change rapidly. Always consult the responsible meteorological agency and local emergency authorities before making safety, travel, work, school, marine, or evacuation decisions.

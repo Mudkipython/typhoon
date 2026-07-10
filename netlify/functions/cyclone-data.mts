@@ -159,10 +159,19 @@ function extractJmaTrackPoints(xml: string): TrackPoint[] {
     if (!/中心位置|center position|center/i.test(attrs + block)) continue;
     const coordinate = parseJmaCoordinate(match[2]);
     if (!coordinate) continue;
-    const dateMatch = block.match(/<(?:jmx_eb:)?DateTime([^>]*)>([^<]+)<\/(?:jmx_eb:)?DateTime>/i);
+    const localIndex = index - beforeInfo;
+    const dateMatches = [...block.matchAll(/<(?:jmx_eb:)?DateTime([^>]*)>([^<]+)<\/(?:jmx_eb:)?DateTime>/gi)];
+    const precedingDates = dateMatches.filter((item) => (item.index || 0) <= localIndex);
+    const dateMatch = precedingDates.at(-1) || dateMatches[0];
     const dateAttrs = dateMatch?.[1] || "";
     const time = dateMatch?.[2]?.trim() || null;
-    const forecast = /予報|forecast/i.test(dateAttrs) || (/予報円|予報位置|Forecast/i.test(block) && !/実況|analysis/i.test(dateAttrs));
+    const infoOpenEnd = block.indexOf(">");
+    const infoContext = infoOpenEnd >= 0 ? block.slice(0, infoOpenEnd + 1) : "";
+    const nearContext = xml.slice(Math.max(0, index - 900), Math.min(xml.length, index + 900));
+    const forecastContext = `${attrs} ${dateAttrs} ${infoContext} ${nearestTagText(block, "Kind")} ${nearContext}`;
+    const explicitlyForecast = /中心位置[（(]?予報|予報円|予報時刻|forecast\s*(position|time)|type=["'][^"']*予報/i.test(forecastContext);
+    const explicitlyObserved = /実況時刻|解析時刻|中心位置[（(]?実況|observation\s*time|analysis\s*time|type=["'][^"']*実況/i.test(`${attrs} ${dateAttrs} ${nearContext}`);
+    const forecast = explicitlyForecast && !explicitlyObserved;
     const windValues = [...block.matchAll(/<(?:jmx_eb:)?WindSpeed[^>]*>([^<]+)<\/(?:jmx_eb:)?WindSpeed>/gi)].map((m) => Number.parseFloat(m[1])).filter(Number.isFinite);
     const pressureValues = [...block.matchAll(/<(?:jmx_eb:)?Pressure[^>]*>([^<]+)<\/(?:jmx_eb:)?Pressure>/gi)].map((m) => Number.parseFloat(m[1])).filter(Number.isFinite);
     points.push({
@@ -339,6 +348,76 @@ async function readHKO(): Promise<{ source: SourceStatus; warning: any | null }>
   }
 }
 
+
+function htmlToText(html: string) {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+async function readPAGASA(): Promise<{ source: SourceStatus; storms: Storm[]; advisory: any | null }> {
+  const url = "https://www.pagasa.dost.gov.ph/tropical-cyclone/severe-weather-bulletin";
+  try {
+    const html = await (await fetchTimed(url, { headers: { Accept: "text/html,*/*" } })).text();
+    const text = htmlToText(html);
+    const nameMatch = text.match(/(?:Typhoon|Tropical Storm|Severe Tropical Storm|Tropical Depression)\s+["“']?([A-Z][A-Z-]{2,})["”']?/i);
+    const coordMatch = text.match(/\((\d+(?:\.\d+)?)\s*°?\s*([NS])\s*,\s*(\d+(?:\.\d+)?)\s*°?\s*([EW])\s*\)/i);
+    const windMatch = text.match(/Maximum sustained winds of\s*(\d+(?:\.\d+)?)\s*km\/h/i);
+    const movementMatch = text.match(/Moving\s+([A-Za-z -]+?)\s+at\s+(\d+(?:\.\d+)?)\s*km\/h/i);
+    const issuedMatch = text.match(/Issued at\s+([^()]+?)(?:\(|“|\")/i);
+    const advisory = {
+      title: nameMatch?.[0] || null,
+      name: nameMatch?.[1]?.toUpperCase() || null,
+      movement: movementMatch ? `${movementMatch[1].trim()} at ${movementMatch[2]} km/h` : null,
+      windKph: windMatch ? Number(windMatch[1]) : null,
+      issued: issuedMatch?.[1]?.trim() || null,
+      hazards: {
+        severeWind: /Severe Winds/i.test(text),
+        heavyRain: /Heavy Rainfall/i.test(text),
+        coastal: /HAZARDS AFFECTING COASTAL WATERS|Storm Surge/i.test(text)
+      }
+    };
+    const storms: Storm[] = [];
+    if (nameMatch && coordMatch) {
+      const lat = Number(coordMatch[1]) * (/S/i.test(coordMatch[2]) ? -1 : 1);
+      const lon = Number(coordMatch[3]) * (/W/i.test(coordMatch[4]) ? -1 : 1);
+      const windMs = windMatch ? Number(windMatch[1]) / 3.6 : null;
+      storms.push({
+        id: `pagasa-${advisory.name || "active"}`,
+        name: advisory.name || "PAGASA-TC",
+        basin: "Western North Pacific",
+        classification: nameMatch[0].replace(/["“”']/g, ""),
+        lat, lon,
+        updatedAt: new Date().toISOString(),
+        windMs,
+        pressureHpa: null,
+        track: [{ lat, lon, time: new Date().toISOString(), windMs, pressureHpa: null, forecast: false, source: "pagasa" }],
+        sources: ["pagasa"]
+      });
+    }
+    const messageParts = [advisory.title, advisory.movement, advisory.windKph ? `${advisory.windKph} km/h` : null].filter(Boolean);
+    return {
+      source: {
+        id: "pagasa", name: "PAGASA", role: "local",
+        status: storms.length ? "online" : "no-data", updatedAt: new Date().toISOString(),
+        message: messageParts.join(" · ") || "Bulletin page online; no active cyclone parsed",
+        url, items: storms.length
+      },
+      storms,
+      advisory
+    };
+  } catch (error) {
+    return { source: { id: "pagasa", name: "PAGASA", role: "local", status: "offline", message: String(error), url }, storms: [], advisory: null };
+  }
+}
+
 function distanceKm(a: { lat: number; lon: number }, b: { lat: number; lon: number }) {
   const toRad = (v: number) => v * Math.PI / 180;
   const dLat = toRad(b.lat - a.lat);
@@ -372,9 +451,9 @@ function mergeStorms(groups: Storm[][]) {
 }
 
 export default async () => {
-  const [nhc, jma, gdacs, hko] = await Promise.all([readNHC(), readJMA(), readGDACS(), readHKO()]);
-  const storms = mergeStorms([jma.storms, nhc.storms, gdacs.storms]);
-  const sources = [jma.source, nhc.source, gdacs.source, hko.source, {
+  const [nhc, jma, gdacs, hko, pagasa] = await Promise.all([readNHC(), readJMA(), readGDACS(), readHKO(), readPAGASA()]);
+  const storms = mergeStorms([jma.storms, nhc.storms, pagasa.storms, gdacs.storms]);
+  const sources = [jma.source, nhc.source, pagasa.source, gdacs.source, hko.source, {
     id: "cwa", name: "Taiwan CWA", role: "optional", status: "not-configured",
     message: "Reserved for a licensed/API-key data connector", url: "https://opendata.cwa.gov.tw/"
   } satisfies SourceStatus];
@@ -384,7 +463,10 @@ export default async () => {
     live: true,
     storms,
     sources,
-    localWarnings: hko.warning ? [{ source: "hko", region: "Hong Kong", ...hko.warning }] : [],
+    localWarnings: [
+      ...(hko.warning ? [{ source: "hko", region: "Hong Kong", ...hko.warning }] : []),
+      ...(pagasa.advisory ? [{ source: "pagasa", region: "Philippines", ...pagasa.advisory }] : [])
+    ],
     methodology: {
       primaryRule: "Use the responsible RSMC or national meteorological service as the authoritative source for each basin/region.",
       comparisonRule: "Compare location, update time and reported intensity; do not average agency warnings or classifications.",
