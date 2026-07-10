@@ -186,6 +186,26 @@ function extractJmaTrackPoints(xml: string): TrackPoint[] {
   return sortAndDedupeTrack(points);
 }
 
+
+function inferOperationalBasin(lat: number, lon: number) {
+  if (lat >= 0 && lon >= 100 && lon <= 180) return "Western North Pacific";
+  if (lat >= 0 && lon <= -100) return "Eastern/Central Pacific";
+  if (lat >= 0 && lon < 0) return "Atlantic";
+  if (lat >= 0 && lon >= 40 && lon < 100) return "North Indian Ocean";
+  if (lat < 0 && lon >= 20 && lon < 100) return "Southwest Indian Ocean";
+  if (lat < 0 && lon >= 100 && lon < 160) return "Australian Region";
+  if (lat < 0) return "South Pacific";
+  return "Global";
+}
+
+function normalizeNhcBasin(value: unknown, id: unknown, lat: number, lon: number) {
+  const raw = `${String(value || "")} ${String(id || "")}`.toLowerCase();
+  if (/atlantic|al\d/.test(raw)) return "Atlantic";
+  if (/eastern|east pacific|ep\d/.test(raw)) return "Eastern Pacific";
+  if (/central|cp\d/.test(raw)) return "Central Pacific";
+  return inferOperationalBasin(lat, lon);
+}
+
 async function readNHC(): Promise<{ source: SourceStatus; storms: Storm[] }> {
   const url = "https://www.nhc.noaa.gov/CurrentStorms.json";
   try {
@@ -200,7 +220,7 @@ async function readNHC(): Promise<{ source: SourceStatus; storms: Storm[] }> {
       return {
         id: String(item.id ?? item.binNumber ?? `nhc-${index}`),
         name: String(item.name ?? "Unnamed"),
-        basin: String(item.basin ?? item.id ?? "NHC"),
+        basin: normalizeNhcBasin(item.basin, item.id, lat, lon),
         classification: String(item.classification ?? item.type ?? "Tropical cyclone"),
         lat,
         lon,
@@ -304,7 +324,7 @@ async function readGDACS(): Promise<{ source: SourceStatus; storms: Storm[] }> {
       return {
         id: `gdacs-${p.eventid ?? index}`,
         name: String(p.eventname ?? p.name ?? `TC ${p.eventid ?? index}`),
-        basin: String(p.country ?? p.episodeid ?? "Global"),
+        basin: inferOperationalBasin(lat, lon),
         classification: String(p.severitydata?.severitytext ?? p.severity ?? "Tropical cyclone"),
         alertLevel: String(p.alertlevel ?? p.episodealertlevel ?? "green").toLowerCase(),
         lat, lon,
@@ -456,7 +476,11 @@ export default async () => {
   const sources = [jma.source, nhc.source, pagasa.source, gdacs.source, hko.source, {
     id: "cwa", name: "Taiwan CWA", role: "optional", status: "not-configured",
     message: "Reserved for a licensed/API-key data connector", url: "https://opendata.cwa.gov.tw/"
-  } satisfies SourceStatus];
+  } satisfies SourceStatus,
+  { id: "imd", name: "IMD / RSMC New Delhi", role: "official", status: "not-configured", message: "Official North Indian Ocean centre; machine-readable connector pending", url: "https://rsmcnewdelhi.imd.gov.in/" } satisfies SourceStatus,
+  { id: "reunion", name: "Météo-France / RSMC La Réunion", role: "official", status: "not-configured", message: "Official Southwest Indian Ocean centre; connector pending", url: "https://meteofrance.re/fr/cyclone" } satisfies SourceStatus,
+  { id: "bom", name: "Australian Bureau of Meteorology", role: "official", status: "not-configured", message: "Official Australian-region products; connector pending", url: "https://www.bom.gov.au/cyclone/" } satisfies SourceStatus,
+  { id: "nadi", name: "RSMC Nadi", role: "official", status: "not-configured", message: "Official South Pacific products; connector pending", url: "https://www.met.gov.fj/" } satisfies SourceStatus];
 
   const body = {
     generatedAt: new Date().toISOString(),

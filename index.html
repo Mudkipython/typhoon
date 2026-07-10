@@ -6,8 +6,9 @@
   <meta name="theme-color" content="#edf4f8" />
   <meta name="color-scheme" content="light dark" />
   <meta name="description" content="Typhoon Vision — 面向公众与专业用户的全球热带气旋轨迹、风险与多来源交叉验证界面。" />
-  <title>Typhoon Vision · Public v11</title>
+  <title>Typhoon Vision · Public v11.2 Formal Map</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230f6b83'/%3E%3Cpath d='M13 33c8-18 29-19 38-5-9-4-17-2-20 5-3 7 2 13 11 14-17 6-33-2-29-14Z' fill='%23fff'/%3E%3Ccircle cx='34' cy='33' r='4' fill='%230f6b83'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="./vendor/maplibre-gl.css" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
@@ -16,7 +17,7 @@
     <header class="topbar">
       <a class="brand" href="#" aria-label="Typhoon Vision">
         <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M6 21C10 9 27 7 34 17c-7-3-13 0-14 6-1 5 3 9 9 9C19 37 5 31 6 21Z"/><circle cx="21" cy="21" r="2.7"/></svg></span>
-        <span class="brand-copy"><strong>Typhoon Vision <em class="version-badge">Public v11</em></strong><small data-i18n="tagline">全球台风简报</small></span>
+        <span class="brand-copy"><strong>Typhoon Vision <em class="version-badge">Public v11.2</em></strong><small data-i18n="tagline">全球热带气旋简报</small></span>
       </a>
 
       <div class="freshness-pill" id="freshnessPill" aria-live="polite">
@@ -49,6 +50,9 @@
           <button class="region-card selected" data-region="global"><span>🌍</span><div><strong data-i18n="globalOverview">全球概览</strong><small data-i18n="allBasins">所有海域</small></div></button>
           <button class="region-card" data-region="wpac"><span>🌊</span><div><strong data-i18n="westPacific">西北太平洋</strong><small>JMA · HKO</small></div></button>
           <button class="region-card" data-region="atl"><span>🌀</span><div><strong data-i18n="atlantic">大西洋</strong><small>NOAA · NHC</small></div></button>
+          <button class="region-card" data-region="epac"><span>🌪️</span><div><strong data-i18n="eastPacific">东北/中太平洋</strong><small>NHC · CPHC</small></div></button>
+          <button class="region-card" data-region="nio"><span>🌧️</span><div><strong data-i18n="northIndian">北印度洋</strong><small>IMD · RSMC New Delhi</small></div></button>
+          <button class="region-card" data-region="south"><span>🌏</span><div><strong data-i18n="southernBasins">南半球海域</strong><small>BoM · Nadi · La Réunion</small></div></button>
         </div>
       </section>
 
@@ -73,7 +77,8 @@
 
     <main class="workspace">
       <section class="map-panel" id="mainMap" aria-label="全球热带气旋地图">
-        <canvas id="mapCanvas"></canvas>
+        <div id="formalMap" aria-label="全球热带气旋正式地图"></div>
+        <canvas id="mapCanvas" aria-label="地图降级视图"></canvas>
         <div class="map-atmosphere" aria-hidden="true"></div>
 
         <div class="map-toolbar">
@@ -164,6 +169,8 @@
           <span><i class="uncertainty"></i><b data-i18n="uncertainty">预报范围</b></span>
           <span><i class="wind-range"></i><b data-i18n="windRange">风圈/可能波及范围</b></span>
           <span class="intensity-key"><em class="td"></em><em class="ts"></em><em class="sts"></em><em class="ty"></em><em class="sty"></em><b data-i18n="intensityLegend">节点颜色＝强度</b></span>
+          <span><i class="city-risk"></i><b data-i18n="cityRiskLegend">城市点＝距路径风险筛选</b></span>
+          <span><i class="user-point"></i><b data-i18n="userLegend">当前位置与最近路径关系</b></span>
         </div>
         <div class="map-tip" id="mapTip" data-i18n="mapTip">拖动地图 · 滚轮或双指缩放 · 点击路径节点</div>
         <div class="point-tooltip" id="pointTooltip"></div>
@@ -314,6 +321,8 @@
   </div>
 
   <div class="toast" id="toast" role="status"></div>
+  <script src="./vendor/maplibre-gl.js"></script>
+  <script src="./formal-map.js"></script>
   <script src="./app.js" type="module"></script>
 </body>
 </html>

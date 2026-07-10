@@ -8,7 +8,7 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const i18n = {
   zh: {
-    skip:'跳到地图', chooseLanguage:'选择语言', appearance:'外观', tagline:'全球台风简报', connecting:'正在连接权威来源', connected:'权威来源已连接', partial:'部分来源暂不可用', simpleView:'公众视图', proView:'专业视图',
+    skip:'跳到地图', chooseLanguage:'选择语言', appearance:'外观', tagline:'全球热带气旋简报', connecting:'正在连接权威来源', connected:'权威来源已连接', partial:'部分来源暂不可用', simpleView:'公众视图', proView:'专业视图',
     region:'关注区域', global:'全球', globalOverview:'全球概览', allBasins:'所有海域', westPacific:'西北太平洋', atlantic:'大西洋', systems:'当前系统', demoScenario:'显示演示情景', demoExplain:'无活跃台风时用于体验界面', sourceHealth:'数据来源', details:'详情', sourceNote:'主预报以所属海域的官方气象机构为准，其他来源只作交叉验证。',
     worldMap:'世界地图', globe3d:'3D 地球', fitWorld:'查看全球', focusStorm:'聚焦台风', demoLabel:'演示情景 · 非官方预警', demoTitle:'台风“曙光”正在向西北移动', demoSummary:'未来两天可能靠近台湾北部与东海沿岸。路径仍会变化，应关注当地气象部门后续更新。', headingTo:'往哪里走', northwest:'西北方向', closestTime:'何时最接近', within48:'约 24–48 小时', whatToDo:'现在怎么做', followLocal:'留意当地预警', understandImpact:'看懂可能影响', trackUnavailable:'当前官方数据只提供中心位置，完整路径暂不可用',
     currentFix:'当前定位', coordinates:'坐标', maxWind:'最大风速', pressure:'中心气压', movement:'移动', agencySpread:'机构定位差异', spreadExplain:'差异越小，路径判断越一致', sourcesAgree:'3 个来源结论接近', agreementExplain:'位置与移动方向大致一致', howVerified:'如何交叉验证', observed:'已观测路径', forecast:'预测路径', uncertainty:'可能范围', mapTip:'拖动地图 · 滚轮或双指缩放 · 点击路径节点',
@@ -22,7 +22,7 @@ const i18n = {
     hkoSignal:'香港热带气旋信号', noWarning:'暂无当地热带气旋信号', sourceUnavailable:'当前请求失败，稍后会自动重试', demoSourceMessage:'演示定位与路径，用于展示交叉验证界面', activeStorm:'活跃系统', liveStormTitle:'热带气旋“{name}”正在更新', globalMonitoring:'全球热带气旋监测中', viewSource:'查看来源', close:'关闭'
   },
   en: {
-    skip:'Skip to map', chooseLanguage:'Choose language', appearance:'Appearance', tagline:'Global Cyclone Brief', connecting:'Connecting official sources', connected:'Official sources connected', partial:'Some sources are unavailable', simpleView:'Public view', proView:'Professional view',
+    skip:'Skip to map', chooseLanguage:'Choose language', appearance:'Appearance', tagline:'Global Tropical Cyclone Brief', connecting:'Connecting official sources', connected:'Official sources connected', partial:'Some sources are unavailable', simpleView:'Public view', proView:'Professional view',
     region:'Watch region', global:'Global', globalOverview:'Global overview', allBasins:'All basins', westPacific:'Western Pacific', atlantic:'Atlantic', systems:'Current systems', demoScenario:'Show demo scenario', demoExplain:'Explore the interface when no storm is active', sourceHealth:'Data sources', details:'Details', sourceNote:'The responsible meteorological agency remains authoritative; other sources are used only for cross-checking.',
     worldMap:'World map', globe3d:'3D globe', fitWorld:'View world', focusStorm:'Focus storm', demoLabel:'Demo scenario · Not an official warning', demoTitle:'Typhoon Aurora is moving northwest', demoSummary:'It may approach northern Taiwan and the East China Sea coast within two days. The track can still change; follow local meteorological updates.', headingTo:'Where it is going', northwest:'Northwest', closestTime:'Closest approach', within48:'About 24–48 hours', whatToDo:'What to do now', followLocal:'Follow local alerts', understandImpact:'Understand impacts', trackUnavailable:'The official feed currently provides only the storm centre; a full track is not available.',
     currentFix:'Current fix', coordinates:'Coordinates', maxWind:'Maximum wind', pressure:'Central pressure', movement:'Movement', agencySpread:'Agency position spread', spreadExplain:'A smaller spread means stronger track agreement', sourcesAgree:'3 sources broadly agree', agreementExplain:'Position and direction are similar', howVerified:'How this is checked', observed:'Observed track', forecast:'Forecast track', uncertainty:'Possible range', mapTip:'Drag · Wheel or pinch to zoom · Select a track point',
@@ -187,6 +187,14 @@ Object.assign(i18n.ko, {riskBrief:'위험 요약',hazardTrack:'경로',hazardWin
 Object.assign(i18n.es, {riskBrief:'Resumen de riesgo',hazardTrack:'Trayectoria',hazardWind:'Radio de viento',hazardRain:'Lluvia',hazardCoast:'Costa',hazardSatellite:'Satélite',hazardRadar:'Radar',intensityLegend:'Color del punto = intensidad',intensity:'Intensidad',decisionCentre:'Centro de decisión',riskAndAdvice:'Riesgo, tiempo y acciones',officialTools:'Herramientas oficiales',openProfessionalMaps:'Abrir capas meteorológicas profesionales',impactProducts:'Viento · lluvia · marejada'});
 Object.assign(i18n.fr, {riskBrief:'Résumé du risque',hazardTrack:'Trajectoire',hazardWind:'Rayons de vent',hazardRain:'Pluie',hazardCoast:'Littoral',hazardSatellite:'Satellite',hazardRadar:'Radar',intensityLegend:'Couleur du point = intensité',intensity:'Intensité',decisionCentre:'Centre de décision',riskAndAdvice:'Risque, calendrier et actions',officialTools:'Outils officiels',openProfessionalMaps:'Ouvrir les couches météo professionnelles',impactProducts:'Vent · pluie · submersion'});
 
+
+Object.assign(i18n.zh, {eastPacific:'东北/中太平洋',northIndian:'北印度洋',southernBasins:'南半球海域',cityRiskLegend:'城市点＝距路径风险筛选',userLegend:'当前位置与最近路径关系',formalMapReady:'正式地图引擎已加载',formalMapFallback:'正式地图不可用，已启用降级地图'});
+Object.assign(i18n.en, {eastPacific:'Eastern/Central Pacific',northIndian:'North Indian Ocean',southernBasins:'Southern Hemisphere',cityRiskLegend:'City dots = track-distance screening',userLegend:'Your location and nearest-track link',formalMapReady:'Formal map engine loaded',formalMapFallback:'Formal map unavailable; fallback map enabled'});
+Object.assign(i18n.ja, {eastPacific:'東部・中部太平洋',northIndian:'北インド洋',southernBasins:'南半球海域',cityRiskLegend:'都市点＝進路距離の目安',userLegend:'現在地と最寄り進路'});
+Object.assign(i18n.ko, {eastPacific:'동부·중부 태평양',northIndian:'북인도양',southernBasins:'남반구 해역',cityRiskLegend:'도시 점 = 경로 거리 기준',userLegend:'현재 위치와 가장 가까운 경로'});
+Object.assign(i18n.es, {eastPacific:'Pacífico oriental/central',northIndian:'Océano Índico norte',southernBasins:'Hemisferio sur',cityRiskLegend:'Ciudades = distancia a la trayectoria',userLegend:'Tu ubicación y trayectoria más cercana'});
+Object.assign(i18n.fr, {eastPacific:'Pacifique est/central',northIndian:'Océan Indien nord',southernBasins:'Hémisphère sud',cityRiskLegend:'Villes = distance à la trajectoire',userLegend:'Votre position et la trajectoire la plus proche'});
+
 const demoStorm = {
   id: 'demo-aurora', name: 'AURORA', localName: '曙光', number: '2600', basin: 'Western North Pacific', classification: 'Strong typhoon', alertLevel: 'orange', lat: 25.2, lon: 124.8, windMs: 58, pressureHpa: 960, updatedAt: '2026-07-10T12:00:00Z', demo: true,
   track: [
@@ -203,6 +211,43 @@ const demoStorm = {
   ],
   sources:['jma','hko','gdacs']
 };
+
+const demoStorms = [
+  demoStorm,
+  {
+    id:'demo-atlas',name:'ATLAS',basin:'Atlantic',classification:'Hurricane',alertLevel:'orange',lat:25.5,lon:-69.2,windMs:42,pressureHpa:958,updatedAt:'2026-07-10T12:00:00Z',demo:true,
+    track:[
+      {lat:13.0,lon:-39.0,time:'2026-07-08T00:00:00Z',windMs:18,pressureHpa:998,forecast:false,source:'demo'},
+      {lat:16.0,lon:-47.0,time:'2026-07-08T18:00:00Z',windMs:25,pressureHpa:988,forecast:false,source:'demo'},
+      {lat:20.0,lon:-57.0,time:'2026-07-09T12:00:00Z',windMs:34,pressureHpa:974,forecast:false,source:'demo'},
+      {lat:23.5,lon:-64.0,time:'2026-07-10T00:00:00Z',windMs:39,pressureHpa:964,forecast:false,source:'demo'},
+      {lat:25.5,lon:-69.2,time:'2026-07-10T12:00:00Z',windMs:42,pressureHpa:958,forecast:false,source:'demo'},
+      {lat:28.0,lon:-73.0,time:'2026-07-11T12:00:00Z',windMs:39,pressureHpa:966,forecast:true,source:'demo'},
+      {lat:32.0,lon:-74.0,time:'2026-07-12T12:00:00Z',windMs:31,pressureHpa:978,forecast:true,source:'demo'}
+    ],sources:['nhc','gdacs']
+  },
+  {
+    id:'demo-nila',name:'NILA',basin:'North Indian Ocean',classification:'Severe Cyclonic Storm',alertLevel:'orange',lat:18.0,lon:87.1,windMs:35,pressureHpa:972,updatedAt:'2026-07-10T12:00:00Z',demo:true,
+    track:[
+      {lat:9.0,lon:91.5,time:'2026-07-08T06:00:00Z',windMs:18,pressureHpa:996,forecast:false,source:'demo'},
+      {lat:12.0,lon:90.0,time:'2026-07-09T00:00:00Z',windMs:24,pressureHpa:988,forecast:false,source:'demo'},
+      {lat:15.0,lon:88.5,time:'2026-07-09T18:00:00Z',windMs:30,pressureHpa:980,forecast:false,source:'demo'},
+      {lat:18.0,lon:87.1,time:'2026-07-10T12:00:00Z',windMs:35,pressureHpa:972,forecast:false,source:'demo'},
+      {lat:20.5,lon:86.0,time:'2026-07-11T06:00:00Z',windMs:31,pressureHpa:980,forecast:true,source:'demo'},
+      {lat:22.8,lon:84.8,time:'2026-07-12T00:00:00Z',windMs:22,pressureHpa:990,forecast:true,source:'demo'}
+    ],sources:['gdacs']
+  },
+  {
+    id:'demo-kiri',name:'KIRI',basin:'South Pacific',classification:'Tropical Cyclone',alertLevel:'yellow',lat:-18.5,lon:171.8,windMs:31,pressureHpa:978,updatedAt:'2026-07-10T12:00:00Z',demo:true,
+    track:[
+      {lat:-13.2,lon:179.0,time:'2026-07-08T12:00:00Z',windMs:18,pressureHpa:995,forecast:false,source:'demo'},
+      {lat:-15.4,lon:176.5,time:'2026-07-09T12:00:00Z',windMs:25,pressureHpa:986,forecast:false,source:'demo'},
+      {lat:-18.5,lon:171.8,time:'2026-07-10T12:00:00Z',windMs:31,pressureHpa:978,forecast:false,source:'demo'},
+      {lat:-21.5,lon:168.0,time:'2026-07-11T12:00:00Z',windMs:29,pressureHpa:983,forecast:true,source:'demo'},
+      {lat:-25.0,lon:164.0,time:'2026-07-12T12:00:00Z',windMs:22,pressureHpa:990,forecast:true,source:'demo'}
+    ],sources:['gdacs']
+  }
+];
 
 const demoSources = [
   {id:'jma',name:'JMA / RSMC Tokyo',role:'primary',status:'online',updatedAt:'2026-07-10T12:00:00Z',message:'25.2°N, 124.8°E · 58 m/s',url:'https://www.jma.go.jp/jma/jma-eng/jma-center/rsmc-hp-pub-eg/RSMC_HP.htm'},
@@ -221,11 +266,52 @@ const historicalAnalogCatalog = [
   {id:'lekima-2019',name:'LEKIMA',year:2019,localZh:'利奇马',basin:'Western North Pacific',peakWind:52,region:'台湾以东、浙江及华东',regionEn:'East of Taiwan, Zhejiang and eastern China',impactZh:'沿海强风暴雨叠加山区地形，造成洪水、滑坡和长时间交通影响。',impactEn:'Coastal wind and rain interacting with terrain led to flooding, landslides and prolonged transport impacts.',lessonZh:'登陆后的减弱过程仍可能伴随持续降雨，山区和河谷需更早采取行动。',lessonEn:'Weakening after landfall can still bring prolonged rain; mountain and river-valley communities need earlier action.',track:[{lat:17,lon:132},{lat:20,lon:128},{lat:23,lon:125},{lat:26,lon:122},{lat:29,lon:120.5},{lat:33,lon:119}]}
 ];
 
+
+const majorCities = [
+  {id:'tokyo',zh:'东京',en:'Tokyo',ja:'東京',ko:'도쿄',lat:35.68,lon:139.69,rank:5},
+  {id:'osaka',zh:'大阪',en:'Osaka',ja:'大阪',ko:'오사카',lat:34.69,lon:135.50,rank:3},
+  {id:'naha',zh:'那霸',en:'Naha',ja:'那覇',ko:'나하',lat:26.21,lon:127.68,rank:4},
+  {id:'taipei',zh:'台北',en:'Taipei',ja:'台北',ko:'타이베이',lat:25.03,lon:121.56,rank:5},
+  {id:'kaohsiung',zh:'高雄',en:'Kaohsiung',ja:'高雄',ko:'가오슝',lat:22.63,lon:120.30,rank:3},
+  {id:'hong-kong',zh:'香港',en:'Hong Kong',ja:'香港',ko:'홍콩',lat:22.32,lon:114.17,rank:5},
+  {id:'shanghai',zh:'上海',en:'Shanghai',ja:'上海',ko:'상하이',lat:31.23,lon:121.47,rank:5},
+  {id:'fuzhou',zh:'福州',en:'Fuzhou',ja:'福州',ko:'푸저우',lat:26.07,lon:119.30,rank:3},
+  {id:'xiamen',zh:'厦门',en:'Xiamen',ja:'厦門',ko:'샤먼',lat:24.48,lon:118.09,rank:3},
+  {id:'guangzhou',zh:'广州',en:'Guangzhou',ja:'広州',ko:'광저우',lat:23.13,lon:113.26,rank:4},
+  {id:'manila',zh:'马尼拉',en:'Manila',ja:'マニラ',ko:'마닐라',lat:14.60,lon:120.98,rank:5},
+  {id:'cebu',zh:'宿务',en:'Cebu',ja:'セブ',ko:'세부',lat:10.32,lon:123.90,rank:3},
+  {id:'hanoi',zh:'河内',en:'Hanoi',ja:'ハノイ',ko:'하노이',lat:21.03,lon:105.85,rank:4},
+  {id:'ho-chi-minh',zh:'胡志明市',en:'Ho Chi Minh City',ja:'ホーチミン',ko:'호찌민',lat:10.82,lon:106.63,rank:4},
+  {id:'seoul',zh:'首尔',en:'Seoul',ja:'ソウル',ko:'서울',lat:37.57,lon:126.98,rank:5},
+  {id:'busan',zh:'釜山',en:'Busan',ja:'釜山',ko:'부산',lat:35.18,lon:129.08,rank:4},
+  {id:'miami',zh:'迈阿密',en:'Miami',ja:'マイアミ',ko:'마이애미',lat:25.76,lon:-80.19,rank:5},
+  {id:'new-orleans',zh:'新奥尔良',en:'New Orleans',ja:'ニューオーリンズ',ko:'뉴올리언스',lat:29.95,lon:-90.07,rank:4},
+  {id:'houston',zh:'休斯敦',en:'Houston',ja:'ヒューストン',ko:'휴스턴',lat:29.76,lon:-95.37,rank:4},
+  {id:'havana',zh:'哈瓦那',en:'Havana',ja:'ハバナ',ko:'아바나',lat:23.11,lon:-82.37,rank:4},
+  {id:'san-juan',zh:'圣胡安',en:'San Juan',ja:'サンフアン',ko:'산후안',lat:18.47,lon:-66.11,rank:4},
+  {id:'honolulu',zh:'檀香山',en:'Honolulu',ja:'ホノルル',ko:'호놀룰루',lat:21.31,lon:-157.86,rank:4},
+  {id:'kolkata',zh:'加尔各答',en:'Kolkata',ja:'コルカタ',ko:'콜카타',lat:22.57,lon:88.36,rank:4},
+  {id:'chennai',zh:'金奈',en:'Chennai',ja:'チェンナイ',ko:'첸나이',lat:13.08,lon:80.27,rank:4},
+  {id:'dhaka',zh:'达卡',en:'Dhaka',ja:'ダッカ',ko:'다카',lat:23.81,lon:90.41,rank:4},
+  {id:'darwin',zh:'达尔文',en:'Darwin',ja:'ダーウィン',ko:'다윈',lat:-12.46,lon:130.84,rank:4},
+  {id:'cairns',zh:'凯恩斯',en:'Cairns',ja:'ケアンズ',ko:'케언스',lat:-16.92,lon:145.77,rank:4},
+  {id:'brisbane',zh:'布里斯班',en:'Brisbane',ja:'ブリスベン',ko:'브리즈번',lat:-27.47,lon:153.03,rank:4},
+  {id:'suva',zh:'苏瓦',en:'Suva',ja:'スバ',ko:'수바',lat:-18.14,lon:178.44,rank:4},
+  {id:'port-louis',zh:'路易港',en:'Port Louis',ja:'ポートルイス',ko:'포트루이스',lat:-20.16,lon:57.50,rank:3}
+];
+function cityName(city){
+  if(state.lang==='zh')return city.zh;
+  if(state.lang==='ja')return city.ja||city.en;
+  if(state.lang==='ko')return city.ko||city.en;
+  return city.en;
+}
+
 const state = {
   lang: localStorage.getItem('tv-lang') || 'zh',
   theme: localStorage.getItem('tv-theme') || 'light',
   view: localStorage.getItem('tv-view') || 'simple',
   mapMode: localStorage.getItem('tv-map') || 'world',
+  region: localStorage.getItem('tv-region') || 'global',
   demoEnabled: localStorage.getItem('tv-demo') !== 'false',
   livePayload: null,
   storms: [], sources: [], selectedStorm: null,
@@ -256,6 +342,7 @@ const ctx = canvas.getContext('2d', { alpha: false });
 const tooltip = $('#pointTooltip');
 let toastTimer;
 let playTimer;
+let formalMapEngine = null;
 
 function t(key) { return i18n[state.lang]?.[key] ?? i18n.en[key] ?? i18n.zh[key] ?? key; }
 function formatDate(value, short = false) {
@@ -287,6 +374,7 @@ function applyTheme(theme = state.theme) {
   const dark = theme === 'dark' || (theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
   $('meta[name="theme-color"]').content = dark ? '#071016' : '#edf4f8';
   state.needsRender = true;
+  formalMapEngine?.setTheme?.(dark?'dark':'light');
 }
 function setView(view, announce = true) {
   state.view = view; localStorage.setItem('tv-view', view); document.documentElement.dataset.view = view;
@@ -297,15 +385,33 @@ function setMapMode(mode) {
   state.mapMode = mode; localStorage.setItem('tv-map', mode); document.documentElement.dataset.map = mode;
   $$('[data-map-mode]').forEach(btn => { const active = btn.dataset.mapMode === mode; btn.classList.toggle('active',active); btn.setAttribute('aria-pressed',String(active)); });
   if (mode === 'globe' && state.zoom < .8) state.targetZoom = 1;
+  formalMapEngine?.setProjection?.(mode);
   if(state.selectedStorm) setTimeout(()=>fitStormTrack(state.selectedStorm,false),0);
   state.needsRender = true;
 }
 
 function currentSources() { return state.sources.length ? state.sources : demoSources; }
+function inferBasinKey(storm) {
+  const basin=String(storm?.basin||'').toLowerCase();
+  const lat=Number(storm?.lat??storm?.track?.at?.(-1)?.lat),lon=Number(storm?.lon??storm?.track?.at?.(-1)?.lon);
+  if(/atlantic/.test(basin))return 'atl';
+  if(/eastern|central pacific|epac|cpac/.test(basin))return 'epac';
+  if(/western|northwest|japan|philipp/.test(basin))return 'wpac';
+  if(/north indian|bay of bengal|arabian/.test(basin))return 'nio';
+  if(/southwest indian|austral|south pacific|fiji|nadi|reunion/.test(basin))return 'south';
+  if(Number.isFinite(lat)&&Number.isFinite(lon)){
+    if(lat>=0&&lon>=100)return 'wpac';
+    if(lat>=0&&lon<=-100)return 'epac';
+    if(lat>=0&&lon<0)return 'atl';
+    if(lat>=0&&lon>=40&&lon<100)return 'nio';
+    if(lat<0)return 'south';
+  }
+  return 'global';
+}
 function availableStorms() {
   const live = state.livePayload?.storms || [];
-  if (live.length) return live;
-  return state.demoEnabled ? [demoStorm] : [];
+  const base=live.length?live:(state.demoEnabled?demoStorms:[]);
+  return state.region==='global'?base:base.filter(storm=>inferBasinKey(storm)===state.region);
 }
 function selectStorm(storm, focus = false) {
   stopTrackPlayback(false);
@@ -317,7 +423,7 @@ function selectStorm(storm, focus = false) {
 }
 
 function renderAll() {
-  renderStormList(); renderSources(); renderPersonalImpact(); renderHistoricalAnalogs(); renderBrief(); renderPro(); renderTimeline(); renderTrackStatus(); renderTrackPlayer();
+  renderStormList(); renderSources(); renderPersonalImpact(); renderHistoricalAnalogs(); renderBrief(); renderPro(); renderTimeline(); renderTrackStatus(); renderTrackPlayer(); syncFormalMap();
 }
 function renderStormList() {
   const storms = availableStorms(); state.storms = storms;
@@ -494,9 +600,9 @@ function setUserLocation(lat,lon,meta={}){
   if(!Number.isFinite(lat)||!Number.isFinite(lon))return;
   state.userLocation={lat:clamp(lat,-90,90),lon:normalizeLon(lon),accuracy:Number(meta.accuracy)||null,source:meta.source||'manual',savedAt:new Date().toISOString()};
   localStorage.setItem('tv-user-location',JSON.stringify(state.userLocation));state.locationPickMode=false;$('#mainMap').classList.remove('location-pick-mode');
-  renderPersonalImpact();state.needsRender=true;showToast(t('locationReady'));
+  renderPersonalImpact();state.needsRender=true;syncFormalMap();showToast(t('locationReady'));
 }
-function clearUserLocation(){state.userLocation=null;state.personalImpact=null;localStorage.removeItem('tv-user-location');renderPersonalImpact();state.needsRender=true;showToast(t('locationCleared'));}
+function clearUserLocation(){state.userLocation=null;state.personalImpact=null;localStorage.removeItem('tv-user-location');renderPersonalImpact();state.needsRender=true;syncFormalMap();showToast(t('locationCleared'));}
 function requestUserLocation(){
   if(!navigator.geolocation){showToast(t('locationDenied'));return;}
   showToast(t('locating'));
@@ -562,7 +668,7 @@ function renderHistoricalAnalogs(){
     const active=state.activeAnalogId===a.id;
     return `<article class="analog-card"><div class="analog-head"><p><strong>${escapeHtml(`${a.year} ${local} (${a.name})`)}</strong><small>${escapeHtml(region)}</small></p><span class="analog-score">${a.score}% ${state.lang==='zh'?'相似':'match'}</span></div><div class="analog-reasons">${analogReasons(storm,a).map(r=>`<span>${escapeHtml(r)}</span>`).join('')}</div><p class="analog-impact"><b>${escapeHtml(t('pastImpact'))}：</b>${escapeHtml(impact)}</p><p class="analog-lesson"><b>${escapeHtml(t('lesson'))}：</b>${escapeHtml(lesson)}</p><div class="analog-actions"><button class="${active?'active':''}" data-analog-id="${a.id}">${escapeHtml(active?t('removeOverlay'):t('overlayTrack'))}</button></div></article>`;
   }).join('');
-  $$('[data-analog-id]',container).forEach(btn=>btn.addEventListener('click',()=>{state.activeAnalogId=state.activeAnalogId===btn.dataset.analogId?null:btn.dataset.analogId;renderHistoricalAnalogs();state.needsRender=true;}));
+  $$('[data-analog-id]',container).forEach(btn=>btn.addEventListener('click',()=>{state.activeAnalogId=state.activeAnalogId===btn.dataset.analogId?null:btn.dataset.analogId;renderHistoricalAnalogs();state.needsRender=true;syncFormalMap();}));
 }
 function drawHistoricalAnalog(colors){
   if(!state.activeAnalogId)return;const analog=historicalAnalogCatalog.find(a=>a.id===state.activeAnalogId);if(!analog)return;
@@ -748,15 +854,15 @@ function projectGlobe(lat,lon) {
 }
 function project(lat,lon){return state.mapMode==='world'?projectWorld(lat,lon):projectGlobe(lat,lon);}
 
-function drawBackground(colors) {
+function drawBackground(colors,time=0) {
   ctx.clearRect(0,0,state.width,state.height); ctx.fillStyle=colors.ocean; ctx.fillRect(0,0,state.width,state.height);
   if(state.mapMode==='globe') {
     ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--bg').trim(); ctx.fillRect(0,0,state.width,state.height);
     const c=globeCenter(),r=globeRadius(); const halo=ctx.createRadialGradient(c.x,c.y,r*.72,c.x,c.y,r*1.25); halo.addColorStop(0,'rgba(25,145,176,0)');halo.addColorStop(.82,'rgba(35,170,195,.1)');halo.addColorStop(1,'rgba(35,170,195,0)');ctx.fillStyle=halo;ctx.beginPath();ctx.arc(c.x,c.y,r*1.25,0,Math.PI*2);ctx.fill();
-    ctx.save();ctx.beginPath();ctx.arc(c.x,c.y,r,0,Math.PI*2);ctx.clip();ctx.fillStyle=colors.ocean;ctx.fillRect(c.x-r,c.y-r,r*2,r*2);drawMapLayers(colors);ctx.restore();ctx.strokeStyle=colors.landStroke;ctx.lineWidth=1;ctx.beginPath();ctx.arc(c.x,c.y,r,0,Math.PI*2);ctx.stroke();
-  } else drawMapLayers(colors);
+    ctx.save();ctx.beginPath();ctx.arc(c.x,c.y,r,0,Math.PI*2);ctx.clip();ctx.fillStyle=colors.ocean;ctx.fillRect(c.x-r,c.y-r,r*2,r*2);drawMapLayers(colors,time);ctx.restore();ctx.strokeStyle=colors.landStroke;ctx.lineWidth=1;ctx.beginPath();ctx.arc(c.x,c.y,r,0,Math.PI*2);ctx.stroke();
+  } else drawMapLayers(colors,time);
 }
-function drawMapLayers(colors){ drawGrid(colors); drawLand(colors); drawHistoricalAnalog(colors); if(state.layers.wind)drawWindFootprints(colors); if(state.layers.cone)drawCone(colors); if(state.layers.track)drawTrack(colors); drawUserLocation(colors); drawStormPulse(colors); }
+function drawMapLayers(colors,time=0){ drawGrid(colors); drawLand(colors); drawMajorCities(colors); drawHistoricalAnalog(colors); if(state.layers.wind)drawWindFootprints(colors); if(state.layers.cone)drawCone(colors); if(state.layers.track)drawTrack(colors); drawUserLocation(colors); drawStormPulse(colors,time); }
 function drawGrid(colors) {
   ctx.strokeStyle=colors.grid;ctx.lineWidth=.7;
   for(let lat=-60;lat<=60;lat+=30){traceGeoLine(Array.from({length:121},(_,i)=>[lat,-180+i*3]),false);}
@@ -802,6 +908,42 @@ function drawLand(colors) {
       ctx.strokeStyle=colors.landStroke;ctx.lineWidth=.8;ctx.stroke();
     }
   }}
+  ctx.restore();
+}
+
+
+function drawMajorCities(colors){
+  if(!state.layers.labels||!majorCities.length)return;
+  const stormPoints=trackParts(state.selectedStorm).points;
+  const candidates=[];
+  for(const city of majorCities){
+    const point=project(city.lat,city.lon);
+    if(!point.visible||point.x<8||point.x>state.width-8||point.y<10||point.y>state.height-8)continue;
+    let nearest=Infinity;
+    if(stormPoints.length)for(const stormPoint of stormPoints)nearest=Math.min(nearest,haversineKm(city,stormPoint));
+    const relevant=nearest<1500;
+    if(state.zoom<1.08&&!relevant&&city.rank<5)continue;
+    if(state.zoom<1.35&&!relevant&&city.rank<4)continue;
+    candidates.push({city,point,nearest,relevant,priority:(relevant?10:0)+city.rank});
+  }
+  candidates.sort((a,b)=>b.priority-a.priority||a.nearest-b.nearest);
+  const boxes=[],limit=isMobile()?7:(state.zoom<1.15?13:state.zoom<1.8?22:32);
+  ctx.save();
+  ctx.textBaseline='middle';ctx.font=`650 ${isMobile()?10:11}px ${getComputedStyle(document.body).fontFamily}`;
+  let drawn=0;
+  for(const item of candidates){
+    if(drawn>=limit)break;
+    const label=cityName(item.city),metrics=ctx.measureText(label),w=metrics.width+12,h=18;
+    const x=item.point.x+7,y=item.point.y-h/2;
+    const box={left:x-2,right:x+w,top:y-1,bottom:y+h+1};
+    if(boxes.some(other=>!(box.right<other.left||box.left>other.right||box.bottom<other.top||box.top>other.bottom)))continue;
+    boxes.push(box);drawn++;
+    ctx.fillStyle=item.relevant?colorAlpha(colors.warning,.88):colorAlpha(colors.text2,.65);
+    ctx.beginPath();ctx.arc(item.point.x,item.point.y,item.relevant?2.8:2.1,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=colorAlpha(colors.surface,.86);ctx.beginPath();ctx.roundRect(x,y,w,h,5);ctx.fill();
+    ctx.strokeStyle=colorAlpha(colors.landStroke,.55);ctx.lineWidth=.7;ctx.stroke();
+    ctx.fillStyle=item.relevant?colors.text2:colorAlpha(colors.text2,.82);ctx.textAlign='left';ctx.fillText(label,x+6,y+h/2+.3);
+  }
   ctx.restore();
 }
 
@@ -881,10 +1023,44 @@ function drawTrackLine(points,color,dashed,haloAlpha=.2,strong=false){
   const trace=()=>{ctx.beginPath();let started=false,last=null;for(const p of points){const q=project(p.lat,p.lon);if(!q.visible||(last&&Math.hypot(q.x-last.x,q.y-last.y)>(state.mapMode==='globe'?globeRadius()*.45:state.width*.45))){started=false;last=null;continue;}if(!started){ctx.moveTo(q.x,q.y);started=true;}else ctx.lineTo(q.x,q.y);last=q;}};
   ctx.save();ctx.lineJoin='round';ctx.lineCap='round';ctx.setLineDash([]);ctx.strokeStyle=colorAlpha(color,haloAlpha);ctx.lineWidth=strong?9:7;trace();ctx.stroke();ctx.strokeStyle=color;ctx.lineWidth=strong?4.5:3.2;ctx.setLineDash(dashed?[10,8]:[]);trace();ctx.stroke();ctx.restore();
 }
-function drawStormPulse(colors) {
-  const points=trackParts().points,point=points[state.activeTrackIndex]||state.selectedStorm;if(!point)return;const p=project(point.lat,point.lon);if(!p.visible)return;
-  const color=intensityColor(point.windMs??state.selectedStorm?.windMs,colors);
-  ctx.save();ctx.strokeStyle=colorAlpha(color,.72);ctx.lineWidth=2.5;ctx.beginPath();ctx.arc(p.x,p.y,12,0,Math.PI*2);ctx.stroke();ctx.fillStyle=color;ctx.beginPath();ctx.arc(p.x,p.y,7,0,Math.PI*2);ctx.fill();ctx.fillStyle=colors.surface;ctx.beginPath();ctx.arc(p.x,p.y,2.6,0,Math.PI*2);ctx.fill();ctx.restore();
+function drawStormPulse(colors,time=0) {
+  const storm=state.selectedStorm,points=trackParts(storm).points,point=points[state.activeTrackIndex]||storm;
+  if(!point||!Number.isFinite(point.lat)||!Number.isFinite(point.lon))return;
+  const p=project(point.lat,point.lon);if(!p.visible)return;
+  const wind=Number(point.windMs??storm?.windMs??0),pressure=Number(point.pressureHpa??storm?.pressureHpa);
+  const color=intensityColor(wind,colors),direction=point.lat>=0?-1:1;
+  const estimated=estimatedWindRadii(point,storm),outerKm=estimated[0]?.km||clamp(170+wind*4,190,500);
+  const edge=project(point.lat,normalizeLon(point.lon+outerKm/(111*Math.max(.25,Math.cos(rad(point.lat))))));
+  const pxRadius=clamp(edge.visible?Math.abs(edge.x-p.x):36,isMobile()?24:30,isMobile()?55:74);
+  const phase=reduceMotion?0:(time/4200)%(Math.PI*2);
+  ctx.save();ctx.lineCap='round';ctx.lineJoin='round';
+  // Three restrained spiral bands show rotation direction without pretending to be observed cloud structure.
+  for(let band=0;band<3;band++){
+    ctx.beginPath();
+    for(let i=0;i<=42;i++){
+      const t=i/42,angle=phase*direction+band*Math.PI*2/3+direction*(.45+t*1.8*Math.PI),r=5+t*pxRadius*(.58+band*.10);
+      const x=p.x+Math.cos(angle)*r,y=p.y+Math.sin(angle)*r*.72;
+      i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+    }
+    ctx.strokeStyle=colorAlpha(color,.13+band*.035);ctx.lineWidth=band===0?2.2:1.4;ctx.stroke();
+  }
+  // Tangential vectors provide a meteorological circulation cue.
+  const arrowRadius=pxRadius*.58;
+  for(let i=0;i<8;i++){
+    const a=i*Math.PI/4+phase*direction*.35,x=p.x+Math.cos(a)*arrowRadius,y=p.y+Math.sin(a)*arrowRadius*.72;
+    const tangent=a+direction*Math.PI/2,len=6+clamp(wind,0,65)/14;
+    const x2=x+Math.cos(tangent)*len,y2=y+Math.sin(tangent)*len;
+    ctx.strokeStyle=colorAlpha(color,.55);ctx.fillStyle=colorAlpha(color,.62);ctx.lineWidth=1.25;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x2,y2);ctx.stroke();
+    const ah=3.1;ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-Math.cos(tangent-.55)*ah,y2-Math.sin(tangent-.55)*ah);ctx.lineTo(x2-Math.cos(tangent+.55)*ah,y2-Math.sin(tangent+.55)*ah);ctx.closePath();ctx.fill();
+  }
+  // Eye and centre fix.
+  ctx.fillStyle=colors.surface;ctx.strokeStyle=color;ctx.lineWidth=2.4;ctx.beginPath();ctx.arc(p.x,p.y,8,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.fillStyle=color;ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fill();
+  if(!isMobile()&&state.view==='pro'){
+    const label=[Number.isFinite(wind)?`${Math.round(wind)} m/s`:null,Number.isFinite(pressure)?`${Math.round(pressure)} hPa`:null].filter(Boolean).join(' · ');
+    if(label){ctx.font=`750 11px ${getComputedStyle(document.body).fontFamily}`;const w=ctx.measureText(label).width+12,x=p.x+12,y=p.y+12;ctx.fillStyle=colorAlpha(colors.surface,.9);ctx.beginPath();ctx.roundRect(x,y,w,20,6);ctx.fill();ctx.strokeStyle=colorAlpha(color,.35);ctx.lineWidth=.8;ctx.stroke();ctx.fillStyle=colors.text2;ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(label,x+6,y+10);}
+  }
+  ctx.restore();
 }
 function colorAlpha(color,alpha){if(color.startsWith('#')){const h=color.slice(1),v=h.length===3?h.split('').map(x=>x+x).join(''):h;return `rgba(${parseInt(v.slice(0,2),16)},${parseInt(v.slice(2,4),16)},${parseInt(v.slice(4,6),16)},${alpha})`;}return color;}
 function animate(time=0) {
@@ -907,7 +1083,7 @@ function hideNodeCard(){const card=$('#nodeCard');if(card){card.classList.remove
 
 function setPlaybackIndex(index){
   const points=trackParts().points;if(!points.length)return;
-  state.activeTrackIndex=clamp(Number(index)||0,0,points.length-1);renderPro();renderTimeline();renderTrackPlayer();state.needsRender=true;
+  state.activeTrackIndex=clamp(Number(index)||0,0,points.length-1);renderPro();renderTimeline();renderTrackPlayer();state.needsRender=true;syncFormalMap();
 }
 function renderTrackPlayer(){
   const points=trackParts().points,parts=trackParts();const range=$('#trackRange');if(!range)return;
@@ -927,11 +1103,11 @@ function startTrackPlayback(){
 }
 function toggleTrackPlayback(){state.playing?stopTrackPlayback():startTrackPlayback();}
 
-function fitWorld(announce=true){state.targetLon=0;state.targetLat=4;state.targetZoom=state.mapMode==='world'?.92:.92;if(announce)showToast(t('globalReset'));}
+function fitWorld(announce=true){state.targetLon=0;state.targetLat=4;state.targetZoom=state.mapMode==='world'?.92:.92;formalMapEngine?.fitWorld?.(announce);if(announce)showToast(t('globalReset'));}
 function fitStormTrack(storm=state.selectedStorm,announce=false){
   if(!storm)return;
   const points=trackParts(storm).points.filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lon));
-  if(points.length<2){const p=points[0]||storm;state.targetLon=p.lon;state.targetLat=p.lat;state.targetZoom=state.mapMode==='world'?(isMobile()?2.4:2.9):(isMobile()?1.08:1.16);if(announce)showToast(t('focused'));return;}
+  if(points.length<2){const p=points[0]||storm;state.targetLon=p.lon;state.targetLat=p.lat;state.targetZoom=state.mapMode==='world'?(isMobile()?2.4:2.9):(isMobile()?1.08:1.16);formalMapEngine?.fitStorm?.([p],state.userLocation,announce);if(announce)showToast(t('focused'));return;}
   const lats=points.map(p=>p.lat), baseLon=points[0].lon, unwrapped=points.map(p=>baseLon+normalizeLon(p.lon-baseLon));
   const minLat=Math.min(...lats),maxLat=Math.max(...lats),minLon=Math.min(...unwrapped),maxLon=Math.max(...unwrapped);
   state.targetLat=clamp((minLat+maxLat)/2,-65,65);state.targetLon=normalizeLon((minLon+maxLon)/2);
@@ -940,6 +1116,7 @@ function fitStormTrack(storm=state.selectedStorm,announce=false){
     const usableW=Math.max(280,state.width*(isMobile()?.86:.66)),usableH=Math.max(220,state.height*(isMobile()?.62:.74));
     state.targetZoom=clamp(Math.min(usableW/(spanLon*(state.width/360)),usableH/(spanLat*(state.height/180)))*.72,1.25,4.8);
   } else state.targetZoom=isMobile()?1.06:1.14;
+  formalMapEngine?.fitStorm?.(points,state.userLocation,announce);
   if(announce)showToast(t('focused'));
 }
 function focusStorm(announce=true){fitStormTrack(state.selectedStorm,announce);}
@@ -953,7 +1130,7 @@ canvas.addEventListener('wheel',e=>{e.preventDefault();const delta=e.deltaY<0?1.
 $$('[data-view-mode]').forEach(btn=>btn.addEventListener('click',()=>setView(btn.dataset.viewMode)));
 $$('[data-map-mode]').forEach(btn=>btn.addEventListener('click',()=>setMapMode(btn.dataset.mapMode)));
 $('#globalViewButton').addEventListener('click',()=>fitWorld());$('#focusButton').addEventListener('click',()=>focusStorm());
-$('#zoomIn').addEventListener('click',()=>state.targetZoom=clamp(state.targetZoom*1.18,.7,state.mapMode==='world'?6:1.6));$('#zoomOut').addEventListener('click',()=>state.targetZoom=clamp(state.targetZoom/1.18,.7,state.mapMode==='world'?6:1.6));
+$('#zoomIn').addEventListener('click',()=>{state.targetZoom=clamp(state.targetZoom*1.18,.7,state.mapMode==='world'?6:1.6);formalMapEngine?.map?.zoomIn?.({duration:260});});$('#zoomOut').addEventListener('click',()=>{state.targetZoom=clamp(state.targetZoom/1.18,.7,state.mapMode==='world'?6:1.6);formalMapEngine?.map?.zoomOut?.({duration:260});});
 $('#quickLocateButton').addEventListener('click',requestUserLocation);
 $('#useLocationButton').addEventListener('click',requestUserLocation);
 $('#pickLocationButton').addEventListener('click',beginMapLocationPick);
@@ -963,8 +1140,8 @@ $$('[data-profile]').forEach(btn=>btn.addEventListener('click',()=>{state.profil
 $$('[data-profile]').forEach(b=>b.classList.toggle('active',b.dataset.profile===state.profile));
 $('#demoToggle').addEventListener('click',()=>{state.demoEnabled=!state.demoEnabled;localStorage.setItem('tv-demo',String(state.demoEnabled));$('#demoToggle').setAttribute('aria-pressed',String(state.demoEnabled));const storms=availableStorms();selectStorm(storms[0]||null,false);fitWorld(false);});
 
-$('#layerButton').addEventListener('click',e=>{e.stopPropagation();const panel=$('#layerPanel');panel.classList.toggle('open');$('#layerButton').setAttribute('aria-expanded',String(panel.classList.contains('open')));});
-$$('[data-layer-toggle]').forEach(input=>{input.checked=state.layers[input.dataset.layerToggle]!==false;input.addEventListener('change',()=>{state.layers[input.dataset.layerToggle]=input.checked;localStorage.setItem('tv-layers',JSON.stringify(state.layers));renderTrackStatus();showToast(t('layerChanged'));});});
+$('#layerButton').addEventListener('click',e=>{e.stopPropagation();const panel=$('#layerPanel'),opening=!panel.classList.contains('open');if(opening){setInspectorOpen(false,false);$('#sidebar').classList.remove('open');$('#languageMenu').classList.remove('open');$('#themeMenu').classList.remove('open');}panel.classList.toggle('open',opening);$('#layerButton').setAttribute('aria-expanded',String(opening));});
+$$('[data-layer-toggle]').forEach(input=>{input.checked=state.layers[input.dataset.layerToggle]!==false;input.addEventListener('change',()=>{state.layers[input.dataset.layerToggle]=input.checked;localStorage.setItem('tv-layers',JSON.stringify(state.layers));renderTrackStatus();syncFormalMap();showToast(t('layerChanged'));});});
 
 $$('[data-horizon]').forEach(btn=>btn.addEventListener('click',()=>{state.forecastHorizon=Number(btn.dataset.horizon)||120;localStorage.setItem('tv-horizon',String(state.forecastHorizon));stopTrackPlayback(false);const parts=trackParts();state.activeTrackIndex=Math.max(0,parts.observed.length-1);renderAll();fitStormTrack(state.selectedStorm,false);}));
 function officialLayerUrl(kind){
@@ -991,7 +1168,7 @@ $$('[data-theme-value]').forEach(btn=>btn.addEventListener('click',()=>{applyThe
 document.addEventListener('click',e=>{if(!e.target.closest('#themeMenu')&&!e.target.closest('#themeButton')){$('#themeMenu').classList.remove('open');$('#themeButton').setAttribute('aria-expanded','false');}if(!e.target.closest('#languageMenu')&&!e.target.closest('#languageToggle')){$('#languageMenu').classList.remove('open');$('#languageToggle').setAttribute('aria-expanded','false');}if(!e.target.closest('#layerPanel')&&!e.target.closest('#layerButton')){$('#layerPanel').classList.remove('open');$('#layerButton').setAttribute('aria-expanded','false');}});
 
 function setInspectorOpen(open,announce=false){
-  state.inspectorOpen=Boolean(open);localStorage.setItem('tv-inspector',String(state.inspectorOpen));
+  state.inspectorOpen=Boolean(open);if(state.inspectorOpen){$('#layerPanel').classList.remove('open');$('#layerButton').setAttribute('aria-expanded','false');$('#sidebar').classList.remove('open');}localStorage.setItem('tv-inspector',String(state.inspectorOpen));
   const panel=$('#insightPanel');if(panel){panel.dataset.open=String(state.inspectorOpen);}
   const toggle=$('#insightToggle');if(toggle)toggle.setAttribute('aria-expanded',String(state.inspectorOpen));
   if(announce)showToast(t(state.inspectorOpen?'inspectorOpened':'inspectorClosed'));
@@ -1017,7 +1194,7 @@ $('#readMoreButton').addEventListener('click',()=>{
   const target=$('#impactSection');$$('[data-mobile-tab]').forEach(b=>b.classList.toggle('active',b.dataset.mobileTab==='brief'));scrollInsightTo(target);target.classList.remove('attention');void target.offsetWidth;target.classList.add('attention');setTimeout(()=>target.classList.remove('attention'),1100);
 });
 $('#personalImpactPreview').addEventListener('click',e=>{if(e.target.closest('button'))return;scrollInsightTo($('#personalSection'));});
-$('#mobileMenuButton').addEventListener('click',()=>$('#sidebar').classList.toggle('open'));
+$('#mobileMenuButton').addEventListener('click',()=>{const opening=!$('#sidebar').classList.contains('open');if(opening){setSheetState('collapsed');setInspectorOpen(false,false);$('#layerPanel').classList.remove('open');$('#layerButton').setAttribute('aria-expanded','false');}$('#sidebar').classList.toggle('open',opening);});
 const insightPanel=$('#insightPanel'),sheetHandle=$('#sheetHandle');
 function setSheetState(value){
   const next=['collapsed','half','full'].includes(value)?value:'collapsed';state.sheetState=next;insightPanel.dataset.sheet=next;insightPanel.classList.toggle('open',next==='full');sheetHandle.setAttribute('aria-expanded',String(next!=='collapsed'));$('#sheetHandleLabel').textContent=t('swipeForDetails');$('#sheetHandleState').textContent=t(next==='collapsed'?'sheetCollapsed':next==='half'?'sheetHalf':'sheetFull');
@@ -1031,25 +1208,79 @@ sheetHandle.addEventListener('pointermove',e=>{if(!sheetDrag||e.pointerId!==shee
 function finishSheetDrag(e){if(!sheetDrag||e.pointerId!==sheetDrag.id)return;const dy=sheetDrag.lastY-sheetDrag.startY;if(Math.abs(dy)>10)suppressSheetClick=true;insightPanel.classList.remove('dragging-sheet');insightPanel.style.transform='';const order=['collapsed','half','full'];let idx=order.indexOf(sheetDrag.startState);if(dy<-45)idx=Math.min(2,idx+1);else if(dy>45)idx=Math.max(0,idx-1);setSheetState(order[idx]);sheetDrag=null;}
 sheetHandle.addEventListener('pointerup',finishSheetDrag);sheetHandle.addEventListener('pointercancel',finishSheetDrag);setSheetState('collapsed');
 $$('[data-mobile-tab]').forEach(btn=>btn.addEventListener('click',()=>{$$('[data-mobile-tab]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const tab=btn.dataset.mobileTab;if(tab==='map'){setSheetState('collapsed');$('#sidebar').classList.remove('open');}else if(tab==='brief'){setSheetState('full');$('.insight-scroll').scrollTo({top:0,behavior:'smooth'});}else if(tab==='sources'){setSheetState('full');setTimeout(()=>$('.sources-section').scrollIntoView({behavior:'smooth'}),80);}else $('#sidebar').classList.toggle('open');}));
-function stormMatchesRegion(storm,region){
-  if(region==='global')return true;
-  const basin=String(storm?.basin||'').toLowerCase();
-  const lon=Number(storm?.lon??storm?.track?.at?.(-1)?.lon);
-  if(region==='wpac')return basin.includes('western')||basin.includes('northwest')||(Number.isFinite(lon)&&lon>100);
-  return basin.includes('atlantic')||basin.includes('eastern north pacific')||(Number.isFinite(lon)&&lon<20);
+function stormMatchesRegion(storm,region){return region==='global'||inferBasinKey(storm)===region;}
+const basinViews={wpac:{center:[135,20],zoom:2.4},atl:{center:[-55,22],zoom:2.2},epac:{center:[-125,18],zoom:2.2},nio:{center:[82,15],zoom:2.4},south:{center:[130,-20],zoom:1.55}};
+function applyRegion(region,focus=true){
+  state.region=region||'global';localStorage.setItem('tv-region',state.region);
+  $$('[data-region]').forEach(b=>b.classList.toggle('selected',b.dataset.region===state.region));
+  const storms=availableStorms();
+  if(!storms.some(storm=>storm.id===state.selectedStorm?.id))state.selectedStorm=storms[0]||null;
+  renderAll();
+  if(state.region==='global')fitWorld(false);
+  else if(state.selectedStorm&&focus)fitStormTrack(state.selectedStorm,false);
+  else if(formalMapEngine?.ready){const view=basinViews[state.region];if(view)formalMapEngine.map.easeTo({center:view.center,zoom:view.zoom,duration:550});}
 }
-$$('[data-region]').forEach(btn=>btn.addEventListener('click',()=>{
-  $$('[data-region]').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');const r=btn.dataset.region;
-  const match=availableStorms().find(storm=>stormMatchesRegion(storm,r));
-  if(r==='global'){fitWorld();}
-  else if(match){selectStorm(match,true);}
-  else if(r==='wpac'){state.targetLon=135;state.targetLat=20;state.targetZoom=state.mapMode==='world'?1.8:1;}
-  else{state.targetLon=-55;state.targetLat=20;state.targetZoom=state.mapMode==='world'?1.7:1;}
-  state.needsRender=true;
-}));
+$$('[data-region]').forEach(btn=>btn.addEventListener('click',()=>applyRegion(btn.dataset.region,true)));
+$$('[data-region]').forEach(btn=>btn.classList.toggle('selected',btn.dataset.region===state.region));
 $('#locateButton').addEventListener('click',()=>fitWorld());
 $('#playTrack').addEventListener('click',toggleTrackPlayback);$('#mapPlayButton').addEventListener('click',toggleTrackPlayback);$('#trackRange').addEventListener('input',e=>{stopTrackPlayback(false);setPlaybackIndex(+e.target.value);});$('#playerSpeed').addEventListener('click',()=>{state.playSpeed=state.playSpeed===1?1.5:state.playSpeed===1.5?2:1;if(state.playing)startTrackPlayback();else renderTrackPlayer();});
 
+
+function formalConeCoordinates(parts){
+  const points=parts.forecast||[];if(points.length<2)return[];
+  const widths=points.map((_,i)=>(parts.usingTrend?90:30)+i*(parts.usingTrend?42:28));
+  const left=[],right=[];
+  points.forEach((p,i)=>{const prev=points[Math.max(0,i-1)],next=points[Math.min(points.length-1,i+1)];const angle=Math.atan2(next.lat-prev.lat,normalizeLon(next.lon-prev.lon));const km=widths[i],dLat=km/111,dLon=km/(111*Math.max(.25,Math.cos(rad(p.lat))));left.push([normalizeLon(p.lon+Math.cos(angle)*dLon),p.lat-Math.sin(angle)*dLat]);right.push([normalizeLon(p.lon-Math.cos(angle)*dLon),p.lat+Math.sin(angle)*dLat]);});
+  const ring=[...left,...right.reverse()];if(ring.length)ring.push(ring[0]);return ring;
+}
+function formalCityData(parts){
+  if(!parts.points.length)return[];
+  return majorCities.map(city=>{let distance=Infinity;for(const point of parts.points)distance=Math.min(distance,haversineKm(city,point));const risk=distance<250?'high':distance<550?'medium':'low';return {...city,name:cityName(city),distance,risk};})
+    .filter(city=>city.distance<1000||(city.rank>=5&&city.distance<1500))
+    .sort((a,b)=>a.distance-b.distance||b.rank-a.rank).slice(0,isMobile()?9:18);
+}
+function formalWindAreas(parts){
+  const storm=state.selectedStorm,current=parts.points[state.activeTrackIndex]||parts.observed.at(-1)||parts.points[0]||storm;if(!current)return[];
+  const official=Array.isArray(storm?.windRadii)&&storm.windRadii.length?storm.windRadii:null;
+  const rows=official||estimatedWindRadii(current,storm);
+  return [...rows].sort((a,b)=>(b.km||0)-(a.km||0)).map((item,index)=>({
+    radiusKm:Number(item.km)||0,estimated:!official,coordinates:geoCirclePoints(current.lat,current.lon,Number(item.km)||0,84).map(([lat,lon])=>[lon,lat]),
+    fill:index===0?'#facc15':index===1?'#fb923c':'#ef4444',stroke:index===0?'#d4a514':index===1?'#e86f24':'#cc3b3b',opacity:index===0?.13:index===1?.10:.09
+  })).filter(area=>area.radiusKm>0);
+}
+function syncFormalMap(){
+  if(!formalMapEngine?.ready)return;
+  const parts=trackParts(state.selectedStorm),points=parts.points||[],active=clamp(state.activeTrackIndex,0,Math.max(0,points.length-1)),shown=points.slice(0,active+1);
+  const observedActive=shown.filter(point=>!point.forecast),officialActive=shown.filter(point=>point.forecast&&!point.synthetic),trendActive=shown.filter(point=>point.synthetic);
+  const colors=canvasColors();
+  const mappedPoints=points.map(point=>({...point,color:intensityColor(point.windMs,colors)}));
+  const cities=formalCityData(parts);
+  const userNearest=state.userLocation&&parts.points.length?parts.points.reduce((best,point)=>{const d=haversineKm(state.userLocation,point);return !best||d<best.d?{d,point}:best;},null)?.point:null;
+  const analog=historicalAnalogCatalog.find(item=>item.id===state.activeAnalogId);
+  formalMapEngine.setData({
+    observed:parts.observed,officialForecast:parts.officialForecast,trendForecast:parts.trendForecast,
+    observedActive,officialActive,trendActive,points:mappedPoints,activeIndex:active,usingTrend:parts.usingTrend,
+    cone:formalConeCoordinates(parts),windAreas:formalWindAreas(parts),cities,
+    userLocation:state.userLocation,userNearest,history:analog?.track||[],layers:state.layers
+  });
+}
+function initFormalMap(){
+  const host=$('#formalMap');
+  if(!host||!window.FormalCycloneMap){document.documentElement.classList.add('formal-map-failed');return;}
+  const dark=state.theme==='dark'||(state.theme==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);
+  formalMapEngine=new window.FormalCycloneMap({
+    container:host,landUrl:'./data/world-land.json',theme:dark?'dark':'light',mode:state.mapMode,
+    onReady:()=>{document.documentElement.classList.add('formal-map-ready');document.documentElement.classList.remove('formal-map-failed');syncFormalMap();if(state.selectedStorm)fitStormTrack(state.selectedStorm,false);else fitWorld(false);},
+    onFailure:()=>{document.documentElement.classList.add('formal-map-failed');document.documentElement.classList.remove('formal-map-ready');showToast(t('formalMapFallback'));},
+    onPointClick:(index)=>{stopTrackPlayback(false);setPlaybackIndex(index);showNodeCard(index);},
+    onMapClick:(point)=>{if(state.locationPickMode)setUserLocation(point.lat,point.lon,{source:'map'});}
+  });
+}
+const originalResizeCanvas=resizeCanvas;
+resizeCanvas=function(){originalResizeCanvas();formalMapEngine?.resize?.();};
+
 new ResizeObserver(resizeCanvas).observe(canvas);window.addEventListener('orientationchange',()=>setTimeout(resizeCanvas,120));matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{if(state.theme==='system')applyTheme('system');});
 
-document.documentElement.dataset.view=state.view;document.documentElement.dataset.map=state.mapMode;$('#demoToggle').setAttribute('aria-pressed',String(state.demoEnabled));applyTheme();setView(state.view,false);setMapMode(state.mapMode);applyTranslations();resizeCanvas();fitWorld(false);Promise.all([loadLand(),loadData()]).then(()=>{if(state.selectedStorm)fitStormTrack(state.selectedStorm,false);});requestAnimationFrame(animate);
+window.__TV_BOOTED__=true;window.addEventListener('unhandledrejection',event=>{console.error('Typhoon Vision async error',event.reason);const pill=$('#freshnessPill');if(pill){pill.querySelector('strong').textContent=t('partial');pill.querySelector('.status-dot')?.classList.add('warning');}});
+
+document.documentElement.dataset.view=state.view;document.documentElement.dataset.map=state.mapMode;$('#demoToggle').setAttribute('aria-pressed',String(state.demoEnabled));applyTheme();setView(state.view,false);setMapMode(state.mapMode);applyTranslations();resizeCanvas();initFormalMap();fitWorld(false);Promise.all([loadLand(),loadData()]).then(()=>{applyRegion(state.region,false);if(state.selectedStorm)fitStormTrack(state.selectedStorm,false);syncFormalMap();});requestAnimationFrame(animate);

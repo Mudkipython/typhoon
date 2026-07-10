@@ -1,0 +1,30 @@
+Typhoon Vision Public v11.2 release manifest
+
+Required files:
+c6cc63e65fe60e3252503d42f88ad09ba1896a01027053fe8e43b554b86c9453  index.html
+893525b2e07a925905ab7d7b8cf5493240ff13cad9bf49b4efbf56ea52a1b5b7  app.js
+3b0020694f91c76e735965a9c0912c390613620524dec5ebd5ab1bccd01d41de  formal-map.js
+ce8abe372c28632f12c4459d328af57751ec6c2d1c40db7a61abd8759225fc76  styles.css
+fdbcece6bc21d60ad16310a46df9023109e6d0366f0a4ac6e2f046254cdfdcf7  README.md
+2fe3590c651ff3b0ef5906f5b20fc0596da9dbd353d7eaf94bd204950d14e3b1  VERSION.txt
+0fbf95827cdea44581fa885d6bd6438aa9e1c0060e10ab89b53674cc4435356f  netlify.toml
+2f9be3e19275257665c8b4f9f44f49a015287210f995dc0404439a3e1699f7a0  data/world-land.json
+45a9b07a9189ce56054c620a947ccf41e291e58c95e9b61533b740aaa65ee5cb  vendor/maplibre-gl.js
+ab1e70d59ec40465bae7e7030da2f3ccf28133fd502e62bd598eefbadfd7a732  vendor/maplibre-gl.css
+cc209f2108a1576b66257f862509fd13ca89fca630c3914f013b41f3d692f867  netlify/functions/cyclone-data.mts
+
+Validation summary:
+- app.js syntax: PASS
+- formal-map.js syntax: PASS
+- Netlify Function esbuild bundle: PASS
+- HTML duplicate IDs: PASS (0 duplicates)
+- local file references: PASS
+- all HTML data-i18n keys present: PASS
+- official trend fallback rule (>=2 observed fixes): PASS
+- simulated MapLibre integration: PASS
+- desktop panel and basin filter interactions: PASS
+- mobile menu and basin filter interactions: PASS
+- API failure demonstration fallback: PASS
+- WebGL failure Canvas fallback: PASS
+
+Note: the validation container cannot create a hardware/software WebGL context. The MapLibre API integration was tested with a compatible browser stub, while the production WebGL failure path was tested with the real v11 Canvas renderer.
