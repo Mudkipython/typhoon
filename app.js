@@ -195,6 +195,14 @@ Object.assign(i18n.ko, {eastPacific:'동부·중부 태평양',northIndian:'북�
 Object.assign(i18n.es, {eastPacific:'Pacífico oriental/central',northIndian:'Océano Índico norte',southernBasins:'Hemisferio sur',cityRiskLegend:'Ciudades = distancia a la trayectoria',userLegend:'Tu ubicación y trayectoria más cercana'});
 Object.assign(i18n.fr, {eastPacific:'Pacifique est/central',northIndian:'Océan Indien nord',southernBasins:'Hémisphère sud',cityRiskLegend:'Villes = distance à la trajectoire',userLegend:'Votre position et la trajectoire la plus proche'});
 
+Object.assign(i18n.zh, {expectedLandfall:'预计登陆',landfallTime:'预计时间',landfallIntensity:'预计强度',landfallOfficial:'基于官方预报路径',landfallTrend:'趋势可能接近陆地',landfallTrendNote:'非官方趋势参考，不是登陆预报',noLandfall:'当前预报时效内未识别到登陆点',landfallPassed:'动画已到达预计登陆阶段',majorCities:'世界主要城市'});
+Object.assign(i18n.en, {expectedLandfall:'Expected landfall',landfallTime:'Estimated time',landfallIntensity:'Estimated intensity',landfallOfficial:'Based on the official forecast track',landfallTrend:'Trend may approach land',landfallTrendNote:'Non-official directional reference, not a landfall forecast',noLandfall:'No landfall point identified within the current forecast horizon',landfallPassed:'Playback has reached the expected landfall stage',majorCities:'Major world cities'});
+Object.assign(i18n.ja, {expectedLandfall:'上陸予想',landfallTime:'予想時刻',landfallIntensity:'予想強度',landfallOfficial:'公式予報進路に基づく',landfallTrend:'陸地へ近づく可能性',landfallTrendNote:'非公式の方向参考で、上陸予報ではありません',noLandfall:'現在の予報期間内に上陸地点は確認されていません',majorCities:'世界主要都市'});
+Object.assign(i18n.ko, {expectedLandfall:'예상 상륙',landfallTime:'예상 시각',landfallIntensity:'예상 강도',landfallOfficial:'공식 예보 경로 기준',landfallTrend:'육지 접근 가능성',landfallTrendNote:'비공식 방향 참고이며 상륙 예보가 아닙니다',noLandfall:'현재 예보 기간에는 상륙 지점이 확인되지 않았습니다',majorCities:'세계 주요 도시'});
+Object.assign(i18n.es, {expectedLandfall:'Llegada prevista a tierra',landfallTime:'Hora estimada',landfallIntensity:'Intensidad estimada',landfallOfficial:'Basado en la trayectoria oficial',landfallTrend:'La tendencia podría acercarse a tierra',landfallTrendNote:'Referencia direccional no oficial; no es un pronóstico de llegada a tierra',noLandfall:'No se identificó llegada a tierra en el horizonte actual',majorCities:'Principales ciudades del mundo'});
+Object.assign(i18n.fr, {expectedLandfall:'Atterrissage prévu',landfallTime:'Heure estimée',landfallIntensity:'Intensité estimée',landfallOfficial:'Basé sur la trajectoire officielle',landfallTrend:'La tendance pourrait approcher des terres',landfallTrendNote:'Référence directionnelle non officielle, pas une prévision d’atterrissage',noLandfall:'Aucun point d’atterrissage identifié dans l’horizon actuel',majorCities:'Principales villes du monde'});
+
+
 const demoStorm = {
   id: 'demo-aurora', name: 'AURORA', localName: '曙光', number: '2600', basin: 'Western North Pacific', classification: 'Strong typhoon', alertLevel: 'orange', lat: 25.2, lon: 124.8, windMs: 58, pressureHpa: 960, updatedAt: '2026-07-10T12:00:00Z', demo: true,
   track: [
@@ -224,6 +232,17 @@ const demoStorms = [
       {lat:25.5,lon:-69.2,time:'2026-07-10T12:00:00Z',windMs:42,pressureHpa:958,forecast:false,source:'demo'},
       {lat:28.0,lon:-73.0,time:'2026-07-11T12:00:00Z',windMs:39,pressureHpa:966,forecast:true,source:'demo'},
       {lat:32.0,lon:-74.0,time:'2026-07-12T12:00:00Z',windMs:31,pressureHpa:978,forecast:true,source:'demo'}
+    ],sources:['nhc','gdacs']
+  },
+  {
+    id:'demo-lucia',name:'LUCIA',basin:'Eastern Pacific',classification:'Hurricane',alertLevel:'orange',lat:15.8,lon:-107.2,windMs:38,pressureHpa:968,updatedAt:'2026-07-10T12:00:00Z',demo:true,
+    track:[
+      {lat:11.5,lon:-116.0,time:'2026-07-08T06:00:00Z',windMs:18,pressureHpa:998,forecast:false,source:'demo'},
+      {lat:12.8,lon:-113.0,time:'2026-07-09T00:00:00Z',windMs:25,pressureHpa:988,forecast:false,source:'demo'},
+      {lat:14.2,lon:-110.0,time:'2026-07-09T18:00:00Z',windMs:32,pressureHpa:978,forecast:false,source:'demo'},
+      {lat:15.8,lon:-107.2,time:'2026-07-10T12:00:00Z',windMs:38,pressureHpa:968,forecast:false,source:'demo'},
+      {lat:17.2,lon:-104.8,time:'2026-07-11T06:00:00Z',windMs:35,pressureHpa:974,forecast:true,source:'demo'},
+      {lat:18.6,lon:-102.7,time:'2026-07-12T00:00:00Z',windMs:28,pressureHpa:984,forecast:true,source:'demo'}
     ],sources:['nhc','gdacs']
   },
   {
@@ -297,7 +316,40 @@ const majorCities = [
   {id:'cairns',zh:'凯恩斯',en:'Cairns',ja:'ケアンズ',ko:'케언스',lat:-16.92,lon:145.77,rank:4},
   {id:'brisbane',zh:'布里斯班',en:'Brisbane',ja:'ブリスベン',ko:'브리즈번',lat:-27.47,lon:153.03,rank:4},
   {id:'suva',zh:'苏瓦',en:'Suva',ja:'スバ',ko:'수바',lat:-18.14,lon:178.44,rank:4},
-  {id:'port-louis',zh:'路易港',en:'Port Louis',ja:'ポートルイス',ko:'포트루이스',lat:-20.16,lon:57.50,rank:3}
+  {id:'port-louis',zh:'路易港',en:'Port Louis',ja:'ポートルイス',ko:'포트루이스',lat:-20.16,lon:57.50,rank:3},
+  {id:'beijing',zh:'北京',en:'Beijing',lat:39.90,lon:116.40,rank:6},
+  {id:'singapore',zh:'新加坡',en:'Singapore',lat:1.35,lon:103.82,rank:6},
+  {id:'jakarta',zh:'雅加达',en:'Jakarta',lat:-6.21,lon:106.85,rank:6},
+  {id:'delhi',zh:'德里',en:'Delhi',lat:28.61,lon:77.21,rank:6},
+  {id:'mumbai',zh:'孟买',en:'Mumbai',lat:19.08,lon:72.88,rank:6},
+  {id:'karachi',zh:'卡拉奇',en:'Karachi',lat:24.86,lon:67.01,rank:5},
+  {id:'dubai',zh:'迪拜',en:'Dubai',lat:25.20,lon:55.27,rank:5},
+  {id:'cairo',zh:'开罗',en:'Cairo',lat:30.04,lon:31.24,rank:6},
+  {id:'istanbul',zh:'伊斯坦布尔',en:'Istanbul',lat:41.01,lon:28.98,rank:6},
+  {id:'moscow',zh:'莫斯科',en:'Moscow',lat:55.76,lon:37.62,rank:6},
+  {id:'london',zh:'伦敦',en:'London',lat:51.51,lon:-0.13,rank:6},
+  {id:'paris',zh:'巴黎',en:'Paris',lat:48.86,lon:2.35,rank:6},
+  {id:'madrid',zh:'马德里',en:'Madrid',lat:40.42,lon:-3.70,rank:5},
+  {id:'rome',zh:'罗马',en:'Rome',lat:41.90,lon:12.50,rank:5},
+  {id:'lagos',zh:'拉各斯',en:'Lagos',lat:6.52,lon:3.38,rank:5},
+  {id:'nairobi',zh:'内罗毕',en:'Nairobi',lat:-1.29,lon:36.82,rank:5},
+  {id:'johannesburg',zh:'约翰内斯堡',en:'Johannesburg',lat:-26.20,lon:28.05,rank:5},
+  {id:'sydney',zh:'悉尼',en:'Sydney',lat:-33.87,lon:151.21,rank:6},
+  {id:'melbourne',zh:'墨尔本',en:'Melbourne',lat:-37.81,lon:144.96,rank:5},
+  {id:'auckland',zh:'奥克兰',en:'Auckland',lat:-36.85,lon:174.76,rank:5},
+  {id:'vancouver',zh:'温哥华',en:'Vancouver',lat:49.28,lon:-123.12,rank:5},
+  {id:'san-francisco',zh:'旧金山',en:'San Francisco',lat:37.77,lon:-122.42,rank:5},
+  {id:'los-angeles',zh:'洛杉矶',en:'Los Angeles',lat:34.05,lon:-118.24,rank:6},
+  {id:'mexico-city',zh:'墨西哥城',en:'Mexico City',lat:19.43,lon:-99.13,rank:6},
+  {id:'chicago',zh:'芝加哥',en:'Chicago',lat:41.88,lon:-87.63,rank:5},
+  {id:'toronto',zh:'多伦多',en:'Toronto',lat:43.65,lon:-79.38,rank:6},
+  {id:'montreal',zh:'蒙特利尔',en:'Montreal',lat:45.50,lon:-73.57,rank:5},
+  {id:'new-york',zh:'纽约',en:'New York',lat:40.71,lon:-74.01,rank:6},
+  {id:'sao-paulo',zh:'圣保罗',en:'São Paulo',lat:-23.55,lon:-46.63,rank:6},
+  {id:'rio',zh:'里约热内卢',en:'Rio de Janeiro',lat:-22.91,lon:-43.17,rank:5},
+  {id:'buenos-aires',zh:'布宜诺斯艾利斯',en:'Buenos Aires',lat:-34.60,lon:-58.38,rank:6},
+  {id:'lima',zh:'利马',en:'Lima',lat:-12.05,lon:-77.04,rank:5},
+  {id:'santiago',zh:'圣地亚哥',en:'Santiago',lat:-33.45,lon:-70.67,rank:5}
 ];
 function cityName(city){
   if(state.lang==='zh')return city.zh;
@@ -409,9 +461,16 @@ function inferBasinKey(storm) {
   return 'global';
 }
 function availableStorms() {
-  const live = state.livePayload?.storms || [];
-  const base=live.length?live:(state.demoEnabled?demoStorms:[]);
-  return state.region==='global'?base:base.filter(storm=>inferBasinKey(storm)===state.region);
+  const live = (state.livePayload?.storms || []).filter(Boolean);
+  const liveForRegion = state.region === 'global' ? live : live.filter(storm => inferBasinKey(storm) === state.region);
+  if (!state.demoEnabled) return liveForRegion;
+  if (state.region !== 'global') {
+    if (liveForRegion.length) return liveForRegion;
+    return demoStorms.filter(storm => inferBasinKey(storm) === state.region);
+  }
+  const represented = new Set(live.map(inferBasinKey));
+  const fallbackDemos = demoStorms.filter(storm => !represented.has(inferBasinKey(storm)));
+  return [...live, ...fallbackDemos];
 }
 function selectStorm(storm, focus = false) {
   stopTrackPlayback(false);
@@ -423,7 +482,7 @@ function selectStorm(storm, focus = false) {
 }
 
 function renderAll() {
-  renderStormList(); renderSources(); renderPersonalImpact(); renderHistoricalAnalogs(); renderBrief(); renderPro(); renderTimeline(); renderTrackStatus(); renderTrackPlayer(); syncFormalMap();
+  renderStormList(); renderSources(); renderPersonalImpact(); renderHistoricalAnalogs(); renderBrief(); renderPro(); renderTimeline(); renderTrackStatus(); renderTrackPlayer(); renderLandfallCard(); syncFormalMap();
 }
 function renderStormList() {
   const storms = availableStorms(); state.storms = storms;
@@ -733,13 +792,47 @@ function renderTimeline() {
 }
 
 function uniqueTrackPoints(track=[]) {
+  const normalized = track
+    .map((point) => ({
+      ...point,
+      lat: Number(point?.lat),
+      lon: normalizeLon(Number(point?.lon)),
+      windMs: Number.isFinite(Number(point?.windMs)) ? Number(point.windMs) : null,
+      pressureHpa: Number.isFinite(Number(point?.pressureHpa)) ? Number(point.pressureHpa) : null,
+      forecast: Boolean(point?.forecast),
+      synthetic: Boolean(point?.synthetic)
+    }))
+    .filter((point) => Number.isFinite(point.lat) && Number.isFinite(point.lon) && Math.abs(point.lat) <= 85)
+    .sort((a,b) => {
+      const ta = new Date(a.time || 0).getTime(), tb = new Date(b.time || 0).getTime();
+      if (ta !== tb) return ta - tb;
+      if (a.forecast !== b.forecast) return a.forecast ? 1 : -1;
+      return a.synthetic === b.synthetic ? 0 : (a.synthetic ? 1 : -1);
+    });
+  const byKey = new Map();
+  for (const point of normalized) {
+    const time = new Date(point.time || 0).getTime();
+    const minute = Number.isFinite(time) && time > 0 ? Math.round(time / 60000) : `unknown-${byKey.size}`;
+    const key = `${minute}|${point.forecast ? 1 : 0}|${point.synthetic ? 1 : 0}`;
+    const existing = byKey.get(key);
+    if (!existing || (Number.isFinite(point.pressureHpa) && !Number.isFinite(existing.pressureHpa))) byKey.set(key, point);
+  }
+  const candidates = [...byKey.values()].sort((a,b) => new Date(a.time || 0) - new Date(b.time || 0));
   const output=[];
-  for(const point of track.filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lon)).sort((a,b)=>new Date(a.time||0)-new Date(b.time||0))){
+  for (const point of candidates) {
     const previous=output.at(-1);
-    if(previous&&Math.abs(previous.lat-point.lat)<.02&&Math.abs(normalizeLon(previous.lon-point.lon))<.02&&Boolean(previous.forecast)===Boolean(point.forecast)) continue;
+    if (previous && Math.abs(previous.lat-point.lat)<.02 && Math.abs(normalizeLon(previous.lon-point.lon))<.02 && previous.forecast===point.forecast) continue;
+    if (previous) {
+      const t0=new Date(previous.time||0).getTime(),t1=new Date(point.time||0).getTime();
+      const hours=(t1-t0)/3600000;
+      if (Number.isFinite(hours) && hours > 0) {
+        const speed=haversineKm(previous,point)/hours;
+        if (speed>180) continue;
+      }
+    }
     output.push(point);
   }
-  return output;
+  return output.slice(-160);
 }
 function buildTrendForecast(observed=[]){
   if(observed.length<2)return[];
@@ -792,6 +885,71 @@ function trackParts(storm=state.selectedStorm){
   const forecast=officialForecast.length?officialForecast:trendForecast;
   const points=[...observed,...forecast];
   return {points,observed,forecast,officialForecast,trendForecast,usingTrend:!officialForecast.length&&trendForecast.length>0};
+}
+
+function pointInRing(lon,lat,ring){
+  let inside=false;
+  for(let i=0,j=ring.length-1;i<ring.length;j=i++){
+    const xi=Number(ring[i][0]),yi=Number(ring[i][1]),xj=Number(ring[j][0]),yj=Number(ring[j][1]);
+    const intersects=((yi>lat)!==(yj>lat))&&(lon<(xj-xi)*(lat-yi)/((yj-yi)||1e-12)+xi);
+    if(intersects)inside=!inside;
+  }
+  return inside;
+}
+function pointOnLand(point){
+  if(!state.land?.features?.length||!point)return false;
+  const lon=normalizeLon(Number(point.lon)),lat=Number(point.lat);
+  if(!Number.isFinite(lat)||!Number.isFinite(lon))return false;
+  for(const feature of state.land.features){
+    const geometry=feature.geometry||{};
+    const polygons=geometry.type==='MultiPolygon'?geometry.coordinates:geometry.type==='Polygon'?[geometry.coordinates]:[];
+    for(const polygon of polygons){
+      if(!polygon?.[0]||!pointInRing(lon,lat,polygon[0]))continue;
+      let inHole=false;for(let i=1;i<polygon.length;i++)if(pointInRing(lon,lat,polygon[i])){inHole=true;break;}
+      if(!inHole)return true;
+    }
+  }
+  return false;
+}
+function interpolateGeoPoint(a,b,t){
+  const lon=a.lon+normalizeLon(b.lon-a.lon)*t;
+  const t0=new Date(a.time||0).getTime(),t1=new Date(b.time||a.time||0).getTime();
+  const lerp=(x,y)=>Number.isFinite(Number(x))&&Number.isFinite(Number(y))?Number(x)+(Number(y)-Number(x))*t:(Number.isFinite(Number(x))?Number(x):Number(y));
+  return {lat:a.lat+(b.lat-a.lat)*t,lon:normalizeLon(lon),time:Number.isFinite(t0)&&Number.isFinite(t1)?new Date(t0+(t1-t0)*t).toISOString():(b.time||a.time),windMs:lerp(a.windMs,b.windMs),pressureHpa:lerp(a.pressureHpa,b.pressureHpa),forecast:true,synthetic:Boolean(a.synthetic||b.synthetic)};
+}
+function findLandfall(parts=trackParts()){
+  const forecast=parts.officialForecast.length?parts.officialForecast:parts.trendForecast;
+  const lastObserved=parts.observed.at(-1);
+  if(!lastObserved||!forecast.length||!state.land)return null;
+  const route=[lastObserved,...forecast];
+  let previous=route[0],previousLand=pointOnLand(previous);
+  for(let i=1;i<route.length;i++){
+    const next=route[i],samples=Math.max(18,Math.ceil(haversineKm(previous,next)/35));
+    let samplePrev=previous,samplePrevLand=previousLand;
+    for(let step=1;step<=samples;step++){
+      const progress=step/samples,sample=interpolateGeoPoint(previous,next,progress),land=pointOnLand(sample);
+      if(!samplePrevLand&&land){
+        let lo=(step-1)/samples,hi=progress;
+        for(let n=0;n<8;n++){const mid=(lo+hi)/2;if(pointOnLand(interpolateGeoPoint(previous,next,mid)))hi=mid;else lo=mid;}
+        const point=interpolateGeoPoint(previous,next,hi);
+        const official=!parts.usingTrend;
+        return {...point,official,routeIndex:i,activeIndex:parts.observed.length-1+i,label:t(official?'expectedLandfall':'landfallTrend'),detail:`${formatDate(point.time,true)} · ${intensityLabel(point.windMs)}`};
+      }
+      samplePrev=sample;samplePrevLand=land;
+    }
+    previous=next;previousLand=pointOnLand(next);
+  }
+  return null;
+}
+function renderLandfallCard(){
+  const card=$('#landfallCard');if(!card)return;
+  const parts=trackParts(),landfall=findLandfall(parts);
+  if(!landfall){card.hidden=true;card.classList.remove('visible','passed','trend');return;}
+  card.hidden=false;card.classList.add('visible');card.classList.toggle('trend',!landfall.official);card.classList.toggle('passed',state.activeTrackIndex>=landfall.activeIndex);
+  $('#landfallCardTitle').textContent=t(landfall.official?'expectedLandfall':'landfallTrend');
+  $('#landfallCardTime').textContent=formatDate(landfall.time,true);
+  $('#landfallCardIntensity').textContent=`${intensityLabel(landfall.windMs)}${Number.isFinite(landfall.windMs)?` · ${Math.round(landfall.windMs)} m/s`:''}`;
+  $('#landfallCardNote').textContent=state.activeTrackIndex>=landfall.activeIndex?t('landfallPassed'):t(landfall.official?'landfallOfficial':'landfallTrendNote');
 }
 function renderTrackStatus(){
   const el=$('#trackStatus'); if(!el)return;
@@ -862,7 +1020,7 @@ function drawBackground(colors,time=0) {
     ctx.save();ctx.beginPath();ctx.arc(c.x,c.y,r,0,Math.PI*2);ctx.clip();ctx.fillStyle=colors.ocean;ctx.fillRect(c.x-r,c.y-r,r*2,r*2);drawMapLayers(colors,time);ctx.restore();ctx.strokeStyle=colors.landStroke;ctx.lineWidth=1;ctx.beginPath();ctx.arc(c.x,c.y,r,0,Math.PI*2);ctx.stroke();
   } else drawMapLayers(colors,time);
 }
-function drawMapLayers(colors,time=0){ drawGrid(colors); drawLand(colors); drawMajorCities(colors); drawHistoricalAnalog(colors); if(state.layers.wind)drawWindFootprints(colors); if(state.layers.cone)drawCone(colors); if(state.layers.track)drawTrack(colors); drawUserLocation(colors); drawStormPulse(colors,time); }
+function drawMapLayers(colors,time=0){ drawGrid(colors); drawLand(colors); drawMajorCities(colors); drawHistoricalAnalog(colors); if(state.layers.wind)drawWindFootprints(colors); if(state.layers.cone)drawCone(colors); if(state.layers.track)drawTrack(colors); drawLandfallForecast(colors,time); drawUserLocation(colors); drawStormPulse(colors,time); }
 function drawGrid(colors) {
   ctx.strokeStyle=colors.grid;ctx.lineWidth=.7;
   for(let lat=-60;lat<=60;lat+=30){traceGeoLine(Array.from({length:121},(_,i)=>[lat,-180+i*3]),false);}
@@ -1023,6 +1181,22 @@ function drawTrackLine(points,color,dashed,haloAlpha=.2,strong=false){
   const trace=()=>{ctx.beginPath();let started=false,last=null;for(const p of points){const q=project(p.lat,p.lon);if(!q.visible||(last&&Math.hypot(q.x-last.x,q.y-last.y)>(state.mapMode==='globe'?globeRadius()*.45:state.width*.45))){started=false;last=null;continue;}if(!started){ctx.moveTo(q.x,q.y);started=true;}else ctx.lineTo(q.x,q.y);last=q;}};
   ctx.save();ctx.lineJoin='round';ctx.lineCap='round';ctx.setLineDash([]);ctx.strokeStyle=colorAlpha(color,haloAlpha);ctx.lineWidth=strong?9:7;trace();ctx.stroke();ctx.strokeStyle=color;ctx.lineWidth=strong?4.5:3.2;ctx.setLineDash(dashed?[10,8]:[]);trace();ctx.stroke();ctx.restore();
 }
+function drawLandfallForecast(colors,time=0){
+  const landfall=findLandfall();if(!landfall)return;
+  const point=project(landfall.lat,landfall.lon);if(!point.visible)return;
+  const passed=state.activeTrackIndex>=landfall.activeIndex,pulse=reduceMotion?0:(Math.sin(time/420)+1)/2;
+  ctx.save();ctx.translate(point.x,point.y);
+  ctx.strokeStyle=landfall.official?'#f97316':'#8b5cf6';ctx.fillStyle=colors.surface;ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.arc(0,0,7,0,Math.PI*2);ctx.fill();ctx.stroke();
+  if(!passed){ctx.globalAlpha=.18+.12*pulse;ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,13+4*pulse,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;}
+  ctx.restore();
+  if(!isMobile()&&state.layers.labels){
+    const title=t(landfall.official?'expectedLandfall':'landfallTrend'),detail=formatDate(landfall.time,true);
+    ctx.save();ctx.font=`750 11px ${getComputedStyle(document.body).fontFamily}`;const width=Math.max(ctx.measureText(title).width,ctx.measureText(detail).width)+18;
+    const x=point.x+11,y=point.y-31;ctx.fillStyle=colorAlpha(colors.surface,.92);ctx.strokeStyle=landfall.official?'rgba(249,115,22,.55)':'rgba(139,92,246,.55)';ctx.lineWidth=1;ctx.beginPath();ctx.roundRect(x,y,width,36,8);ctx.fill();ctx.stroke();ctx.fillStyle=colors.text2;ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(title,x+9,y+11);ctx.font=`650 9px ${getComputedStyle(document.body).fontFamily}`;ctx.fillText(detail,x+9,y+25);ctx.restore();
+  }
+}
+
 function drawStormPulse(colors,time=0) {
   const storm=state.selectedStorm,points=trackParts(storm).points,point=points[state.activeTrackIndex]||storm;
   if(!point||!Number.isFinite(point.lat)||!Number.isFinite(point.lon))return;
@@ -1077,13 +1251,13 @@ function showNodeCard(index){
   $('#nodeCardWind').textContent=Number.isFinite(point.windMs)?`${Math.round(point.windMs)} m/s`:'—';$('#nodeCardPressure').textContent=Number.isFinite(point.pressureHpa)?`${Math.round(point.pressureHpa)} hPa`:'—';
   $('#nodeCardIntensity').textContent=intensityLabel(point.windMs??state.selectedStorm?.windMs);
   $('#nodeCardNote').textContent=point.synthetic?t('trendStatus'):(point.forecast?t('coneMeaning'):t('selectedPoint'));
-  card.hidden=false;card.classList.add('visible');
+  card.hidden=false;card.classList.add('visible');$('#landfallCard')?.classList.add('covered');
 }
-function hideNodeCard(){const card=$('#nodeCard');if(card){card.classList.remove('visible');setTimeout(()=>{if(!card.classList.contains('visible'))card.hidden=true;},160);}}
+function hideNodeCard(){const card=$('#nodeCard');if(card){card.classList.remove('visible');$('#landfallCard')?.classList.remove('covered');setTimeout(()=>{if(!card.classList.contains('visible'))card.hidden=true;},160);}}
 
 function setPlaybackIndex(index){
   const points=trackParts().points;if(!points.length)return;
-  state.activeTrackIndex=clamp(Number(index)||0,0,points.length-1);renderPro();renderTimeline();renderTrackPlayer();state.needsRender=true;syncFormalMap();
+  state.activeTrackIndex=clamp(Number(index)||0,0,points.length-1);renderPro();renderTimeline();renderTrackPlayer();state.needsRender=true;renderLandfallCard();syncFormalMap();
 }
 function renderTrackPlayer(){
   const points=trackParts().points,parts=trackParts();const range=$('#trackRange');if(!range)return;
@@ -1239,6 +1413,12 @@ function formalCityData(parts){
     .filter(city=>city.distance<1000||(city.rank>=5&&city.distance<1500))
     .sort((a,b)=>a.distance-b.distance||b.rank-a.rank).slice(0,isMobile()?9:18);
 }
+function formalGlobalCityData(riskCities=[]){
+  const riskIds=new Set(riskCities.map(city=>city.id));
+  const limit=isMobile()?16:34;
+  const base=majorCities.filter(city=>city.rank>=5||riskIds.has(city.id)).sort((a,b)=>(riskIds.has(b.id)?1:0)-(riskIds.has(a.id)?1:0)||b.rank-a.rank);
+  return base.slice(0,limit).map(city=>({...city,name:cityName(city),risk:riskIds.has(city.id)?riskCities.find(item=>item.id===city.id)?.risk:'neutral'}));
+}
 function formalWindAreas(parts){
   const storm=state.selectedStorm,current=parts.points[state.activeTrackIndex]||parts.observed.at(-1)||parts.points[0]||storm;if(!current)return[];
   const official=Array.isArray(storm?.windRadii)&&storm.windRadii.length?storm.windRadii:null;
@@ -1254,13 +1434,13 @@ function syncFormalMap(){
   const observedActive=shown.filter(point=>!point.forecast),officialActive=shown.filter(point=>point.forecast&&!point.synthetic),trendActive=shown.filter(point=>point.synthetic);
   const colors=canvasColors();
   const mappedPoints=points.map(point=>({...point,color:intensityColor(point.windMs,colors)}));
-  const cities=formalCityData(parts);
+  const cities=formalCityData(parts),cityLabels=formalGlobalCityData(cities);
   const userNearest=state.userLocation&&parts.points.length?parts.points.reduce((best,point)=>{const d=haversineKm(state.userLocation,point);return !best||d<best.d?{d,point}:best;},null)?.point:null;
   const analog=historicalAnalogCatalog.find(item=>item.id===state.activeAnalogId);
   formalMapEngine.setData({
     observed:parts.observed,officialForecast:parts.officialForecast,trendForecast:parts.trendForecast,
     observedActive,officialActive,trendActive,points:mappedPoints,activeIndex:active,usingTrend:parts.usingTrend,
-    cone:formalConeCoordinates(parts),windAreas:formalWindAreas(parts),cities,
+    cone:formalConeCoordinates(parts),windAreas:formalWindAreas(parts),cities,cityLabels,landfall:findLandfall(parts),
     userLocation:state.userLocation,userNearest,history:analog?.track||[],layers:state.layers
   });
 }
@@ -1281,6 +1461,7 @@ resizeCanvas=function(){originalResizeCanvas();formalMapEngine?.resize?.();};
 
 new ResizeObserver(resizeCanvas).observe(canvas);window.addEventListener('orientationchange',()=>setTimeout(resizeCanvas,120));matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{if(state.theme==='system')applyTheme('system');});
 
+window.__TV_TEST_API__={trackParts,findLandfall,availableStorms,inferBasinKey,uniqueTrackPoints,majorCities,demoStorms,state};
 window.__TV_BOOTED__=true;window.addEventListener('unhandledrejection',event=>{console.error('Typhoon Vision async error',event.reason);const pill=$('#freshnessPill');if(pill){pill.querySelector('strong').textContent=t('partial');pill.querySelector('.status-dot')?.classList.add('warning');}});
 
 document.documentElement.dataset.view=state.view;document.documentElement.dataset.map=state.mapMode;$('#demoToggle').setAttribute('aria-pressed',String(state.demoEnabled));applyTheme();setView(state.view,false);setMapMode(state.mapMode);applyTranslations();resizeCanvas();initFormalMap();fitWorld(false);Promise.all([loadLand(),loadData()]).then(()=>{applyRegion(state.region,false);if(state.selectedStorm)fitStormTrack(state.selectedStorm,false);syncFormalMap();});requestAnimationFrame(animate);
