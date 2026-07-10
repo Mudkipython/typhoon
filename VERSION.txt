@@ -1,2 +1,1 @@
-Typhoon Vision Public v11.2
-Stable v11 baseline with local MapLibre formal map, global basin filters, city impact screening, explicit track semantics and Canvas fallback.
+Public v11.3

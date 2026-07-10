@@ -2,11 +2,29 @@
   'use strict';
 
   const emptyFC = () => ({ type: 'FeatureCollection', features: [] });
-  const lineFeature = (points, properties = {}) => ({
-    type: 'Feature',
-    properties,
-    geometry: { type: 'LineString', coordinates: points.map((p) => [Number(p.lon), Number(p.lat)]) }
-  });
+  const lineFeature = (points, properties = {}) => {
+    const clean = (points || [])
+      .map((p) => [((Number(p.lon) + 540) % 360) - 180, Number(p.lat)])
+      .filter(([lon, lat]) => Number.isFinite(lon) && Number.isFinite(lat) && Math.abs(lat) <= 85);
+    const segments = [];
+    let segment = [];
+    for (const coordinate of clean) {
+      const previous = segment.at(-1);
+      if (previous && Math.abs(coordinate[0] - previous[0]) > 180) {
+        if (segment.length > 1) segments.push(segment);
+        segment = [];
+      }
+      segment.push(coordinate);
+    }
+    if (segment.length > 1) segments.push(segment);
+    return {
+      type: 'Feature',
+      properties,
+      geometry: segments.length > 1
+        ? { type: 'MultiLineString', coordinates: segments }
+        : { type: 'LineString', coordinates: segments[0] || clean }
+    };
+  };
   const pointFeature = (point, properties = {}) => ({
     type: 'Feature',
     properties,
@@ -53,6 +71,8 @@
       this.onReady = options.onReady || (() => {});
       this.onFailure = options.onFailure || (() => {});
       this.cityMarkers = [];
+      this.landfallMarker = null;
+      this.currentMarker = null;
       this.userMarker = null;
       this.ready = false;
       this.payload = null;
@@ -90,7 +110,7 @@
           maxZoom: 8,
           maxPitch: 65,
           attributionControl: true,
-          renderWorldCopies: true,
+          renderWorldCopies: false,
           dragRotate: false,
           pitchWithRotate: false,
           cooperativeGestures: false
@@ -127,7 +147,7 @@
       [
         'tv-cone', 'tv-wind', 'tv-observed-full', 'tv-forecast-full', 'tv-trend-full',
         'tv-observed-active', 'tv-forecast-active', 'tv-trend-active', 'tv-points',
-        'tv-cities', 'tv-user', 'tv-user-link', 'tv-history'
+        'tv-cities', 'tv-user', 'tv-user-link', 'tv-history', 'tv-landfall'
       ].forEach((id) => this._addSource(id));
 
       this._addLayer({ id: 'tv-cone-fill', type: 'fill', source: 'tv-cone', paint: {
@@ -199,6 +219,13 @@
       this._addLayer({ id: 'tv-user-point', type: 'circle', source: 'tv-user', paint: {
         'circle-radius': 6.5, 'circle-color': '#ffffff', 'circle-stroke-color': '#0f6b83', 'circle-stroke-width': 3
       }});
+
+      this._addLayer({ id: 'tv-landfall-halo', type: 'circle', source: 'tv-landfall', paint: {
+        'circle-radius': 15, 'circle-color': '#f97316', 'circle-opacity': 0.16
+      }});
+      this._addLayer({ id: 'tv-landfall-point', type: 'circle', source: 'tv-landfall', paint: {
+        'circle-radius': 7.5, 'circle-color': '#ffffff', 'circle-stroke-color': '#f97316', 'circle-stroke-width': 3
+      }});
     }
 
     _bindEvents() {
@@ -211,6 +238,7 @@
       this.map.on('mouseenter', 'tv-track-points', () => { this.map.getCanvas().style.cursor = 'pointer'; });
       this.map.on('mouseleave', 'tv-track-points', () => { this.map.getCanvas().style.cursor = ''; });
       this.map.on('click', (event) => this.onMapClick({ lat: event.lngLat.lat, lon: event.lngLat.lng }));
+      this.map.on('zoom', () => this._updateCityMarkerVisibility());
     }
 
     setTheme(theme) {
@@ -287,6 +315,7 @@
       safeSetData(this.map, 'tv-user', user ? { type: 'FeatureCollection', features: [pointFeature(user)] } : emptyFC());
       safeSetData(this.map, 'tv-user-link', user && p.userNearest ? { type: 'FeatureCollection', features: [lineFeature([user, p.userNearest])] } : emptyFC());
       safeSetData(this.map, 'tv-history', p.history?.length > 1 ? { type: 'FeatureCollection', features: [lineFeature(p.history)] } : emptyFC());
+      safeSetData(this.map, 'tv-landfall', p.landfall ? { type: 'FeatureCollection', features: [pointFeature(p.landfall, { official: Boolean(p.landfall.official) })] } : emptyFC());
 
       const layers = p.layers || {};
       setVisibility(this.map, ['tv-observed-full-line', 'tv-forecast-full-line', 'tv-trend-full-line', 'tv-observed-active-line', 'tv-forecast-active-line', 'tv-trend-active-line', 'tv-track-points'], layers.track !== false);
@@ -295,23 +324,80 @@
       setVisibility(this.map, ['tv-city-circles'], layers.labels !== false);
       setVisibility(this.map, ['tv-user-link-line', 'tv-user-halo', 'tv-user-point'], true);
       setVisibility(this.map, ['tv-history-line'], Boolean(p.history?.length));
-      this._renderCityMarkers(p.cities || [], layers.labels !== false);
+      setVisibility(this.map, ['tv-landfall-halo', 'tv-landfall-point'], Boolean(p.landfall));
+      this._renderCityMarkers(p.cities || [], p.cityLabels || [], layers.labels !== false);
+      this._renderLandfallMarker(p.landfall || null);
+      this._renderCurrentMarker((p.points || [])[p.activeIndex] || null);
     }
 
-    _renderCityMarkers(cities, visible) {
+    _renderCityMarkers(riskCities, cityLabels, visible) {
       for (const marker of this.cityMarkers) marker.remove();
       this.cityMarkers = [];
       if (!visible) return;
-      for (const city of cities.slice(0, 18)) {
+      const riskById = new Map((riskCities || []).map((city) => [city.id, city]));
+      const merged = [];
+      const seen = new Set();
+      for (const city of [...(riskCities || []), ...(cityLabels || [])]) {
+        if (!city || seen.has(city.id)) continue;
+        seen.add(city.id);
+        merged.push(riskById.get(city.id) || city);
+      }
+      for (const city of merged.slice(0, 42)) {
+        const risk = riskById.get(city.id)?.risk || 'neutral';
         const el = document.createElement('div');
-        el.className = `formal-city-label risk-${city.risk || 'low'}`;
+        el.className = `formal-city-label risk-${risk} rank-${Number(city.rank || 0)}`;
+        el.dataset.rank = String(Number(city.rank || 0));
+        el.dataset.risk = risk;
         el.innerHTML = `<span></span><b>${String(city.name || '')}</b>`;
-        el.title = `${city.name || ''} · ${Math.round(city.distance || 0)} km`;
+        el.title = Number.isFinite(Number(city.distance)) ? `${city.name || ''} · ${Math.round(city.distance)} km` : String(city.name || '');
         const marker = new maplibregl.Marker({ element: el, anchor: 'left', offset: [3, 0] })
           .setLngLat([Number(city.lon), Number(city.lat)])
           .addTo(this.map);
         this.cityMarkers.push(marker);
       }
+      this._updateCityMarkerVisibility();
+    }
+
+    _updateCityMarkerVisibility() {
+      const zoom = Number(this.map?.getZoom?.() || 0);
+      for (const marker of this.cityMarkers) {
+        const el = marker.getElement?.();
+        if (!el) continue;
+        const rank = Number(el.dataset.rank || 0), risk = el.dataset.risk || 'neutral';
+        const visible = risk !== 'neutral' || rank >= 6 || (rank >= 5 && zoom >= 1.8) || zoom >= 3.2;
+        el.style.display = visible ? 'inline-flex' : 'none';
+      }
+    }
+
+    _renderCurrentMarker(point) {
+      if (!point) {
+        if (this.currentMarker) this.currentMarker.remove();
+        this.currentMarker = null;
+        return;
+      }
+      if (!this.currentMarker) {
+        const el = document.createElement('div');
+        el.className = 'formal-current-marker';
+        el.innerHTML = '<i></i><b></b>';
+        this.currentMarker = new maplibregl.Marker({ element: el, anchor: 'center' })
+          .setLngLat([Number(point.lon), Number(point.lat)])
+          .addTo(this.map);
+      }
+      const el = this.currentMarker.getElement?.();
+      if (el) el.style.setProperty('--storm-color', String(point.color || '#09a7c4'));
+      this.currentMarker.setLngLat([Number(point.lon), Number(point.lat)]);
+    }
+
+    _renderLandfallMarker(landfall) {
+      if (this.landfallMarker) this.landfallMarker.remove();
+      this.landfallMarker = null;
+      if (!landfall) return;
+      const el = document.createElement('div');
+      el.className = `formal-landfall-marker ${landfall.official ? 'official' : 'trend'}`;
+      el.innerHTML = `<span></span><div><b>${String(landfall.label || '')}</b><small>${String(landfall.detail || '')}</small></div>`;
+      this.landfallMarker = new maplibregl.Marker({ element: el, anchor: 'bottom-left', offset: [8, -6] })
+        .setLngLat([Number(landfall.lon), Number(landfall.lat)])
+        .addTo(this.map);
     }
 
     fitWorld(animate = true) {

@@ -14,7 +14,7 @@ Typhoon Vision is a responsive global tropical-cyclone map and public decision-s
 
 ## Stable v11 baseline
 
-Public v11.2 is built directly from the stable Public v11 interface. It retains the v11 layout, public/professional views, path timeline, mobile bottom sheet, personal impact estimates, historical analogues and source cross-checking. Later experimental v12–v17 branches are not used as a code base.
+Public v11.3 is built directly from the stable Public v11 interface. It retains the v11 layout, public/professional views, path timeline, mobile bottom sheet, personal impact estimates, historical analogues and source cross-checking. Later experimental v12–v17 branches are not used as a code base.
 
 ## Formal map engine
 
@@ -192,7 +192,7 @@ https://YOUR-SITE.netlify.app/
 https://YOUR-SITE.netlify.app/api/cyclones
 ```
 
-## Validation performed for v11.2
+## Validation performed for v11.3
 
 The release package was checked with:
 
@@ -222,3 +222,37 @@ The test container cannot create a real WebGL context, so MapLibre GPU rendering
 ## License and attribution
 
 Map rendering uses MapLibre GL JS. Geographic outlines are included locally. Operational meteorological data remain subject to the terms and attribution requirements of their respective providers.
+
+
+## Public v11.3 稳定增强
+
+本版本继续以 Public v11 稳定界面为基础，重点修复地图路径与全球海域展示，而不是更换页面架构。
+
+### 路径和播放
+
+- 关闭 MapLibre 的世界副本重复渲染，避免轨迹横贯地图并重复出现。
+- 跨越国际日期变更线的轨迹会自动分段，不再画成穿过整个世界的直线。
+- 前后端都会去除同一时刻的重复位置以及不符合热带气旋移动速度的异常跳点。
+- 时间轴播放时，当前气旋中心会沿实况和预报节点移动。
+- 若官方预报路径由海面进入陆地，地图会标出预计登陆位置、时间与预计强度。
+- 若仅有非官方趋势参考，页面只显示“趋势可能接近陆地”，不会称为正式登陆预报。
+
+### 全球海域
+
+当某一海域没有实时系统、且用户开启演示情景时，该海域会自动使用对应的演示气旋，而不会因为西北太平洋存在实时系统就让其他海域变空。演示范围包括：
+
+- 西北太平洋
+- 大西洋
+- 东北太平洋
+- 北印度洋
+- 南太平洋及南半球海域
+
+### 城市标签
+
+地图底图不显示国家级政治标签。项目自行维护世界主要城市标签，并在气旋路径附近将城市显示为距离筛选结果：
+
+- 红色：距离路径较近
+- 黄色：需要关注
+- 绿色：外围筛选范围
+
+城市距离只是地理筛选，不等于官方城市预警。

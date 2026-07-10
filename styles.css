@@ -793,3 +793,156 @@ html.formal-map-failed #formalMap { display: none; }
   .formal-city-label { font-size: 9px; padding: 3px 6px 3px 4px; }
   .region-grid { grid-template-columns: 1fr 1fr; }
 }
+
+/* v11.3 world-city and landfall forecast additions */
+.formal-city-label.risk-neutral {
+  gap: 4px;
+  padding: 2px 5px 2px 3px;
+  border-color: color-mix(in srgb, var(--line) 55%, transparent);
+  background: color-mix(in srgb, var(--surface-solid) 66%, transparent);
+  box-shadow: 0 1px 5px rgba(16,46,58,.07);
+  color: color-mix(in srgb, var(--text-2) 82%, transparent);
+  font-weight: 650;
+}
+.formal-city-label.risk-neutral span {
+  width: 5px;
+  height: 5px;
+  background: #64748b;
+  box-shadow: 0 0 0 1.5px rgba(255,255,255,.72);
+}
+.formal-city-label.rank-6 { font-size: 10.5px; color: var(--text-1); }
+
+.formal-landfall-marker {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  pointer-events: none;
+  color: var(--text-1);
+}
+.formal-landfall-marker > span {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 3px solid #f97316;
+  background: #fff;
+  box-shadow: 0 0 0 7px rgba(249,115,22,.16), 0 4px 16px rgba(127,65,15,.25);
+  animation: tv-landfall-pulse 1.8s ease-out infinite;
+}
+.formal-landfall-marker.trend > span {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 7px rgba(139,92,246,.14), 0 4px 16px rgba(69,44,133,.2);
+}
+.formal-landfall-marker > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--surface-solid) 92%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 5px 18px rgba(19,55,68,.14);
+  white-space: nowrap;
+}
+.formal-landfall-marker b { font-size: 11px; }
+.formal-landfall-marker small { color: var(--text-2); font-size: 9px; }
+@keyframes tv-landfall-pulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+.landfall-card {
+  position: absolute;
+  z-index: 36;
+  right: 18px;
+  top: 84px;
+  width: min(300px, calc(100% - 36px));
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 10px;
+  padding: 12px 13px;
+  border: 1px solid color-mix(in srgb, #f97316 42%, var(--line));
+  border-radius: 15px;
+  background: color-mix(in srgb, var(--surface-solid) 91%, transparent);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(55,74,82,.14);
+  opacity: 0;
+  transform: translateY(-7px);
+  transition: .18s var(--ease);
+}
+.landfall-card.visible { opacity: 1; transform: translateY(0); }
+.landfall-card.covered { opacity: 0; pointer-events: none; }
+.landfall-card.trend { border-color: color-mix(in srgb, #8b5cf6 46%, var(--line)); }
+.landfall-card.passed { box-shadow: 0 0 0 2px rgba(249,115,22,.12), 0 10px 30px rgba(55,74,82,.14); }
+.landfall-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  color: #f97316;
+  background: rgba(249,115,22,.12);
+  font-size: 19px;
+  font-weight: 900;
+}
+.landfall-card.trend .landfall-icon { color: #8b5cf6; background: rgba(139,92,246,.12); }
+.landfall-card > div { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.landfall-card small { color: #d46512; font-size: 10px; font-weight: 850; letter-spacing: .03em; }
+.landfall-card.trend small { color: #7c4dd8; }
+.landfall-card strong { font-size: 16px; line-height: 1.2; }
+.landfall-card p { margin: 0; display: flex; flex-direction: column; gap: 2px; }
+.landfall-card p span { color: var(--text-2); font-size: 11px; font-weight: 700; }
+.landfall-card p em { color: var(--text-3); font-size: 9px; font-style: normal; line-height: 1.35; }
+
+@media (max-width: 760px) {
+  .formal-city-label.risk-neutral { font-size: 8px; opacity: .88; }
+  .formal-city-label.rank-5:not(.risk-high):not(.risk-medium):not(.risk-low) { display: none; }
+  .formal-landfall-marker > div { max-width: 150px; white-space: normal; }
+  .landfall-card {
+    top: 68px;
+    right: 8px;
+    width: min(260px, calc(100% - 16px));
+    padding: 9px 10px;
+    grid-template-columns: 28px 1fr;
+    gap: 8px;
+  }
+  .landfall-icon { width: 28px; height: 28px; border-radius: 9px; font-size: 16px; }
+  .landfall-card strong { font-size: 13px; }
+  .landfall-card p em { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .formal-landfall-marker > span { animation: none; }
+}
+
+.formal-current-marker {
+  --storm-color: #09a7c4;
+  position: relative;
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+  transition: transform .72s cubic-bezier(.22,.8,.25,1);
+}
+.formal-current-marker i,
+.formal-current-marker b {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  border-radius: 50%;
+  transform: translate(-50%,-50%);
+}
+.formal-current-marker i {
+  width: 26px;
+  height: 26px;
+  background: color-mix(in srgb, var(--storm-color) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--storm-color) 42%, transparent);
+  animation: tv-current-pulse 1.5s ease-in-out infinite;
+}
+.formal-current-marker b {
+  width: 11px;
+  height: 11px;
+  background: var(--storm-color);
+  border: 3px solid #fff;
+  box-shadow: 0 3px 10px rgba(12,49,63,.25);
+}
+@keyframes tv-current-pulse { 0%,100%{transform:translate(-50%,-50%) scale(.9);opacity:.62}50%{transform:translate(-50%,-50%) scale(1.18);opacity:1} }
+@media (prefers-reduced-motion: reduce) { .formal-current-marker i { animation:none; } .formal-current-marker { transition:none; } }
