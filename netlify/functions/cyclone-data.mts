@@ -131,18 +131,55 @@ function pointTime(point: TrackPoint) {
   return Number.isFinite(time) ? time : 0;
 }
 function sortAndDedupeTrack(points: TrackPoint[]) {
-  const sorted = [...points].sort((a, b) => pointTime(a) - pointTime(b));
-  const output: TrackPoint[] = [];
-  for (const point of sorted) {
-    const duplicate = output.find((item) => Math.abs(item.lat - point.lat) < 0.015 && Math.abs(item.lon - point.lon) < 0.015 && (item.time || "") === (point.time || ""));
-    if (!duplicate) output.push(point);
+  const normalized = points
+    .map((point) => ({
+      ...point,
+      lat: Number(point.lat),
+      lon: ((Number(point.lon) + 540) % 360) - 180,
+      windMs: Number.isFinite(Number(point.windMs)) ? Number(point.windMs) : null,
+      pressureHpa: Number.isFinite(Number(point.pressureHpa)) ? Number(point.pressureHpa) : null,
+      forecast: Boolean(point.forecast)
+    }))
+    .filter((point) => Number.isFinite(point.lat) && Number.isFinite(point.lon) && Math.abs(point.lat) <= 85)
+    .sort((a, b) => pointTime(a) - pointTime(b));
+
+  const grouped = new Map<string, TrackPoint>();
+  for (const point of normalized) {
+    const time = pointTime(point);
+    const key = `${time || `${point.lat.toFixed(2)},${point.lon.toFixed(2)}`}|${point.forecast ? 1 : 0}`;
+    const existing = grouped.get(key);
+    const score = (Number.isFinite(Number(point.pressureHpa)) ? 2 : 0) + (Number.isFinite(Number(point.windMs)) ? 1 : 0);
+    const existingScore = existing ? ((Number.isFinite(Number(existing.pressureHpa)) ? 2 : 0) + (Number.isFinite(Number(existing.windMs)) ? 1 : 0)) : -1;
+    if (!existing || score > existingScore) grouped.set(key, point);
   }
-  return output;
+
+  const output: TrackPoint[] = [];
+  for (const point of [...grouped.values()].sort((a, b) => pointTime(a) - pointTime(b))) {
+    const previous = output.at(-1);
+    if (previous && Math.abs(previous.lat - point.lat) < 0.015 && Math.abs(previous.lon - point.lon) < 0.015 && previous.forecast === point.forecast) continue;
+    if (previous) {
+      const hours = (pointTime(point) - pointTime(previous)) / 3600_000;
+      if (hours > 0 && distanceKm(previous, point) / hours > 180) continue;
+    }
+    output.push(point);
+  }
+  return output.slice(-160);
 }
 
 
 function nearestTagText(block: string, tag: string) {
   return textOf(block, `jmx_eb:${tag}`) || textOf(block, tag);
+}
+
+function normalizeWindMs(value: number, attrs = "") {
+  if (!Number.isFinite(value)) return null;
+  const unit = attrs.toLowerCase();
+  if (/kt|knot|ノット/.test(unit)) return value * 0.514444;
+  if (/km\/?h|kmh|キロメートル毎時/.test(unit)) return value / 3.6;
+  if (/m\/?s|mps|メートル毎秒/.test(unit)) return value;
+  // JMA maximum winds are commonly encoded in m/s or knots. Values well above
+  // realistic m/s intensity are treated as knots only when the unit is absent.
+  return value > 100 ? value * 0.514444 : value;
 }
 function extractJmaTrackPoints(xml: string): TrackPoint[] {
   const points: TrackPoint[] = [];
@@ -172,7 +209,9 @@ function extractJmaTrackPoints(xml: string): TrackPoint[] {
     const explicitlyForecast = /中心位置[（(]?予報|予報円|予報時刻|forecast\s*(position|time)|type=["'][^"']*予報/i.test(forecastContext);
     const explicitlyObserved = /実況時刻|解析時刻|中心位置[（(]?実況|observation\s*time|analysis\s*time|type=["'][^"']*実況/i.test(`${attrs} ${dateAttrs} ${nearContext}`);
     const forecast = explicitlyForecast && !explicitlyObserved;
-    const windValues = [...block.matchAll(/<(?:jmx_eb:)?WindSpeed[^>]*>([^<]+)<\/(?:jmx_eb:)?WindSpeed>/gi)].map((m) => Number.parseFloat(m[1])).filter(Number.isFinite);
+    const windValues = [...block.matchAll(/<(?:jmx_eb:)?WindSpeed([^>]*)>([^<]+)<\/(?:jmx_eb:)?WindSpeed>/gi)]
+      .map((m) => normalizeWindMs(Number.parseFloat(m[2]), m[1] || ""))
+      .filter((value): value is number => Number.isFinite(value));
     const pressureValues = [...block.matchAll(/<(?:jmx_eb:)?Pressure[^>]*>([^<]+)<\/(?:jmx_eb:)?Pressure>/gi)].map((m) => Number.parseFloat(m[1])).filter(Number.isFinite);
     points.push({
       ...coordinate,
@@ -200,9 +239,9 @@ function inferOperationalBasin(lat: number, lon: number) {
 
 function normalizeNhcBasin(value: unknown, id: unknown, lat: number, lon: number) {
   const raw = `${String(value || "")} ${String(id || "")}`.toLowerCase();
-  if (/atlantic|al\d/.test(raw)) return "Atlantic";
-  if (/eastern|east pacific|ep\d/.test(raw)) return "Eastern Pacific";
-  if (/central|cp\d/.test(raw)) return "Central Pacific";
+  if (/atlantic|\bal\d/.test(raw)) return "Atlantic";
+  if (/eastern|east pacific|\bep\d/.test(raw)) return "Eastern Pacific";
+  if (/central|\bcp\d/.test(raw)) return "Central Pacific";
   return inferOperationalBasin(lat, lon);
 }
 
