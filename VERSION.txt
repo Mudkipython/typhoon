@@ -1,1 +1,2 @@
-Typhoon Vision Public v15
+Typhoon Vision Public v15.1
+Hotfix: corrected duplicate async keyword in app.js so the application can boot.

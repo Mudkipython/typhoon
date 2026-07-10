@@ -9,7 +9,7 @@ const UI = {
   zh: {
     tagline:'全球热带气旋与个人影响', connecting:'正在连接权威来源', publicView:'公众视图', proView:'专业视图', appearance:'外观',
     activeSystems:'活跃系统', systemsWorldwide:'个全球系统', showDemo:'显示全球演示系统', demoExplain:'无活跃气旋时用于体验全部功能',
-    authority:'所属权威机构', officialSite:'官网 ↗', mapView:'地图', globeView:'地球', cyclone3d:'3D 气旋', cinematicMode:'3D 气旋模式', visualDemo:'数据驱动视觉示意', focusStorm:'聚焦气旋', viewWorld:'查看全球', layers:'图层',
+    authority:'所属权威机构', officialSite:'官网 ↗', mapView:'地图', globeView:'地球', cyclone3d:'动态气旋', cinematicMode:'3D 气旋模式', visualDemo:'数据驱动视觉示意', focusStorm:'聚焦气旋', viewWorld:'查看全球', layers:'图层',
     mapLayers:'地图图层', weatherLayers:'气象与风险图层', trackLayer:'路径与节点', trackLayerNote:'实况、官方预报与趋势参考',
     coneLayer:'预测可能范围', coneLayerNote:'中心路径的不确定性，不是影响边界', windLayer:'风圈与波及范围', windLayerNote:'无官方半径时会明确标为估算',
     cityLayer:'受影响城市', cityLayerNote:'按路径距离筛选主要城市', satelliteLayer:'NASA 卫星云图', radarLayer:'全球雷达拼图',
@@ -37,7 +37,7 @@ const UI = {
   en: {
     tagline:'Global tropical cyclone and personal impact', connecting:'Connecting authoritative sources', publicView:'Public view', proView:'Professional view', appearance:'Appearance',
     activeSystems:'Active systems', systemsWorldwide:'systems worldwide', showDemo:'Show global demo systems', demoExplain:'Explore all features when no live cyclone is active',
-    authority:'Responsible authority', officialSite:'Official site ↗', mapView:'Map', globeView:'Globe', cyclone3d:'3D cyclone', cinematicMode:'3D cyclone mode', visualDemo:'Data-driven visualisation', focusStorm:'Focus cyclone', viewWorld:'View world', layers:'Layers',
+    authority:'Responsible authority', officialSite:'Official site ↗', mapView:'Map', globeView:'Globe', cyclone3d:'Animated cyclone', cinematicMode:'3D cyclone mode', visualDemo:'Data-driven visualisation', focusStorm:'Focus cyclone', viewWorld:'View world', layers:'Layers',
     mapLayers:'Map layers', weatherLayers:'Weather and risk layers', trackLayer:'Track and points', trackLayerNote:'Observed, official forecast and trend reference',
     coneLayer:'Forecast uncertainty', coneLayerNote:'Possible centre-track area, not an impact boundary', windLayer:'Wind and impact area', windLayerNote:'Estimated values are clearly labelled',
     cityLayer:'Affected cities', cityLayerNote:'Major cities screened by track distance', satelliteLayer:'NASA satellite imagery', radarLayer:'Global radar mosaic',
@@ -66,10 +66,10 @@ const UI = {
 
 const languageNames = { zh:'中文', en:'English', ja:'日本語', ko:'한국어', es:'Español', fr:'Français' };
 const languageStatic = {
-  ja: { cyclone3d:'3Dサイクロン', publicView:'一般向け', proView:'専門表示', appearance:'外観', activeSystems:'活動中のシステム', systemsWorldwide:'個の全球システム', mapView:'地図', globeView:'地球', focusStorm:'台風に移動', viewWorld:'世界表示', layers:'レイヤー', plainBrief:'一般向け速報', whatMeans:'自分への影響は？', useLocation:'位置情報', pickOnMap:'地図で選択', clear:'削除', methodology:'データ手法', themeSystem:'システム', themeLight:'ライト', themeDark:'ダーク' },
-  ko: { cyclone3d:'3D 사이클론', publicView:'일반 보기', proView:'전문 보기', appearance:'화면', activeSystems:'활성 시스템', systemsWorldwide:'개 전 세계 시스템', mapView:'지도', globeView:'지구', focusStorm:'사이클론 보기', viewWorld:'전 세계', layers:'레이어', plainBrief:'일반 브리핑', whatMeans:'나에게 어떤 의미인가요?', useLocation:'위치 사용', pickOnMap:'지도 선택', clear:'지우기', methodology:'데이터 방법', themeSystem:'시스템', themeLight:'라이트', themeDark:'다크' },
-  es: { cyclone3d:'Ciclón 3D', publicView:'Vista pública', proView:'Vista profesional', appearance:'Apariencia', activeSystems:'Sistemas activos', systemsWorldwide:'sistemas globales', mapView:'Mapa', globeView:'Globo', focusStorm:'Enfocar ciclón', viewWorld:'Ver mundo', layers:'Capas', plainBrief:'Resumen público', whatMeans:'¿Qué significa para mí?', useLocation:'Usar ubicación', pickOnMap:'Elegir en mapa', clear:'Borrar', methodology:'Método de datos', themeSystem:'Sistema', themeLight:'Claro', themeDark:'Oscuro' },
-  fr: { cyclone3d:'Cyclone 3D', publicView:'Vue publique', proView:'Vue professionnelle', appearance:'Apparence', activeSystems:'Systèmes actifs', systemsWorldwide:'systèmes mondiaux', mapView:'Carte', globeView:'Globe', focusStorm:'Centrer le cyclone', viewWorld:'Voir le monde', layers:'Couches', plainBrief:'Bulletin public', whatMeans:'Quel impact pour moi ?', useLocation:'Utiliser la position', pickOnMap:'Choisir sur la carte', clear:'Effacer', methodology:'Méthode des données', themeSystem:'Système', themeLight:'Clair', themeDark:'Sombre' },
+  ja: { cyclone3d:'動くサイクロン', publicView:'一般向け', proView:'専門表示', appearance:'外観', activeSystems:'活動中のシステム', systemsWorldwide:'個の全球システム', mapView:'地図', globeView:'地球', focusStorm:'台風に移動', viewWorld:'世界表示', layers:'レイヤー', plainBrief:'一般向け速報', whatMeans:'自分への影響は？', useLocation:'位置情報', pickOnMap:'地図で選択', clear:'削除', methodology:'データ手法', themeSystem:'システム', themeLight:'ライト', themeDark:'ダーク' },
+  ko: { cyclone3d:'동적 사이클론', publicView:'일반 보기', proView:'전문 보기', appearance:'화면', activeSystems:'활성 시스템', systemsWorldwide:'개 전 세계 시스템', mapView:'지도', globeView:'지구', focusStorm:'사이클론 보기', viewWorld:'전 세계', layers:'레이어', plainBrief:'일반 브리핑', whatMeans:'나에게 어떤 의미인가요?', useLocation:'위치 사용', pickOnMap:'지도 선택', clear:'지우기', methodology:'데이터 방법', themeSystem:'시스템', themeLight:'라이트', themeDark:'다크' },
+  es: { cyclone3d:'Ciclón animado', publicView:'Vista pública', proView:'Vista profesional', appearance:'Apariencia', activeSystems:'Sistemas activos', systemsWorldwide:'sistemas globales', mapView:'Mapa', globeView:'Globo', focusStorm:'Enfocar ciclón', viewWorld:'Ver mundo', layers:'Capas', plainBrief:'Resumen público', whatMeans:'¿Qué significa para mí?', useLocation:'Usar ubicación', pickOnMap:'Elegir en mapa', clear:'Borrar', methodology:'Método de datos', themeSystem:'Sistema', themeLight:'Claro', themeDark:'Oscuro' },
+  fr: { cyclone3d:'Cyclone animé', publicView:'Vue publique', proView:'Vue professionnelle', appearance:'Apparence', activeSystems:'Systèmes actifs', systemsWorldwide:'systèmes mondiaux', mapView:'Carte', globeView:'Globe', focusStorm:'Centrer le cyclone', viewWorld:'Voir le monde', layers:'Couches', plainBrief:'Bulletin public', whatMeans:'Quel impact pour moi ?', useLocation:'Utiliser la position', pickOnMap:'Choisir sur la carte', clear:'Effacer', methodology:'Méthode des données', themeSystem:'Système', themeLight:'Clair', themeDark:'Sombre' },
 };
 
 const agencyDirectory = {
@@ -149,10 +149,10 @@ const state = {
   map:null, mapReady:false, projection:'mercator', styleReloading:false,
   layers:{track:true,cone:true,wind:true,cities:true,satellite:false,radar:false,coverage:false},
   opacity:Number(localStorage.getItem('tv15-opacity') || 62) / 100,
-  playMode:'track', playIndex:0, playProgress:0, playing:false, speed:1, raf:null, playLastTs:0,
+  playMode:'track', playIndex:0, playProgress:0, playing:false, speed:1, raf:null, playLastTs:0, radarAccum:0,
   userLocation:(() => { try { return JSON.parse(localStorage.getItem('tv15-location') || 'null'); } catch { return null; } })(),
   pickLocation:false, profile:localStorage.getItem('tv15-profile') || 'commute', sheet:'collapsed',
-  visualMode: localStorage.getItem('tv15-visual-mode') || 'cinematic',
+  visualMode: localStorage.getItem('tv15-visual-mode') || 'map',
   fxQuality: localStorage.getItem('tv15-fx-quality') || 'auto',
   fxParticles: localStorage.getItem('tv15-fx-particles') !== 'false',
   fxEyewall: localStorage.getItem('tv15-fx-eyewall') !== 'false',
@@ -286,13 +286,9 @@ function applyI18n() {
   $('#languageLabel').textContent=languageNames[state.lang]||'English'; renderAll();applyNeutralGeographyLabels();
 }
 function resolvedTheme() { return state.theme==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):state.theme; }
-function baseMapStyle() {
-  const dark=resolvedTheme()==='dark';
-  return {version:8,sources:{base:{type:'raster',tiles:[dark?'https://a.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png':'https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'],tileSize:256,attribution:'© OpenStreetMap contributors © CARTO'}},layers:[{id:'base',type:'raster',source:'base',paint:{'raster-saturation':dark?-.35:-.12,'raster-contrast':dark?.12:.04,'raster-brightness-min':dark?.05:.72,'raster-brightness-max':dark?.68:1}}]};
-}
 function applyTheme(reloadMap=true) {
   document.documentElement.dataset.theme=resolvedTheme(); localStorage.setItem('tv15-theme',state.theme);
-  if(reloadMap&&state.map) { state.styleReloading=true; state.map.setStyle(baseMapStyle()); state.map.once('style.load',()=>{ state.styleReloading=false; installMapLayers(); ensureCycloneFX(); }); }
+  if(reloadMap&&state.map) { state.styleReloading=true; state.map.setStyle(`https://tiles.openfreemap.org/styles/${resolvedTheme()==='dark'?'dark':'positron'}`); state.map.once('style.load',()=>{ state.styleReloading=false; installMapLayers(); ensureCycloneFX(); }); }
 }
 function setView(view) { state.view=view; localStorage.setItem('tv15-view',view); document.body.dataset.view=view; $$('[data-view-mode]').forEach(b=>b.classList.toggle('is-active',b.dataset.viewMode===view)); }
 
@@ -384,10 +380,10 @@ window.addEventListener('cyclonefxready',()=>{if(state.mapReady)ensureCycloneFX(
 
 function initMap() {
   if(!window.maplibregl) { $('#map').innerHTML='<div class="map-fallback">MapLibre failed to load. Check network access to unpkg.com.</div>'; return; }
-  state.map=new maplibregl.Map({container:'map',style:baseMapStyle(),center:[130,20],zoom:2.2,attributionControl:true,maxPitch:72,canvasContextAttributes:{antialias:true}});
+  state.map=new maplibregl.Map({container:'map',style:`https://tiles.openfreemap.org/styles/${resolvedTheme()==='dark'?'dark':'positron'}`,center:[130,20],zoom:2.2,attributionControl:true,maxPitch:72,canvasContextAttributes:{antialias:true}});
   state.map.addControl(new maplibregl.NavigationControl({showCompass:true,showZoom:true}),'right');
   state.map.on('load',()=>{ state.mapReady=true; installMapLayers(); bindMapEvents(); ensureCycloneFX(); applyVisualMode(state.visualMode,false); fitSelected(false); });
-  state.map.on('error',(event)=>{if(event?.error?.message)console.warn('Map error',event.error.message);const sourceId=event?.sourceId||event?.error?.sourceId||'';if(String(sourceId).includes('satellite')||String(sourceId).includes('radar'))console.warn('Weather raster tile failed',sourceId);});
+  state.map.on('error',(event)=>{if(event?.error?.message)console.warn('Map error',event.error.message);const sourceId=event?.sourceId||event?.error?.sourceId||'';if(String(sourceId).includes('satellite')||String(sourceId).includes('radar'))showWeatherStatus(state.lang==='zh'?'天气图层暂不可用':'Weather layer unavailable',tr('weatherFailed'),'error');});
 }
 function firstSymbolLayer() { return state.map?.getStyle()?.layers?.find(l=>l.type==='symbol')?.id; }
 function ensureGeoSource(id) { if(!state.map.getSource(id)) state.map.addSource(id,{type:'geojson',data:featureCollection()}); }
@@ -421,7 +417,7 @@ function currentPlaybackPoints() {
 
 function updateMapData() {
   if(!state.mapReady||state.styleReloading) return;
-  if(!state.selected){['tv-cone','tv-wind','tv-observed','tv-forecast','tv-trend','tv-points','tv-cities','tv-user-link','tv-history'].forEach(id=>setSourceData(id,featureCollection()));updateUserMap();window.CycloneFX?.setEnabled(!!state.selected);return;}
+  if(!state.selected){['tv-cone','tv-wind','tv-observed','tv-forecast','tv-trend','tv-points','tv-cities','tv-user-link','tv-history'].forEach(id=>setSourceData(id,featureCollection()));updateUserMap();window.CycloneFX?.setEnabled(false);return;}
   const parts=trackParts(state.selected); const shown=currentPlaybackPoints();
   const observed=shown.filter(p=>!p.forecast), official=shown.filter(p=>p.forecast&&!p.trend), trend=shown.filter(p=>p.trend);
   setSourceData('tv-observed',observed.length>1?featureCollection([lineFeature(observed)]):featureCollection());
@@ -565,26 +561,25 @@ function bindUI() {
   matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{if(state.theme==='system')applyTheme();});
 }
 function startPlay(){
-  if(state.playing)return;state.playing=true;state.playLastTs=performance.now();
-  const tick=(ts)=>{if(!state.playing)return;const dt=Math.min(80,ts-state.playLastTs);state.playLastTs=ts;if(state.playMode==='radar'){const max=Math.max(0,(state.weather?.radar?.frames?.length||1)-1);state.playIndex=state.playIndex>=max?0:state.playIndex+1;}else{state.playProgress+=dt*(0.000035*state.speed);if(state.playProgress>1)state.playProgress=0;}renderTimeline();state.raf=requestAnimationFrame(tick);};
-  state.raf=requestAnimationFrame(tick);renderTimeline();
+  if(state.playing)return;state.playing=true;state.playLastTs=performance.now();state.radarAccum=0;$('#playButton').textContent='❚❚';
+  const tick=(ts)=>{
+    if(!state.playing)return;const dt=Math.min(90,ts-state.playLastTs);state.playLastTs=ts;
+    if(state.playMode==='radar'){
+      state.radarAccum+=dt;
+      if(state.radarAccum>=850/state.speed){state.radarAccum=0;const max=Math.max(0,(state.weather?.radar?.frames?.length||1)-1);state.playIndex=state.playIndex>=max?0:state.playIndex+1;renderTimeline();}
+    }else{
+      state.playProgress+=dt*(0.000035*state.speed);if(state.playProgress>1)state.playProgress=0;
+      const p=activePlaybackPoint();state.playIndex=Math.floor(state.playProgress*Math.max(0,trackParts(state.selected).all.length-1));
+      $('#timelineRange').value=Math.round(state.playProgress*1000);$('#playbackTime').textContent=p?fmtDate(p.time):'—';$('#playbackKind').textContent=p?.trend?tr('trackKindTrend'):p?.forecast?tr('trackKindForecast'):tr('trackKindObserved');syncCycloneFX();
+    }
+    state.raf=requestAnimationFrame(tick);
+  };
+  state.raf=requestAnimationFrame(tick);
 }
 
 function stopPlay(){state.playing=false;if(state.raf)cancelAnimationFrame(state.raf);state.raf=null;renderTimeline();}
 
 function togglePlay(){state.playing?stopPlay():startPlay();}
-
-async function directWeatherFallback() {
-  const satellite={status:'online',provider:'NASA GIBS',date:'latest',tileTemplate:'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/default/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg'};
-  let radar={status:'offline',frames:[],coverageTemplate:null};
-  try {
-    const j=await fetch('https://api.rainviewer.com/public/weather-maps.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()});
-    const host=j.host||'https://tilecache.rainviewer.com';
-    const frames=[...(j.radar?.past||[]),...(j.radar?.nowcast||[])].slice(-18).map(f=>({time:+f.time,path:f.path,tileTemplate:`${host}${f.path}/256/{z}/{x}/{y}/6/1_1.png`}));
-    radar={status:frames.length?'online':'no-data',frames,coverageTemplate:`${host}/v2/coverage/0/256/{z}/{x}/{y}/0/0_0.png`,generatedAt:j.generated?new Date(j.generated*1000).toISOString():null};
-  } catch(e) { radar.message=String(e); }
-  return {generatedAt:new Date().toISOString(),satellite,radar};
-}
 
 
 function fallbackWeatherConfig(){
@@ -596,12 +591,13 @@ async function fetchWeatherDirect(){
   try{const json=await fetch('https://api.rainviewer.com/public/weather-maps.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();});const host=json.host||'https://tilecache.rainviewer.com';const frames=(json.radar?.past||[]).slice(-12).map(f=>({time:+f.time,path:f.path,tileTemplate:`${host}${f.path}/256/{z}/{x}/{y}/2/1_1.png`}));fallback.radar={status:frames.length?'online':'no-data',host,frames,generatedAt:json.generated?new Date(json.generated*1000).toISOString():null,coverageTemplate:`${host}/v2/coverage/0/256/{z}/{x}/{y}/0/0_0.png`};}catch(error){fallback.radar.message=String(error);}return fallback;
 }
 
-async async function loadData() {
+async function loadData() {
   const cyclonePromise=fetch('/api/cyclones',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject(new Error(r.status)));
   const weatherPromise=fetch('/api/weather-layers',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject(new Error(r.status))).catch(()=>fetchWeatherDirect());
   const [cycloneResult,weatherResult]=await Promise.allSettled([cyclonePromise,weatherPromise]);
   if(cycloneResult.status==='fulfilled'){state.storms=(cycloneResult.value.storms||[]).map(s=>({...s,basin:s.basin||inferBasin(s)}));state.sources=cycloneResult.value.sources||[];}else{state.storms=[];state.sources=[{name:'Cyclone API',status:'offline',message:String(cycloneResult.reason)}];}
   state.weather=weatherResult.status==='fulfilled'?weatherResult.value:fallbackWeatherConfig();
+  if(!(state.weather?.radar?.frames||[]).length){const direct=await fetchWeatherDirect();if((direct.radar?.frames||[]).length)state.weather.radar=direct.radar;if(!state.weather.satellite)state.weather.satellite=direct.satellite;}
   $('#satelliteTime').textContent=`NASA GIBS · ${state.weather.satellite?.date||'latest'}`;$('#radarTime').textContent=state.weather.radar?.generatedAt?fmtDate(state.weather.radar.generatedAt):tr('radarEmpty');
   const liveWithTrack=state.storms.find(storm=>sortedTrack(storm).length>=2);
   if(!liveWithTrack){state.demo=true;localStorage.setItem('tv15-demo','true');}

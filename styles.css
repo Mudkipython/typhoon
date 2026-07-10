@@ -513,7 +513,7 @@ body[data-visual="cinematic"] .speed-button { background: rgba(255,255,255,.10);
 }
 
 
-/* V14 map-first layout, reliable canvas cyclone and restored historical reference */
+/* V15 map-first layout, reliable canvas cyclone and restored historical reference */
 .cyclone-fx-canvas{position:absolute;inset:0;z-index:6;pointer-events:none;mix-blend-mode:screen;filter:saturate(1.15);}
 .map-edge-button{position:absolute;z-index:18;top:82px;min-height:42px;border:1px solid var(--border-strong);border-radius:13px;background:color-mix(in srgb,var(--surface-solid) 92%,transparent);box-shadow:var(--shadow-soft);backdrop-filter:blur(14px);font-weight:850;cursor:pointer;padding:0 13px;display:flex;align-items:center;gap:7px}.map-edge-left{left:16px}.map-edge-right{right:16px}.map-edge-button.is-active{background:var(--primary);color:#fff;border-color:var(--primary)}
 .weather-layer-status{position:absolute;z-index:19;top:134px;right:16px;max-width:340px;border-radius:15px;padding:10px 12px;display:grid;grid-template-columns:12px 1fr 28px;align-items:center;gap:10px}.weather-layer-status strong{display:block;font-size:13px}.weather-layer-status small{display:block;color:var(--muted);font-size:11px;margin-top:2px}.weather-layer-status button{border:0;background:transparent;font-size:20px;cursor:pointer}.weather-layer-status[data-state="error"] .status-dot{background:var(--danger);box-shadow:0 0 0 5px color-mix(in srgb,var(--danger) 15%,transparent)}
@@ -538,59 +538,68 @@ body[data-visual="cinematic"] #map canvas.maplibregl-canvas{filter:saturate(1.05
 body[data-visual="cinematic"] .cyclone-fx-canvas{filter:saturate(1.35) drop-shadow(0 0 18px rgba(34,211,238,.28));}
 @media(max-width:920px){.map-edge-button{top:58px;min-height:38px}.map-edge-left{left:8px}.map-edge-right{right:8px}.map-edge-button span{display:none}.weather-layer-status{top:105px;right:8px;left:8px;max-width:none}.storm-summary{top:106px}.history-section{padding-bottom:20px}.cyclone-fx-canvas{z-index:6}.cinematic-hud{z-index:14!important}.insight-panel[data-sheet="collapsed"]{pointer-events:none}.insight-panel[data-sheet="half"],.insight-panel[data-sheet="full"]{pointer-events:auto}}
 
-/* V15 — map-first animated cyclone layout */
-@media (min-width: 921px) {
-  :root { --topbar-h: 68px; --rail-w: 330px; --panel-w: 430px; }
-  .topbar { grid-template-columns: 300px 1fr auto; padding: 0 16px; }
-  .source-health { min-width: 230px; padding: 7px 12px; }
-  .app-shell { grid-template-columns: 0 minmax(0,1fr); }
-  .storm-rail { position:absolute; inset:0 auto 0 0; width:var(--rail-w); z-index:60; transform:translateX(-105%); opacity:0; pointer-events:none; transition:.25s ease; box-shadow:var(--shadow); }
-  body:not(.rail-collapsed) .storm-rail { transform:translateX(0); opacity:1; pointer-events:auto; }
-  .insight-panel { position:absolute; top:0; right:0; bottom:0; width:var(--panel-w); z-index:55; transform:translateX(105%); transition:.25s ease; box-shadow:var(--shadow); background:var(--surface-solid); }
-  body.insight-open .insight-panel { transform:translateX(0); }
-  .map-workspace { grid-column:1; }
-  .map-top-left { top:14px; left:50%; transform:translateX(-50%); max-width:calc(100% - 210px); }
-  .map-toolbar { border-radius:999px; padding:6px; }
-  .tool-button { min-height:42px; font-size:14px; padding:0 15px; }
-  .storm-summary { top:80px; left:22px; width:330px; padding:16px 17px; border-radius:18px; }
-  .storm-summary h1 { font-size:26px; margin:7px 0 5px; }
-  .storm-summary > p { font-size:13px; line-height:1.45; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-  .summary-metrics { margin:11px 0; }
-  .summary-metrics > div { padding:8px; }
-  .primary-button { min-height:40px; }
-  body[data-visual="cinematic"] .cinematic-hud { display:block; right:20px; top:78px; width:285px; padding:14px; }
-  .cinematic-title-row { margin-top:10px; }
-  .cinematic-title-row strong { font-size:23px; }
-  .cinematic-metrics { margin-top:10px; }
-  .cinematic-time small { display:none; }
-  .timeline { width:min(690px,calc(100% - 240px)); bottom:16px; }
-  .source-agreement { left:20px; bottom:18px; max-width:330px; }
-  .map-legend { right:20px; bottom:18px; }
+/* V15 — uncluttered map-first layout with an always-visible animated cyclone */
+:root{--rail-w:330px;--panel-w:440px}
+.app-shell{grid-template-columns:1fr!important;position:relative}
+.map-workspace{grid-column:1!important;min-width:0}
+.storm-rail{position:absolute!important;z-index:140!important;left:0;top:0;bottom:0;width:min(var(--rail-w),88vw);box-shadow:22px 0 56px rgba(12,38,50,.18);transform:translateX(-105%);opacity:0;pointer-events:none;transition:transform .26s ease,opacity .2s ease}
+body:not(.rail-collapsed) .storm-rail,.storm-rail.is-open{transform:translateX(0);opacity:1;pointer-events:auto}
+.insight-panel{position:absolute!important;z-index:140!important;right:0;top:0;bottom:0;width:min(var(--panel-w),92vw);box-shadow:-22px 0 56px rgba(12,38,50,.18);transform:translateX(105%);transition:transform .26s ease}
+body.insight-open .insight-panel{transform:translateX(0)}
+.map-edge-button{top:74px}
+.map-top-left{top:14px;left:50%;transform:translateX(-50%);max-width:calc(100% - 170px)}
+.map-toolbar{justify-content:center;background:color-mix(in srgb,var(--surface-solid) 94%,transparent);box-shadow:0 12px 34px rgba(16,47,61,.13)}
+.storm-summary{top:auto!important;left:18px!important;bottom:100px!important;width:min(330px,calc(100% - 36px))!important;padding:12px 14px!important;border-radius:17px!important}
+.storm-summary .summary-kicker{font-size:10px}
+.storm-summary h1{font-size:22px!important;margin:6px 0 9px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.storm-summary>p,.storm-summary .summary-metrics{display:none!important}
+.storm-summary .primary-button{min-height:38px;padding:0 13px;font-size:12px}
+.source-agreement{display:none!important}
+.cinematic-hud{display:none!important}
+.cinematic-vignette{opacity:0!important}
+.cyclone-fx-canvas{z-index:8!important;mix-blend-mode:screen;filter:saturate(1.22) drop-shadow(0 0 12px rgba(34,211,238,.16))}
+body[data-theme="light"] .cyclone-fx-canvas{mix-blend-mode:multiply;filter:saturate(1.25) contrast(1.05)}
+body[data-visual="cinematic"] #map canvas.maplibregl-canvas{filter:saturate(1.06) contrast(1.04) brightness(.9)}
+.timeline{z-index:24;width:min(720px,calc(100% - 42px));min-height:62px;border-radius:18px;padding:8px 10px;background:color-mix(in srgb,var(--surface-solid) 94%,transparent);box-shadow:0 16px 40px rgba(8,32,45,.18)}
+.timeline-main input{height:7px}
+.fx-legend{display:inline-flex!important}
+.weather-layer-status{top:74px}
+.maplibregl-popup-content{border-radius:15px!important;box-shadow:0 18px 45px rgba(10,35,48,.22)!important}
+
+@media(min-width:921px){
+  .topbar{grid-template-columns:minmax(230px,310px) minmax(220px,360px) auto}
+  .storm-rail{border-right:1px solid var(--border)}
+  .insight-panel{border-left:1px solid var(--border)}
+  .map-edge-left{left:14px}.map-edge-right{right:14px}
 }
 
-.cyclone-fx-canvas { position:absolute; inset:0; z-index:7; pointer-events:none; }
-body[data-visual="cinematic"] .storm-summary { display:none; }
-body[data-visual="cinematic"] .map-legend { opacity:.72; }
-body[data-visual="cinematic"] .maplibregl-canvas { filter:saturate(.9) contrast(1.08) brightness(.72); }
-body[data-visual="cinematic"] .cyclone-fx-canvas { filter:saturate(1.4) drop-shadow(0 0 22px rgba(34,211,238,.3)); }
-.map-edge-button { z-index:35; }
-.map-edge-left { left:14px; }
-.map-edge-right { right:14px; }
+@media(max-width:920px){
+  .map-top-left{left:8px;right:8px;transform:none;max-width:none;top:8px}
+  .map-toolbar{justify-content:flex-start;width:100%;padding:4px;overflow-x:auto}
+  .tool-button{min-height:36px;padding:0 10px;font-size:12px}
+  .map-edge-button{top:54px;min-height:36px;padding:0 10px}
+  .storm-summary{display:none!important}
+  .timeline{bottom:86px;width:calc(100% - 16px);min-height:58px;grid-template-columns:40px minmax(0,1fr) 42px;gap:7px;padding:7px 8px}
+  .timeline-mode{position:absolute;left:8px;top:-34px}
+  .timeline-label strong{font-size:12px}.timeline-label small{display:none}
+  .play-button{width:40px;height:40px}
+  .speed-button{min-height:38px}
+  .insight-panel{left:0!important;right:0!important;top:auto!important;width:auto!important;height:86dvh!important;border-radius:22px 22px 0 0;transform:translateY(calc(100% - 78px))!important}
+  .insight-panel[data-sheet="half"]{transform:translateY(46%)!important}
+  .insight-panel[data-sheet="full"]{transform:translateY(0)!important}
+  .storm-rail{width:min(88vw,350px)}
+  .cyclone-fx-canvas{z-index:9!important}
+}
 
-@media (max-width: 920px) {
-  .storm-summary { top:104px; left:10px; width:calc(100% - 20px); max-width:360px; padding:12px 13px; }
-  .storm-summary h1 { font-size:21px; margin:5px 0; }
-  .storm-summary > p,.summary-metrics { display:none; }
-  .primary-button { min-height:38px; padding:0 13px; }
-  .map-top-left { left:8px; right:8px; top:8px; max-width:none; }
-  .map-toolbar { width:100%; }
-  .tool-button { min-height:39px; padding:0 10px; font-size:12px; }
-  body[data-visual="cinematic"] .cinematic-hud { top:60px; right:8px; width:205px; padding:10px; }
-  .cinematic-hud-top .visual-demo,.cinematic-time small { display:none; }
-  .cinematic-title-row strong { font-size:18px; }
-  .cinematic-metrics { grid-template-columns:1fr 1fr; }
-  .cinematic-metrics > div:nth-child(3) { display:none; }
-  .timeline { bottom:10px; width:calc(100% - 16px); grid-template-columns:auto 42px minmax(0,1fr) 45px; }
-  .timeline-mode { display:none; }
-  .map-legend,.source-agreement { display:none; }
+@media(max-width:560px){
+  .topbar{height:66px;grid-template-columns:1fr auto}
+  .source-health{display:none}
+  .brand-copy small{display:none}
+  .brand-copy strong{font-size:14px}
+  .version-pill{font-size:8px}
+  .top-actions .segmented{display:none}
+  .icon-button{min-height:38px;padding:0 9px}
+  .map-toolbar .tool-button span{display:none}
+  .map-toolbar .tool-button{min-width:38px;padding:0 8px}
+  .timeline{bottom:82px}
 }
